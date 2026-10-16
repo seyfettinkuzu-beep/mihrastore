@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mihra Store</title>
+<meta name="description" content="Takı koleksiyonumuzdan seçmeler.">
+<meta name="theme-color" content="#FAF8F5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1 class="brand" id="brand"></h1>
+    <p class="slogan" id="slogan"></p>
+    <p class="lead" id="lead"></p>
+    <div class="rule"></div>
+  </header>
+  <nav class="filters" id="filters" aria-label="Kategoriler"></nav>
+  <main>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>Bu kategoride henüz ürün yok.</p>
+  </main>
+  <footer id="foot"></footer>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Büyük görünüm" aria-hidden="true">
+  <button class="x" id="lbx" aria-label="Kapat">&times;</button>
+  <button class="pv" id="lbp" aria-label="Önceki">&#8249;</button>
+  <button class="nx" id="lbn" aria-label="Sonraki">&#8250;</button>
+  <figure><img id="lbi" alt=""></figure>
+  <figcaption><b id="lbt"></b><span id="lbc"></span><span class="count" id="lbk"></span></figcaption>
+</div>
+
+<noscript><p style="text-align:center;padding:40px">Bu sayfanın görünmesi için JavaScript gerekir.</p></noscript>
+<script src="products.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
