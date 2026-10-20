@@ -27,7 +27,11 @@
   function waLink(txt) { return 'https://wa.me/' + wa + '?text=' + encodeURIComponent(txt); }
   if (wa) { var fab = $('wafab'); fab.href = waLink('Merhaba, ' + marka + ' ürünleri hakkında bilgi almak istiyorum.'); fab.hidden = false; }
 
+  /* Kategori sırası: yönetici panelindeki sıra (gruplar), ardından listede olup orada olmayanlar. Ürünü olmayan kategori gösterilmez. */
+  var has = {};
+  all.forEach(function (u) { has[grupOf(u)] = 1; });
   var groups = ['Tümü'];
+  (Array.isArray(S.gruplar) ? S.gruplar : []).forEach(function (g) { if (has[g] && groups.indexOf(g) < 0) groups.push(g); });
   all.forEach(function (u) { var g = grupOf(u); if (g && groups.indexOf(g) < 0) groups.push(g); });
   var cur = 'Tümü', sub = '', shown = [], io = null, last = null;
 

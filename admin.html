@@ -104,6 +104,14 @@ input:focus,select:focus{border-color:var(--ink)}
 .ib.del{color:var(--bad)}
 .ib.del:hover{border-color:var(--bad)}
 .badge{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.cats{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.cat{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.cat input{background:#fff}
+.cat .n{font-size:13px;color:var(--muted);white-space:nowrap}
+.cat .subs{grid-column:1/-1;font-size:12px;color:var(--muted);margin-top:-2px}
+.newcat{display:flex;gap:10px}
+.newcat input{flex:1}
+select.gsel{padding:8px 10px;font-size:15px}
 .empty{padding:40px 18px;text-align:center;color:var(--muted)}
 
 @media (max-width:680px){
@@ -194,6 +202,21 @@ input:focus,select:focus{border-color:var(--ink)}
     </details>
   </section>
 
+  <!-- Kategoriler -->
+  <section class="card">
+    <details id="catBox">
+      <summary>Kategoriler <span class="tag" id="catTag"></span></summary>
+      <div class="body">
+        <p class="hint">Sitenin üstündeki kategori butonları (Kolye, Bileklik…) buradaki sırayla görünür. Bir kategori, içinde en az bir ürün olunca sitede çıkar. Adını değiştirirsen içindeki tüm ürünler de yeni ada geçer. Alt kategoriler (İnci, Taşlı…) ürünlerin "Alt kategori" kutusuna yazılarak oluşur.</p>
+        <div class="cats" id="cats"></div>
+        <div class="newcat">
+          <input id="newCat" placeholder="Yeni kategori adı (ör. Yüzük)" aria-label="Yeni kategori adı">
+          <button class="btn primary" type="button" id="newCatBtn">Kategori ekle</button>
+        </div>
+      </div>
+    </details>
+  </section>
+
   <!-- Yeni ürün -->
   <section class="card">
     <h2>Yeni ürün ekle</h2>
@@ -207,7 +230,7 @@ input:focus,select:focus{border-color:var(--ink)}
         <div>
           <div class="form">
             <label class="field wide"><span>Ürün adı</span><input id="aAd" placeholder="ör. İnci Damla Kolye"></label>
-            <label class="field"><span>Grup</span><input id="aGrup" list="dlGrup" placeholder="Kolye, Bileklik…"></label>
+            <label class="field"><span>Kategori</span><select id="aGrup" class="gsel"></select></label>
             <label class="field"><span>Alt kategori (isteğe bağlı)</span><input id="aKat" list="dlKat" placeholder="İnci, Taşlı…"></label>
             <label class="field"><span>Fiyat (isteğe bağlı)</span><input id="aFiyat" placeholder="ör. 1250" inputmode="decimal"></label>
           </div>
@@ -242,7 +265,6 @@ input:focus,select:focus{border-color:var(--ink)}
 </main>
 
 <input type="file" id="replFile" accept="image/*" hidden>
-<datalist id="dlGrup"></datalist>
 <datalist id="dlKat"></datalist>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toastTxt"></span><button type="button" id="toastBtn" hidden></button></div>
 <div class="overlay" id="busy" hidden><div><div class="spin"></div><p id="busyTxt">Lütfen bekle…</p></div></div>
@@ -253,7 +275,6 @@ input:focus,select:focus{border-color:var(--ink)}
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   var low = function (s) { return String(s || '').toLocaleLowerCase('tr'); };
-  var DEFAULT_GROUPS = ['Kolye', 'Bileklik', 'Küpe', 'Yüzük', 'Çocuk'];
   var CFG_KEY = 'mihra-admin-baglanti';
 
   /* ---------- durum ---------- */
@@ -337,6 +358,9 @@ input:focus,select:focus{border-color:var(--ink)}
       o.gizli = !!o.gizli;
       return o;
     });
+    var g = Array.isArray(d.gruplar) ? d.gruplar.map(function (x) { return String(x || '').trim(); }).filter(Boolean) : [];
+    d.urunler.forEach(function (u) { if (u.grup && g.indexOf(u.grup) < 0) g.push(u.grup); });
+    d.gruplar = g.filter(function (x, i) { return g.indexOf(x) === i; });
     return d;
   }
   function refPaths() {
@@ -369,6 +393,7 @@ input:focus,select:focus{border-color:var(--ink)}
       '  aciklama: ' + q(d.aciklama) + ',\n' +
       '  altYazi: ' + q(d.altYazi) + ',\n' +
       '  whatsapp: ' + q(d.whatsapp) + ',\n' +
+      '  gruplar: ' + q(d.gruplar || []) + ',\n' +
       '  urunler: [\n' + d.urunler.map(function (u) { return '    ' + item(u); }).join(',\n') + '\n  ]\n};\n';
   }
 
@@ -518,14 +543,39 @@ input:focus,select:focus{border-color:var(--ink)}
   }
 
   /* ---------- çizim ---------- */
-  function groupsList() {
-    var g = [];
-    data.urunler.forEach(function (u) { if (u.grup && g.indexOf(u.grup) < 0) g.push(u.grup); });
-    return g;
+  function groupsList() { return data.gruplar; }
+  function countIn(g) { return data.urunler.filter(function (u) { return u.grup === g; }).length; }
+  function groupOptions(sel) {
+    var g = groupsList().slice();
+    if (sel && g.indexOf(sel) < 0) g.push(sel);
+    return (sel ? '' : '<option value="">Kategori seç…</option>') + g.map(function (x) {
+      return '<option value="' + esc(x) + '"' + (x === sel ? ' selected' : '') + '>' + esc(x) + '</option>';
+    }).join('');
+  }
+  function renderCats() {
+    var g = groupsList();
+    $('catTag').textContent = g.length + ' kategori';
+    $('cats').innerHTML = g.map(function (x, i) {
+      var n = countIn(x), subs = [];
+      data.urunler.forEach(function (u) { if (u.grup === x && u.kategori && subs.indexOf(u.kategori) < 0) subs.push(u.kategori); });
+      return '<div class="cat" data-g="' + i + '">' +
+        '<input data-cat="name" value="' + esc(x) + '" aria-label="Kategori adı">' +
+        '<span class="n">' + n + ' ürün</span>' +
+        '<div class="ops"><div class="row">' +
+          '<button type="button" class="ib" data-cat="up" title="Yukarı" aria-label="Yukarı taşı"' + (i === 0 ? ' disabled' : '') + '>&#8593;</button>' +
+          '<button type="button" class="ib" data-cat="down" title="Aşağı" aria-label="Aşağı taşı"' + (i === g.length - 1 ? ' disabled' : '') + '>&#8595;</button>' +
+          '<button type="button" class="ib del" data-cat="del" title="' + (n ? 'Önce içindeki ürünleri başka kategoriye taşı ya da sil' : 'Kategoriyi sil') + '" aria-label="Kategoriyi sil"' + (n ? ' disabled' : '') + '>&#10005;</button>' +
+        '</div></div>' +
+        (subs.length ? '<div class="subs">Alt kategoriler: ' + esc(subs.join(', ')) + '</div>' : '') +
+      '</div>';
+    }).join('') || '<p class="hint">Henüz kategori yok.</p>';
+    var a = $('aGrup'), cur = a.value;
+    a.innerHTML = groupOptions('');
+    if (g.indexOf(cur) >= 0) a.value = cur;
   }
   function renderLists() {
-    var g = groupsList(), all = g.concat(DEFAULT_GROUPS.filter(function (x) { return g.indexOf(x) < 0; }));
-    $('dlGrup').innerHTML = all.map(function (x) { return '<option value="' + esc(x) + '">'; }).join('');
+    var g = groupsList();
+    renderCats();
     var k = [];
     data.urunler.forEach(function (u) { if (u.kategori && k.indexOf(u.kategori) < 0) k.push(u.kategori); });
     $('dlKat').innerHTML = k.map(function (x) { return '<option value="' + esc(x) + '">'; }).join('');
@@ -557,7 +607,7 @@ input:focus,select:focus{border-color:var(--ink)}
       '<div class="f">' +
         '<input class="ad" data-k="ad" value="' + esc(u.ad) + '" placeholder="Ürün adı" aria-label="Ürün adı">' +
         '<div class="sub3">' +
-          '<input data-k="grup" list="dlGrup" value="' + esc(u.grup) + '" placeholder="Grup" aria-label="Grup">' +
+          '<select class="gsel" data-k="grup" aria-label="Kategori">' + groupOptions(u.grup) + '</select>' +
           '<input data-k="kategori" list="dlKat" value="' + esc(u.kategori) + '" placeholder="Alt kategori" aria-label="Alt kategori">' +
           '<input class="fi" data-k="fiyat" value="' + esc(u.fiyat) + '" placeholder="Fiyat (ör. 1250)" aria-label="Fiyat">' +
         '</div>' +
@@ -643,6 +693,42 @@ input:focus,select:focus{border-color:var(--ink)}
     updateBar();
   });
 
+  /* ---------- kategoriler ---------- */
+  function addCat() {
+    var v = $('newCat').value.trim().replace(/\s+/g, ' ');
+    if (!data || !v) return;
+    if (data.gruplar.some(function (x) { return low(x) === low(v); })) { toast('"' + v + '" kategorisi zaten var.', { bad: true }); return; }
+    data.gruplar.push(v);
+    $('newCat').value = '';
+    renderLists(); updateBar();
+    $('aGrup').value = v;
+    toast('"' + v + '" eklendi. İçine ürün ekleyip Kaydet\'e bas; ürünü olunca sitede görünür.');
+  }
+  $('newCatBtn').addEventListener('click', addCat);
+  $('newCat').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addCat(); } });
+  $('cats').addEventListener('change', function (e) {
+    if (e.target.getAttribute('data-cat') !== 'name') return;
+    var i = +e.target.closest('.cat').getAttribute('data-g'), old = data.gruplar[i], v = e.target.value.trim().replace(/\s+/g, ' ');
+    if (!v || v === old) { e.target.value = old; return; }
+    if (data.gruplar.some(function (x, j) { return j !== i && low(x) === low(v); })) { e.target.value = old; toast('"' + v + '" adında bir kategori zaten var.', { bad: true }); return; }
+    data.gruplar[i] = v;
+    var n = 0;
+    data.urunler.forEach(function (u) { if (u.grup === old) { u.grup = v; n++; } });
+    if ($('fg').value === old) $('fg').value = '';
+    renderLists(); renderList(); updateBar();
+    toast('"' + old + '" → "' + v + '"' + (n ? ' (' + n + ' ürün güncellendi)' : '') + '.');
+  });
+  $('cats').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-cat]'); if (!b || b.disabled) return;
+    var i = +b.closest('.cat').getAttribute('data-g'), g = data.gruplar, act = b.getAttribute('data-cat');
+    if (act === 'del') { var gone = g.splice(i, 1)[0]; renderLists(); updateBar(); toast('"' + gone + '" kategorisi silindi.'); return; }
+    var j = i + (act === 'up' ? -1 : 1); if (j < 0 || j >= g.length) return;
+    var t = g[i]; g[i] = g[j]; g[j] = t;
+    renderLists(); updateBar();
+    var nb = $('cats').querySelector('.cat[data-g="' + j + '"] [data-cat="' + act + '"]');
+    if (nb && !nb.disabled) nb.focus();
+  });
+
   /* ---------- yeni ürün ---------- */
   var addFileObj = null;
   function setAddFile(f) {
@@ -666,7 +752,7 @@ input:focus,select:focus{border-color:var(--ink)}
     if (!data) return fail('Ürün listesi henüz yüklenmedi.');
     if (!addFileObj) return fail('Önce bir fotoğraf seç.');
     if (!ad) return fail('Ürün adını yaz.');
-    if (!grup) return fail('Bir grup seç ya da yaz (ör. Kolye).');
+    if (!grup) return fail('Bir kategori seç. Yoksa önce Kategoriler bölümünden ekle.');
     busy('Fotoğraf hazırlanıyor…');
     makeImages(addFileObj, ad).then(function (p) {
       var u = { gorsel: p.gorsel, kucuk: p.kucuk, ad: ad, grup: grup, kategori: $('aKat').value.trim(), fiyat: fmtPrice($('aFiyat').value), gizli: false };
