@@ -3,8 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Mihra Store</title>
-<meta name="description" content="Takı koleksiyonumuzdan seçmeler.">
+<title>Mihra Store · El işçiliği takılar</title>
+<meta name="description" content="Koleksiyonumuzdan seçtiklerimiz.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mihra Store">
+<meta property="og:title" content="Mihra Store · El işçiliği takılar">
+<meta property="og:description" content="Koleksiyonumuzdan seçtiklerimiz.">
+<meta property="og:image" content="images/damla-tasli.jpg">
+<meta property="og:url" content="">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#FAF8F5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +28,10 @@
     <p class="lead" id="lead"></p>
     <div class="rule"></div>
   </header>
-  <nav class="filters" id="filters" aria-label="Kategoriler"></nav>
+  <nav class="filters" id="nav" aria-label="Kategoriler">
+    <div class="row" id="filters"></div>
+    <div class="row sub" id="subfilters" hidden></div>
+  </nav>
   <main>
     <div class="grid" id="grid"></div>
     <p class="empty" id="empty" hidden>Bu kategoride henüz ürün yok.</p>
@@ -32,11 +44,12 @@
   <button class="pv" id="lbp" aria-label="Önceki">&#8249;</button>
   <button class="nx" id="lbn" aria-label="Sonraki">&#8250;</button>
   <figure><img id="lbi" alt=""></figure>
-  <figcaption><b id="lbt"></b><span id="lbc"></span><span class="count" id="lbk"></span></figcaption>
+  <figcaption><b id="lbt"></b><span class="cat" id="lbc"></span><span class="price" id="lbf"></span><a class="wa" id="lbw" target="_blank" rel="noopener">WhatsApp'tan sipariş ver</a><span class="count" id="lbk"></span></figcaption>
 </div>
 
+<a class="wa-fab" id="wafab" target="_blank" rel="noopener" aria-label="WhatsApp ile yaz" hidden>WhatsApp</a>
 <noscript><p style="text-align:center;padding:40px">Bu sayfanın görünmesi için JavaScript gerekir.</p></noscript>
-<script src="products.js"></script>
+<script src="products.js?v=1"></script>
 <script src="app.js"></script>
 </body>
 </html>
