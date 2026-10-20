@@ -8,6 +8,7 @@ window.SHOWROOM = {
   altYazi: "© {yil} Mihra Store",
   whatsapp: "905416714581",
   urunler: [
+    { gorsel: "images/kupe-sonbahar.jpg", kucuk: "images/kupe-sonbahar-k.jpg", ad: "Küpe Sonbahar", grup: "Küpe", kategori: "Taşlı", fiyat: "1.200 ₺" },
     { gorsel: "images/damla-tasli.jpg", kucuk: "images/damla-tasli-k.jpg", ad: "Damla Taşlı Kolye", grup: "Kolye", kategori: "Taşlı" },
     { gorsel: "images/sallanan-inci.jpg", kucuk: "images/sallanan-inci-k.jpg", ad: "Sallantılı İnci Kolye", grup: "Kolye", kategori: "İnci" },
     { gorsel: "images/cicek-inci-altin.jpg", kucuk: "images/cicek-inci-altin-k.jpg", ad: "Çiçek ve İnci Kolye", grup: "Kolye", kategori: "Çiçek" },
