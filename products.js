@@ -3,7 +3,7 @@
    altYazi içindeki {yil} otomatik olarak bu yılla değişir. */
 window.SHOWROOM = {
   marka: "Mihra Store",
-  slogan: "El işçiliği takılar",
+  slogan: "",
   aciklama: "Koleksiyonumuzdan seçtiklerimiz.",
   altYazi: "© {yil} Mihra Store",
   whatsapp: "905416714581",
