@@ -103,6 +103,18 @@ input:focus,select:focus{border-color:var(--ink)}
 .ib:disabled{opacity:.3;cursor:default;border-color:var(--line)}
 .ib.del{color:var(--bad)}
 .ib.del:hover{border-color:var(--bad)}
+.gal{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.gal .gi{position:relative;width:46px;height:60px;border-radius:5px;overflow:hidden;background:var(--soft);flex:none}
+.gal .gi img{width:100%;height:100%;object-fit:cover;display:block}
+.gal .gi button{position:absolute;appearance:none;border:0;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;line-height:1;cursor:pointer;padding:0;background:rgba(31,27,22,.75);color:#fff}
+.gal .gi .x{top:2px;right:2px}
+.gal .gi .cv{bottom:2px;left:2px;font-size:10px}
+.gal .gi button:hover{background:var(--accent)}
+.gal .gi.nw{outline:2px solid var(--accent);outline-offset:-2px}
+.gal .gadd{appearance:none;height:60px;padding:0 12px;border:1.5px dashed var(--line);border-radius:5px;background:transparent;cursor:pointer;color:var(--muted);font:500 12px/1.2 var(--f-body);text-align:center}
+.gal .gadd:hover{border-color:var(--accent);color:var(--ink)}
+.gal .lbl{font-size:12px;color:var(--muted);margin-right:2px}
+.dropn{position:absolute;right:8px;bottom:8px;background:rgba(31,27,22,.8);color:#fff;font-size:12px;padding:4px 8px;border-radius:99px}
 .badge{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .cats{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .cat{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
@@ -223,9 +235,9 @@ select.gsel{padding:8px 10px;font-size:15px}
     <div class="body">
       <div class="add">
         <label class="drop" id="drop">
-          <input type="file" id="addFile" accept="image/*" aria-label="Ürün fotoğrafı">
-          <img id="addPrev" alt="" hidden>
-          <span id="dropTxt"><span class="plus">+</span>Fotoğraf seç<br><small>ya da buraya sürükle</small></span>
+          <input type="file" id="addFile" accept="image/*" multiple aria-label="Ürün fotoğrafları">
+          <img id="addPrev" alt="" hidden><span class="dropn" id="dropN" hidden></span>
+          <span id="dropTxt"><span class="plus">+</span>Fotoğraf seç<br><small>birden fazla seçebilirsin; ilki kapak olur</small></span>
         </label>
         <div>
           <div class="form">
@@ -265,6 +277,7 @@ select.gsel{padding:8px 10px;font-size:15px}
 </main>
 
 <input type="file" id="replFile" accept="image/*" hidden>
+<input type="file" id="ekFile" accept="image/*" multiple hidden>
 <datalist id="dlKat"></datalist>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toastTxt"></span><button type="button" id="toastBtn" hidden></button></div>
 <div class="overlay" id="busy" hidden><div><div class="spin"></div><p id="busyTxt">Lütfen bekle…</p></div></div>
@@ -356,6 +369,8 @@ select.gsel{padding:8px 10px;font-size:15px}
       ['ad', 'grup', 'kategori', 'fiyat'].forEach(function (k) { o[k] = o[k] == null ? '' : String(o[k]); });
       o.kucuk = o.kucuk || o.gorsel;
       o.gizli = !!o.gizli;
+      o.ekGorseller = (Array.isArray(o.ekGorseller) ? o.ekGorseller : []).filter(function (e) { return e && e.gorsel; })
+        .map(function (e) { return { gorsel: String(e.gorsel), kucuk: String(e.kucuk || e.gorsel) }; });
       return o;
     });
     var g = Array.isArray(d.gruplar) ? d.gruplar.map(function (x) { return String(x || '').trim(); }).filter(Boolean) : [];
@@ -365,20 +380,20 @@ select.gsel{padding:8px 10px;font-size:15px}
   }
   function refPaths() {
     var s = {};
-    data.urunler.forEach(function (u) { s[u.gorsel] = 1; if (u.kucuk) s[u.kucuk] = 1; });
+    data.urunler.forEach(function (u) { s[u.gorsel] = 1; if (u.kucuk) s[u.kucuk] = 1; (u.ekGorseller || []).forEach(function (e) { s[e.gorsel] = 1; if (e.kucuk) s[e.kucuk] = 1; }); });
     return s;
   }
   function snapshot() { base = JSON.stringify(data); origPaths = refPaths(); }
 
   function serialize(d) {
     var q = JSON.stringify;
-    var order = ['gorsel', 'kucuk', 'ad', 'grup', 'kategori', 'fiyat', 'gizli'];
+    var order = ['gorsel', 'kucuk', 'ekGorseller', 'ad', 'grup', 'kategori', 'fiyat', 'gizli'];
     function item(u) {
       var keys = order.concat(Object.keys(u).filter(function (k) { return order.indexOf(k) < 0; }));
       var parts = [];
       keys.forEach(function (k) {
         var v = u[k];
-        if (v === undefined || v === null || v === '' || v === false) return;
+        if (v === undefined || v === null || v === '' || v === false || (Array.isArray(v) && !v.length)) return;
         if (k === 'kucuk' && v === u.gorsel) return;
         parts.push(k + ': ' + q(v));
       });
@@ -600,7 +615,7 @@ select.gsel{padding:8px 10px;font-size:15px}
   }
   function visIdx() { var r = []; for (var i = 0; i < data.urunler.length; i++) if (visible(i)) r.push(i); return r; }
   function rowHtml(i, pos, total) {
-    var u = data.urunler[i], isNew = !!pending[u.gorsel];
+    var u = data.urunler[i], ek = u.ekGorseller || [], isNew = !!pending[u.gorsel];
     return '<div class="item' + (u.gizli ? ' off' : '') + (isNew ? ' new' : '') + '" data-i="' + i + '">' +
       '<button type="button" class="th" data-act="photo" title="Fotoğrafı değiştir" aria-label="' + esc(u.ad) + ' fotoğrafını değiştir">' +
         '<img src="' + esc(src(u.kucuk || u.gorsel)) + '" alt="" loading="lazy" decoding="async"><span>Değiştir</span></button>' +
@@ -610,6 +625,14 @@ select.gsel{padding:8px 10px;font-size:15px}
           '<select class="gsel" data-k="grup" aria-label="Kategori">' + groupOptions(u.grup) + '</select>' +
           '<input data-k="kategori" list="dlKat" value="' + esc(u.kategori) + '" placeholder="Alt kategori" aria-label="Alt kategori">' +
           '<input class="fi" data-k="fiyat" value="' + esc(u.fiyat) + '" placeholder="Fiyat (ör. 1250)" aria-label="Fiyat">' +
+        '</div>' +
+        '<div class="gal"><span class="lbl">Diğer fotoğraflar' + (ek.length ? ' (' + ek.length + ')' : '') + ':</span>' +
+          ek.map(function (e, j) {
+            return '<div class="gi' + (pending[e.gorsel] ? ' nw' : '') + '"><img src="' + esc(src(e.kucuk || e.gorsel)) + '" alt="" loading="lazy" decoding="async">' +
+              '<button type="button" class="cv" data-act="ekcover" data-j="' + j + '" title="Kapak fotoğrafı yap" aria-label="Kapak fotoğrafı yap">&#9733;</button>' +
+              '<button type="button" class="x" data-act="ekdel" data-j="' + j + '" title="Bu fotoğrafı kaldır" aria-label="Bu fotoğrafı kaldır">&#10005;</button></div>';
+          }).join('') +
+          '<button type="button" class="gadd" data-act="ekadd">+ Fotoğraf<br>ekle</button>' +
         '</div>' +
         (isNew ? '<span class="badge">Yeni · henüz kaydedilmedi</span>' : '') +
       '</div>' +
@@ -730,19 +753,31 @@ select.gsel{padding:8px 10px;font-size:15px}
   });
 
   /* ---------- yeni ürün ---------- */
-  var addFileObj = null;
-  function setAddFile(f) {
-    addFileObj = f || null;
+  var addFiles = [];
+  function setAddFiles(fs) {
+    addFiles = Array.prototype.filter.call(fs || [], function (f) { return /^image\//.test(f.type || 'image/'); });
     var img = $('addPrev');
     if (addBlob) { URL.revokeObjectURL(addBlob); addBlob = null; }
-    if (f) { addBlob = URL.createObjectURL(f); img.src = addBlob; img.hidden = false; $('dropTxt').hidden = true; }
+    if (addFiles.length) { addBlob = URL.createObjectURL(addFiles[0]); img.src = addBlob; img.hidden = false; $('dropTxt').hidden = true; }
     else { img.hidden = true; img.removeAttribute('src'); $('dropTxt').hidden = false; $('addFile').value = ''; }
+    $('dropN').hidden = addFiles.length < 2;
+    $('dropN').textContent = addFiles.length + ' fotoğraf';
   }
-  $('addFile').addEventListener('change', function () { setAddFile(this.files && this.files[0]); });
+  $('addFile').addEventListener('change', function () { setAddFiles(this.files); });
   var drop = $('drop');
   ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
   ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function () { drop.classList.remove('over'); }); });
-  drop.addEventListener('drop', function (e) { e.preventDefault(); var f = e.dataTransfer.files && e.dataTransfer.files[0]; if (f) setAddFile(f); });
+  drop.addEventListener('drop', function (e) { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files.length) setAddFiles(e.dataTransfer.files); });
+  /* birden fazla fotoğrafı sırayla hazırla */
+  function makeMany(files, name) {
+    var out = [], n = 0;
+    return files.reduce(function (pr, f) {
+      return pr.then(function () {
+        busy('Fotoğraf hazırlanıyor… ' + (++n) + ' / ' + files.length);
+        return makeImages(f, name).then(function (p) { out.push(p); });
+      });
+    }, Promise.resolve()).then(function () { return out; });
+  }
   $('aFiyat').addEventListener('change', function () { this.value = fmtPrice(this.value); });
 
   $('addBtn').addEventListener('click', function () {
@@ -750,18 +785,18 @@ select.gsel{padding:8px 10px;font-size:15px}
     var ad = $('aAd').value.trim(), grup = $('aGrup').value.trim();
     var fail = function (m) { err.textContent = m; err.hidden = false; };
     if (!data) return fail('Ürün listesi henüz yüklenmedi.');
-    if (!addFileObj) return fail('Önce bir fotoğraf seç.');
+    if (!addFiles.length) return fail('Önce bir fotoğraf seç.');
     if (!ad) return fail('Ürün adını yaz.');
     if (!grup) return fail('Bir kategori seç. Yoksa önce Kategoriler bölümünden ekle.');
-    busy('Fotoğraf hazırlanıyor…');
-    makeImages(addFileObj, ad).then(function (p) {
-      var u = { gorsel: p.gorsel, kucuk: p.kucuk, ad: ad, grup: grup, kategori: $('aKat').value.trim(), fiyat: fmtPrice($('aFiyat').value), gizli: false };
+    makeMany(addFiles, ad).then(function (ps) {
+      var p = ps[0];
+      var u = { gorsel: p.gorsel, kucuk: p.kucuk, ekGorseller: ps.slice(1), ad: ad, grup: grup, kategori: $('aKat').value.trim(), fiyat: fmtPrice($('aFiyat').value), gizli: false };
       if ($('aTop').checked) data.urunler.unshift(u); else data.urunler.push(u);
-      $('aAd').value = ''; $('aFiyat').value = ''; setAddFile(null);
+      $('aAd').value = ''; $('aFiyat').value = ''; setAddFiles(null);
       $('q').value = ''; $('ff').value = '';
       if ($('fg').value && $('fg').value !== grup) $('fg').value = '';
       renderLists(); renderList(); updateBar();
-      toast('"' + ad + '" eklendi. Siteye göndermek için Kaydet\'e bas.');
+      toast('"' + ad + '" eklendi' + (ps.length > 1 ? ' (' + ps.length + ' fotoğraf)' : '') + '. Siteye göndermek için Kaydet\'e bas.');
     }).catch(function (e) { fail(e.message); }).finally(function () { busy(false); });
   });
 
@@ -796,6 +831,22 @@ select.gsel{padding:8px 10px;font-size:15px}
     var b = e.target.closest('[data-act]'); if (!b) return;
     var i = +b.closest('.item').getAttribute('data-i'), act = b.getAttribute('data-act'), arr = data.urunler;
     if (act === 'photo') { replTarget = i; $('replFile').click(); return; }
+    if (act === 'ekadd') { replTarget = i; $('ekFile').click(); return; }
+    if (act === 'ekdel' || act === 'ekcover') {
+      var pu = arr[i], j = +b.getAttribute('data-j'), e2 = pu.ekGorseller[j];
+      if (!e2) return;
+      if (act === 'ekdel') {
+        pu.ekGorseller.splice(j, 1);
+        renderList(); updateBar();
+        toast('Fotoğraf kaldırıldı.', { action: 'Geri al', onAction: function () { pu.ekGorseller.splice(Math.min(j, pu.ekGorseller.length), 0, e2); renderList(); updateBar(); } });
+      } else {
+        pu.ekGorseller[j] = { gorsel: pu.gorsel, kucuk: pu.kucuk || pu.gorsel };
+        pu.gorsel = e2.gorsel; pu.kucuk = e2.kucuk;
+        renderList(); updateBar();
+        toast('Kapak fotoğrafı değişti.');
+      }
+      return;
+    }
     if (act === 'del') {
       var it = arr.splice(i, 1)[0];
       lastDel = { it: it, i: i };
@@ -825,6 +876,16 @@ select.gsel{padding:8px 10px;font-size:15px}
       u.gorsel = p.gorsel; u.kucuk = p.kucuk;
       renderList(); updateBar();
       toast('Fotoğraf değişti. Kaydet\'e basınca siteye gider.');
+    }).catch(function (e) { toast(e.message, { bad: true }); }).finally(function () { busy(false); });
+  });
+  $('ekFile').addEventListener('change', function () {
+    var fs = Array.prototype.slice.call(this.files || []), i = replTarget; this.value = '';
+    if (!fs.length || i < 0 || !data.urunler[i]) return;
+    var u = data.urunler[i];
+    makeMany(fs, u.ad || 'urun').then(function (ps) {
+      u.ekGorseller = (u.ekGorseller || []).concat(ps);
+      renderList(); updateBar();
+      toast(ps.length + ' fotoğraf eklendi. Kaydet\'e basınca siteye gider.');
     }).catch(function (e) { toast(e.message, { bad: true }); }).finally(function () { busy(false); });
   });
   ['q', 'fg', 'ff'].forEach(function (id) { $(id).addEventListener('input', renderList); });

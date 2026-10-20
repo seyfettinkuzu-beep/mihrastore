@@ -11,6 +11,12 @@
      Eski biçimdeki dosyalarda yalnızca "kategori" vardır; o zaman grup olarak kullanılır. */
   function grupOf(u) { return u.grup || u.kategori || ''; }
   function altOf(u) { return u.grup ? (u.kategori || '') : ''; }
+  /* Ürünün tüm fotoğrafları: kapak + ekGorseller */
+  function pics(u) {
+    var a = [{ g: u.gorsel, k: u.kucuk || u.gorsel }];
+    (Array.isArray(u.ekGorseller) ? u.ekGorseller : []).forEach(function (e) { if (e && e.gorsel) a.push({ g: e.gorsel, k: e.kucuk || e.gorsel }); });
+    return a;
+  }
   function etiket(u) { var g = grupOf(u), k = altOf(u); return k ? g + ' · ' + k : g; }
 
   document.title = marka + (S.slogan ? ' · ' + S.slogan : '');
@@ -60,8 +66,9 @@
     });
     var g = $('grid');
     g.innerHTML = shown.map(function (u, i) {
-      var et = etiket(u);
-      return '<button type="button" class="tile reveal" data-i="' + i + '" aria-label="' + esc(u.ad || 'Ürün') + ' büyüt">' +
+      var et = etiket(u), np = pics(u).length;
+      return '<button type="button" class="tile reveal" data-i="' + i + '" aria-label="' + esc(u.ad || 'Ürün') + ' büyüt' + (np > 1 ? ', ' + np + ' fotoğraf' : '') + '">' +
+        (np > 1 ? '<span class="multi" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12"><rect x="4.5" y="1.5" width="10" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 4.5v9a1 1 0 0 0 1 1h9" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>' + np + '</span>' : '') +
         '<img class="pre" src="' + esc(u.kucuk || u.gorsel) + '" alt="' + esc(u.ad || '') + '" loading="' + (i < 6 ? 'eager' : 'lazy') + '" decoding="async">' +
         ((u.ad || et || u.fiyat) ? '<span class="cap"><b>' + esc(u.ad || '') + '</b><span>' + esc(et) + '</span>' +
           (u.fiyat ? '<em class="p">' + esc(u.fiyat) + '</em>' : '') + '</span>' : '') + '</button>';
@@ -89,23 +96,37 @@
   });
 
   /* büyük görünüm */
-  var lb = $('lb'), idx = 0;
-  function show(i) {
+  var lb = $('lb'), idx = 0, pidx = 0;
+  function show(i, p) {
     if (!shown.length) return;
     idx = (i + shown.length) % shown.length;
-    var u = shown[idx];
+    var u = shown[idx], ps = pics(u), n = ps.length;
+    pidx = p == null ? 0 : p < 0 ? n - 1 : Math.min(p, n - 1);
+    var ph = ps[pidx];
     resetZoom();
-    $('lbi').src = u.gorsel; $('lbi').alt = u.ad || '';
+    $('lbi').src = ph.g; $('lbi').alt = (u.ad || '') + (n > 1 ? ' – fotoğraf ' + (pidx + 1) : '');
     $('lbt').textContent = u.ad || ''; $('lbc').textContent = etiket(u);
     $('lbf').textContent = u.fiyat || ''; $('lbf').hidden = !u.fiyat;
+    var gl = $('lbg');
+    gl.hidden = n < 2;
+    gl.innerHTML = n < 2 ? '' : ps.map(function (q, j) {
+      return '<button type="button" data-p="' + j + '" aria-label="Fotoğraf ' + (j + 1) + '"' + (j === pidx ? ' aria-current="true"' : '') + '><img src="' + esc(q.k) + '" alt=""></button>';
+    }).join('');
     var w = $('lbw'); w.hidden = !wa;
     if (wa) {
-      w.href = waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.fiyat ? ' (' + u.fiyat + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(u.gorsel, location.href).href);
+      w.href = waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.fiyat ? ' (' + u.fiyat + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(ph.g, location.href).href);
       w.textContent = u.fiyat ? 'WhatsApp\'tan sipariş ver' : 'WhatsApp\'tan fiyat sor';
     }
-    $('lbk').textContent = (idx + 1) + ' / ' + shown.length + '\n' + zoomHint;
-    var multi = shown.length > 1; $('lbp').hidden = !multi; $('lbn').hidden = !multi;
-    var nx = shown[(idx + 1) % shown.length]; if (nx) { var pre = new Image(); pre.src = nx.gorsel; }
+    $('lbk').textContent = (idx + 1) + ' / ' + shown.length + (n > 1 ? ' · Fotoğraf ' + (pidx + 1) + ' / ' + n : '') + '\n' + zoomHint;
+    var multi = shown.length > 1 || n > 1; $('lbp').hidden = !multi; $('lbn').hidden = !multi;
+    var nxt = pidx < n - 1 ? ps[pidx + 1].g : pics(shown[(idx + 1) % shown.length])[0].g;
+    var pre = new Image(); pre.src = nxt;
+  }
+  /* ileri/geri: önce ürünün fotoğrafları, sonra bir sonraki ürün */
+  function step(d) {
+    var n = pics(shown[idx]).length;
+    if (d > 0) { if (pidx < n - 1) show(idx, pidx + 1); else show(idx + 1, 0); }
+    else { if (pidx > 0) show(idx, pidx - 1); else show(idx - 1, -1); }
   }
   function open(i) {
     last = document.activeElement; show(i);
@@ -118,8 +139,9 @@
   }
   $('grid').addEventListener('click', function (e) { var t = e.target.closest('.tile'); if (t) open(Number(t.getAttribute('data-i'))); });
   $('lbx').addEventListener('click', close);
-  $('lbp').addEventListener('click', function () { show(idx - 1); });
-  $('lbn').addEventListener('click', function () { show(idx + 1); });
+  $('lbp').addEventListener('click', function () { step(-1); });
+  $('lbg').addEventListener('click', function (e) { var b = e.target.closest('[data-p]'); if (b) show(idx, +b.getAttribute('data-p')); });
+  $('lbn').addEventListener('click', function () { step(1); });
   lb.addEventListener('click', function (e) {
     if (noClick) { noClick = false; return; }
     if (e.target === lb || e.target.tagName === 'FIGURE') { if (Z.s > 1) zoomTo(1, 0, 0, true); else close(); }
@@ -127,7 +149,7 @@
   document.addEventListener('keydown', function (e) {
     if (!lb.classList.contains('open')) return;
     if (e.key === 'Escape') { if (Z.s > 1) zoomTo(1, 0, 0, true); else close(); }
-    else if (e.key === 'ArrowLeft') show(idx - 1); else if (e.key === 'ArrowRight') show(idx + 1);
+    else if (e.key === 'ArrowLeft') step(-1); else if (e.key === 'ArrowRight') step(1);
     else if (e.key === '+' || e.key === '=') zoomCenter(Z.s * 1.5);
     else if (e.key === '-' || e.key === '_') zoomCenter(Z.s / 1.5);
     else if (e.key === '0') zoomTo(1, 0, 0, true);
@@ -201,7 +223,7 @@
     var dx = e.clientX - d.x, dy = e.clientY - d.y;
     if (d.moved) {
       noClick = true;
-      if (Z.s === 1 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(idx + (dx < 0 ? 1 : -1));
+      if (Z.s === 1 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
       return;
     }
     if (e.pointerType === 'mouse') {                    // bilgisayar: fotoğrafa tıkla → yakınlaş / uzaklaş
