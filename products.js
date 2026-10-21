@@ -9,6 +9,7 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Küpe","Çocuk"],
   urunler: [
+    { gorsel: "images/oval-tasli-bileklik.jpg", kucuk: "images/oval-tasli-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/oval-tasli-bileklik-2.jpg","kucuk":"images/oval-tasli-bileklik-2-k.jpg"}], ad: "Oval Taşlı Bileklik", grup: "Bileklik", kategori: "Suyolu", fiyat: "2.800 ₺" },
     { gorsel: "images/tasli-bileklik-5.jpg", kucuk: "images/tasli-bileklik-5-k.jpg", ekGorseller: [{"gorsel":"images/tasli-bileklik-6.jpg","kucuk":"images/tasli-bileklik-6-k.jpg"}], ad: "Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.800 ₺" },
     { gorsel: "images/tasli-bileklik-3.jpg", kucuk: "images/tasli-bileklik-3-k.jpg", ekGorseller: [{"gorsel":"images/tasli-bileklik-4.jpg","kucuk":"images/tasli-bileklik-4-k.jpg"}], ad: "Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "4.400 ₺" },
     { gorsel: "images/boncuk-kupe.jpg", kucuk: "images/boncuk-kupe-k.jpg", ekGorseller: [{"gorsel":"images/boncuk-kupe-2.jpg","kucuk":"images/boncuk-kupe-2-k.jpg"}], ad: "Boncuk Küpe", grup: "Küpe", kategori: "Charm", fiyat: "1.050 ₺" },
