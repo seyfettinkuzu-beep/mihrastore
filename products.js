@@ -9,6 +9,7 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Küpe","Çocuk"],
   urunler: [
+    { gorsel: "images/tasli-plaka-bileklik-2.jpg", kucuk: "images/tasli-plaka-bileklik-2-k.jpg", ad: "Taşlı Plaka Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.300 ₺" },
     { gorsel: "images/tek-tas-bileklik.jpg", kucuk: "images/tek-tas-bileklik-k.jpg", ad: "Tek Taş Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "1.400 ₺" },
     { gorsel: "images/oval-tasli-bileklik-3.jpg", kucuk: "images/oval-tasli-bileklik-3-k.jpg", ekGorseller: [{"gorsel":"images/oval-tasli-bileklik-4.jpg","kucuk":"images/oval-tasli-bileklik-4-k.jpg"}], ad: "Oval Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "4.200 ₺" },
     { gorsel: "images/yuvarlak-bileklik.jpg", kucuk: "images/yuvarlak-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/yuvarlak-bileklik-2.jpg","kucuk":"images/yuvarlak-bileklik-2-k.jpg"}], ad: "Yuvarlak Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "1.300 ₺" },
