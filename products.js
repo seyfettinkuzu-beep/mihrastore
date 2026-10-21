@@ -124,7 +124,7 @@ window.SHOWROOM = {
     { gorsel: "images/bileklik-bezel-tenis-ince-2.jpg", kucuk: "images/bileklik-bezel-tenis-ince-2-k.jpg", ad: "Bezel Taşlı İnce Tenis Bileklik · 2", grup: "Bileklik", kategori: "Suyolu", fiyat: "3.000 ₺" },
     { gorsel: "images/bileklik-disk-sarkit.jpg", kucuk: "images/bileklik-disk-sarkit-k.jpg", ad: "Pullu Bileklik", grup: "Bileklik", fiyat: "1.750 ₺" },
     { gorsel: "images/bileklik-kelebek-kunye.jpg", kucuk: "images/bileklik-kelebek-kunye-k.jpg", ad: "Kelebekli Çocuk Künye Bileklik", grup: "Çocuk" },
-    { gorsel: "images/bileklik-tek-tas-bezel.jpg", kucuk: "images/bileklik-tek-tas-bezel-k.jpg", ad: "Tek Taş Bezel Bileklik", grup: "Bileklik" },
+    { gorsel: "images/tek-tas-bezel-bileklik.jpg", kucuk: "images/tek-tas-bezel-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/tek-tas-bezel-bileklik-2.jpg","kucuk":"images/tek-tas-bezel-bileklik-2-k.jpg"}], ad: "Tek Taş Bezel Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.400 ₺" },
     { gorsel: "images/bileklik-top-kare-pave.jpg", kucuk: "images/bileklik-top-kare-pave-k.jpg", ad: "Top ve Kare Taşlı Bileklik", grup: "Bileklik", fiyat: "3.400 ₺" },
     { gorsel: "images/bileklik-dalga-pave-barel.jpg", kucuk: "images/bileklik-dalga-pave-barel-k.jpg", ad: "Dalga Taşlı Bileklik", grup: "Bileklik", fiyat: "4.400 ₺" },
     { gorsel: "images/bileklik-opal-marquise-kol.jpg", kucuk: "images/bileklik-opal-marquise-kol-k.jpg", ad: "Opal Taşlı Marquise Bileklik · Kolda", grup: "Bileklik" },
