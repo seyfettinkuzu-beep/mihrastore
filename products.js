@@ -9,6 +9,7 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Küpe","Çocuk"],
   urunler: [
+    { gorsel: "images/tek-tas-bileklik.jpg", kucuk: "images/tek-tas-bileklik-k.jpg", ad: "Tek Taş Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "1.400 ₺" },
     { gorsel: "images/oval-tasli-bileklik-3.jpg", kucuk: "images/oval-tasli-bileklik-3-k.jpg", ekGorseller: [{"gorsel":"images/oval-tasli-bileklik-4.jpg","kucuk":"images/oval-tasli-bileklik-4-k.jpg"}], ad: "Oval Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "4.200 ₺" },
     { gorsel: "images/yuvarlak-bileklik.jpg", kucuk: "images/yuvarlak-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/yuvarlak-bileklik-2.jpg","kucuk":"images/yuvarlak-bileklik-2-k.jpg"}], ad: "Yuvarlak Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "1.300 ₺" },
     { gorsel: "images/tasli-oval-bileklik.jpg", kucuk: "images/tasli-oval-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/tasli-oval-bileklik-2.jpg","kucuk":"images/tasli-oval-bileklik-2-k.jpg"}], ad: "Taşlı Oval Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.700 ₺" },
@@ -132,7 +133,7 @@ window.SHOWROOM = {
     { gorsel: "images/bileklik-opal-marquise-kol.jpg", kucuk: "images/bileklik-opal-marquise-kol-k.jpg", ad: "Opal Taşlı Marquise Bileklik · Kolda", grup: "Bileklik" },
     { gorsel: "images/bileklik-halo-yuvarlak-kol.jpg", kucuk: "images/bileklik-halo-yuvarlak-kol-k.jpg", ekGorseller: [{"gorsel":"images/halo-tasli-yuvarlak-bileklik-kolda.jpg","kucuk":"images/halo-tasli-yuvarlak-bileklik-kolda-k.jpg"}], ad: "Halo Taşlı Yuvarlak Bileklik · Kolda", grup: "Bileklik", fiyat: "1.800 ₺" },
     { gorsel: "images/bileklik-kalp-kunye.jpg", kucuk: "images/bileklik-kalp-kunye-k.jpg", ad: "Pembe Kalpli Çocuk Künye Bileklik", grup: "Çocuk" },
-    { gorsel: "images/bileklik-plaka-pave.jpg", kucuk: "images/bileklik-plaka-pave-k.jpg", ad: "Taşlı Plaka Bileklik", grup: "Bileklik" },
+    { gorsel: "images/tasli-plaka-bileklik.jpg", kucuk: "images/tasli-plaka-bileklik-k.jpg", ad: "Taşlı Plaka Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "7.700 ₺" },
     { gorsel: "images/bileklik-sonsuzluk-zincir.jpg", kucuk: "images/bileklik-sonsuzluk-zincir-k.jpg", ad: "Sonsuzluk Zincir Bileklik", grup: "Bileklik" },
     { gorsel: "images/bileklik-tenis-top-sarkit-2.jpg", kucuk: "images/bileklik-tenis-top-sarkit-2-k.jpg", ad: "Tenis ve Top Sarkıtlı Bileklik · 2", grup: "Bileklik" },
     { gorsel: "images/bileklik-pirinc-zincir.jpg", kucuk: "images/bileklik-pirinc-zincir-k.jpg", ad: "İnce Pirinç Zincir Bileklik", grup: "Bileklik" },
