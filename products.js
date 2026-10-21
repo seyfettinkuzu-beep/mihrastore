@@ -9,6 +9,7 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Küpe","Çocuk"],
   urunler: [
+    { gorsel: "images/tasli-bileklik-5.jpg", kucuk: "images/tasli-bileklik-5-k.jpg", ekGorseller: [{"gorsel":"images/tasli-bileklik-6.jpg","kucuk":"images/tasli-bileklik-6-k.jpg"}], ad: "Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.800 ₺" },
     { gorsel: "images/tasli-bileklik-3.jpg", kucuk: "images/tasli-bileklik-3-k.jpg", ekGorseller: [{"gorsel":"images/tasli-bileklik-4.jpg","kucuk":"images/tasli-bileklik-4-k.jpg"}], ad: "Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "4.400 ₺" },
     { gorsel: "images/boncuk-kupe.jpg", kucuk: "images/boncuk-kupe-k.jpg", ekGorseller: [{"gorsel":"images/boncuk-kupe-2.jpg","kucuk":"images/boncuk-kupe-2-k.jpg"}], ad: "Boncuk Küpe", grup: "Küpe", kategori: "Charm", fiyat: "1.050 ₺" },
     { gorsel: "images/kupe-sonbahar.jpg", kucuk: "images/kupe-sonbahar-k.jpg", ekGorseller: [{"gorsel":"images/kupe-sonbahar-2.jpg","kucuk":"images/kupe-sonbahar-2-k.jpg"}], ad: "Küpe Sonbahar", grup: "Küpe", kategori: "Taşlı", fiyat: "1.200 ₺" },
@@ -91,7 +92,6 @@ window.SHOWROOM = {
     { gorsel: "images/tek-tasli-suyolu-bileklik.jpg", kucuk: "images/tek-tasli-suyolu-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/tek-tasli-suyolu-bileklik-2.jpg","kucuk":"images/tek-tasli-suyolu-bileklik-2-k.jpg"}], ad: "Tek Taşlı Suyolu Bileklik", grup: "Bileklik", kategori: "Suyolu", fiyat: "3.200 ₺" },
     { gorsel: "images/sarkit-toplu-bileklik.jpg", kucuk: "images/sarkit-toplu-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/bileklik-toplu-sarkit.jpg","kucuk":"images/bileklik-toplu-sarkit-k.jpg"}], ad: "Sarkıt Toplu Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "2.500 ₺" },
     { gorsel: "images/kalpli-tasli-bileklik-2.jpg", kucuk: "images/kalpli-tasli-bileklik-2-k.jpg", ekGorseller: [{"gorsel":"images/kalpli-tasli-bileklik.jpg","kucuk":"images/kalpli-tasli-bileklik-k.jpg"}], ad: "Kalpli Taşlı Bileklik", grup: "Bileklik", kategori: "Kalp", fiyat: "1.800 ₺" },
-    { gorsel: "images/bileklik-opal-oval-uclu.jpg", kucuk: "images/bileklik-opal-oval-uclu-k.jpg", ad: "Üçlü Opal Bileklik", grup: "Bileklik" },
     { gorsel: "images/dikdortgen-halkali-bileklik.jpg", kucuk: "images/dikdortgen-halkali-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/bileklik-dikdortgen-halka.jpg","kucuk":"images/bileklik-dikdortgen-halka-k.jpg"}], ad: "Dikdörtgen Halkalı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "4.200 ₺" },
     { gorsel: "images/bileklik-tenis-toplu-cift.jpg", kucuk: "images/bileklik-tenis-toplu-cift-k.jpg", ad: "Çift Sıra Tenis ve Top Bileklik", grup: "Bileklik" },
     { gorsel: "images/altigen-halkali-zincir-bileklik.jpg", kucuk: "images/altigen-halkali-zincir-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/bileklik-altigen-halka-zincir.jpg","kucuk":"images/bileklik-altigen-halka-zincir-k.jpg"}], ad: "Altıgen Halkalı Zincir Bileklik", grup: "Bileklik", fiyat: "1.500 ₺" },
