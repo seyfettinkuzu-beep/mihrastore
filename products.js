@@ -110,7 +110,7 @@ window.SHOWROOM = {
     { gorsel: "images/bileklik-yonca-cubuk.jpg", kucuk: "images/bileklik-yonca-cubuk-k.jpg", ekGorseller: [{"gorsel":"images/yonca-detayli-tasli-bileklik.jpg","kucuk":"images/yonca-detayli-tasli-bileklik-k.jpg"}], ad: "Yonca Detaylı Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.600 ₺" },
     { gorsel: "images/bileklik-bezel-ince-tenis.jpg", kucuk: "images/bileklik-bezel-ince-tenis-k.jpg", ad: "Bezel Taşlı İnce Tenis Bileklik", grup: "Bileklik" },
     { gorsel: "images/bileklik-navet-bezel.jpg", kucuk: "images/bileklik-navet-bezel-k.jpg", ad: "Navet Zincir Taşlı Bileklik", grup: "Bileklik" },
-    { gorsel: "images/bileklik-ic-ice-halka.jpg", kucuk: "images/bileklik-ic-ice-halka-k.jpg", ad: "İç İçe Halka Bileklik", grup: "Bileklik" },
+    { gorsel: "images/ic-ice-halka-bileklik.jpg", kucuk: "images/ic-ice-halka-bileklik-k.jpg", ad: "İç İçe Halka Bileklik", grup: "Bileklik", fiyat: "3.900 ₺" },
     { gorsel: "images/bileklik-oval-pave.jpg", kucuk: "images/bileklik-oval-pave-k.jpg", ad: "Oval Taşlı Halka Bileklik", grup: "Bileklik" },
     { gorsel: "images/tasli-cubuklu-bileklik.jpg", kucuk: "images/tasli-cubuklu-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/bileklik-cubuk-tasli.jpg","kucuk":"images/bileklik-cubuk-tasli-k.jpg"}], ad: "Taşlı Çubuklu Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.580 ₺" },
     { gorsel: "images/bileklik-halat-zincir-tasli.jpg", kucuk: "images/bileklik-halat-zincir-tasli-k.jpg", ad: "Halat Zincir Taşlı Bileklik", grup: "Bileklik", fiyat: "3.900 ₺" },
