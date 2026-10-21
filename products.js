@@ -139,7 +139,7 @@ window.SHOWROOM = {
     { gorsel: "images/bileklik-tenis-top-sarkit-2.jpg", kucuk: "images/bileklik-tenis-top-sarkit-2-k.jpg", ad: "Tenis ve Top Sarkıtlı Bileklik · 2", grup: "Bileklik" },
     { gorsel: "images/bileklik-pirinc-zincir.jpg", kucuk: "images/bileklik-pirinc-zincir-k.jpg", ad: "İnce Pirinç Zincir Bileklik", grup: "Bileklik" },
     { gorsel: "images/bileklik-dalga-pave-dokulu.jpg", kucuk: "images/bileklik-dalga-pave-dokulu-k.jpg", ad: "Dalga Taşlı Dokulu Bileklik", grup: "Bileklik", fiyat: "3.500 ₺" },
-    { gorsel: "images/bileklik-tenis-buyuk-tas.jpg", kucuk: "images/bileklik-tenis-buyuk-tas-k.jpg", ad: "Büyük Taşlı Tenis Bileklik", grup: "Bileklik", kategori: "Suyolu" },
+    { gorsel: "images/buyuk-tasli-tenis-bileklik.jpg", kucuk: "images/buyuk-tasli-tenis-bileklik-k.jpg", ad: "Büyük Taşlı Tenis Bileklik", grup: "Bileklik", kategori: "Suyolu", fiyat: "4.600 ₺" },
     { gorsel: "images/bileklik-uc-sira-ince.jpg", kucuk: "images/bileklik-uc-sira-ince-k.jpg", ad: "Üç Sıra İnce Taşlı Bileklik", grup: "Bileklik", kategori: "Suyolu", fiyat: "5.000 ₺" },
     { gorsel: "images/tasli-bileklik.jpg", kucuk: "images/tasli-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/tasli-bileklik-2.jpg","kucuk":"images/tasli-bileklik-2-k.jpg"}], ad: "Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.500 ₺" }
   ]
