@@ -81,7 +81,7 @@ window.SHOWROOM = {
     { gorsel: "images/puskul-altin.jpg", kucuk: "images/puskul-altin-k.jpg", ekGorseller: [{"gorsel":"images/puskul-kolye.jpg","kucuk":"images/puskul-kolye-k.jpg"}], ad: "Püskül Kolye", grup: "Kolye", kategori: "Taşlı", fiyat: "1.500 ₺" },
     { gorsel: "images/inci-cicek-altin.jpg", kucuk: "images/inci-cicek-altin-k.jpg", ekGorseller: [{"gorsel":"images/inci-cicek-kolye-2.jpg","kucuk":"images/inci-cicek-kolye-2-k.jpg"}], ad: "İnci Çiçek Kolye", grup: "Kolye", kategori: "Çiçek", fiyat: "2.300 ₺" },
     { gorsel: "images/bileklik-marquise-tasli.jpg", kucuk: "images/bileklik-marquise-tasli-k.jpg", ad: "Marquise Taşlı İnce Bileklik", grup: "Bileklik" },
-    { gorsel: "images/bileklik-dalgali-tasli.jpg", kucuk: "images/bileklik-dalgali-tasli-k.jpg", ad: "Dalgalı Taşlı Bileklik", grup: "Bileklik" },
+    { gorsel: "images/bileklik-dalgali-tasli.jpg", kucuk: "images/bileklik-dalgali-tasli-k.jpg", ekGorseller: [{"gorsel":"images/dalgali-tasli-bileklik.jpg","kucuk":"images/dalgali-tasli-bileklik-k.jpg"}], ad: "Dalgalı Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.700 ₺" },
     { gorsel: "images/bileklik-sekizgen-pave.jpg", kucuk: "images/bileklik-sekizgen-pave-k.jpg", ad: "Sekizgen Taşlı Halka Bileklik", grup: "Bileklik" },
     { gorsel: "images/bileklik-baget-yuvarlak.jpg", kucuk: "images/bileklik-baget-yuvarlak-k.jpg", ad: "Baget ve Yuvarlak Taşlı Bileklik", grup: "Bileklik" },
     { gorsel: "images/bileklik-tenis-yuvarlak.jpg", kucuk: "images/bileklik-tenis-yuvarlak-k.jpg", ad: "Yuvarlak Taşlı Tenis Bileklik", grup: "Bileklik" },
