@@ -9,6 +9,8 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Küpe","Çocuk"],
   urunler: [
+    { gorsel: "images/yuvarlak-bileklik.jpg", kucuk: "images/yuvarlak-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/yuvarlak-bileklik-2.jpg","kucuk":"images/yuvarlak-bileklik-2-k.jpg"}], ad: "Yuvarlak Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "1.300 ₺" },
+    { gorsel: "images/tasli-oval-bileklik.jpg", kucuk: "images/tasli-oval-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/tasli-oval-bileklik-2.jpg","kucuk":"images/tasli-oval-bileklik-2-k.jpg"}], ad: "Taşlı Oval Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.700 ₺" },
     { gorsel: "images/inci-bileklik.jpg", kucuk: "images/inci-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/inci-bileklik-2.jpg","kucuk":"images/inci-bileklik-2-k.jpg"}], ad: "Inci Bileklik", grup: "Bileklik", kategori: "İnci", fiyat: "1.500 ₺" },
     { gorsel: "images/oval-tasli-bileklik.jpg", kucuk: "images/oval-tasli-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/oval-tasli-bileklik-2.jpg","kucuk":"images/oval-tasli-bileklik-2-k.jpg"}], ad: "Oval Taşlı Bileklik", grup: "Bileklik", kategori: "Suyolu", fiyat: "2.800 ₺" },
     { gorsel: "images/tasli-bileklik-5.jpg", kucuk: "images/tasli-bileklik-5-k.jpg", ekGorseller: [{"gorsel":"images/tasli-bileklik-6.jpg","kucuk":"images/tasli-bileklik-6-k.jpg"}], ad: "Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.800 ₺" },
@@ -110,7 +112,7 @@ window.SHOWROOM = {
     { gorsel: "images/tasli-cubuklu-bileklik.jpg", kucuk: "images/tasli-cubuklu-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/bileklik-cubuk-tasli.jpg","kucuk":"images/bileklik-cubuk-tasli-k.jpg"}], ad: "Taşlı Çubuklu Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.580 ₺" },
     { gorsel: "images/bileklik-halat-zincir-tasli.jpg", kucuk: "images/bileklik-halat-zincir-tasli-k.jpg", ad: "Halat Zincir Taşlı Bileklik", grup: "Bileklik", fiyat: "3.900 ₺" },
     { gorsel: "images/bileklik-cift-oval-zincir.jpg", kucuk: "images/bileklik-cift-oval-zincir-k.jpg", ad: "Oval Halkalı Zincir Bileklik", grup: "Bileklik", fiyat: "2.600 ₺" },
-    { gorsel: "images/bileklik-bezel-dalgali-ince.jpg", kucuk: "images/bileklik-bezel-dalgali-ince-k.jpg", ad: "Bezel Taşlı Dalgalı Bileklik", grup: "Bileklik" },
+    { gorsel: "images/bezel-tasli-dalgali-bileklik.jpg", kucuk: "images/bezel-tasli-dalgali-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/bileklik-bezel-dalgali-ince.jpg","kucuk":"images/bileklik-bezel-dalgali-ince-k.jpg"}], ad: "Bezel Taşlı Dalgalı Bileklik", grup: "Bileklik" },
     { gorsel: "images/bileklik-dokulu-oval-halka.jpg", kucuk: "images/bileklik-dokulu-oval-halka-k.jpg", ekGorseller: [{"gorsel":"images/dokulu-oval-halkali-bileklik.jpg","kucuk":"images/dokulu-oval-halkali-bileklik-k.jpg"}], ad: "Dokulu Oval Halkalı Bileklik", grup: "Bileklik", fiyat: "1.900 ₺" },
     { gorsel: "images/bileklik-altigen-halka-kol.jpg", kucuk: "images/bileklik-altigen-halka-kol-k.jpg", ekGorseller: [{"gorsel":"images/altigen-tasli-halka-bileklik-kolda.jpg","kucuk":"images/altigen-tasli-halka-bileklik-kolda-k.jpg"}], ad: "Altıgen Taşlı Halka Bileklik · Kolda", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.800 ₺" },
     { gorsel: "images/tenis-bileklik.jpg", kucuk: "images/tenis-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/tenis-bileklik-2.jpg","kucuk":"images/tenis-bileklik-2-k.jpg"}], ad: "Tenis Bileklik", grup: "Bileklik", kategori: "Suyolu", fiyat: "1.500 ₺" },
