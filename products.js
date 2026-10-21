@@ -113,7 +113,7 @@ window.SHOWROOM = {
     { gorsel: "images/bileklik-bezel-dalgali-ince.jpg", kucuk: "images/bileklik-bezel-dalgali-ince-k.jpg", ad: "Bezel Taşlı Dalgalı Bileklik", grup: "Bileklik" },
     { gorsel: "images/bileklik-dokulu-oval-halka.jpg", kucuk: "images/bileklik-dokulu-oval-halka-k.jpg", ekGorseller: [{"gorsel":"images/dokulu-oval-halkali-bileklik.jpg","kucuk":"images/dokulu-oval-halkali-bileklik-k.jpg"}], ad: "Dokulu Oval Halkalı Bileklik", grup: "Bileklik", fiyat: "1.900 ₺" },
     { gorsel: "images/bileklik-altigen-halka-kol.jpg", kucuk: "images/bileklik-altigen-halka-kol-k.jpg", ekGorseller: [{"gorsel":"images/altigen-tasli-halka-bileklik-kolda.jpg","kucuk":"images/altigen-tasli-halka-bileklik-kolda-k.jpg"}], ad: "Altıgen Taşlı Halka Bileklik · Kolda", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.800 ₺" },
-    { gorsel: "images/bileklik-tenis-kolda.jpg", kucuk: "images/bileklik-tenis-kolda-k.jpg", ad: "Tenis Bileklik · Kolda", grup: "Bileklik" },
+    { gorsel: "images/tenis-bileklik.jpg", kucuk: "images/tenis-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/tenis-bileklik-2.jpg","kucuk":"images/tenis-bileklik-2-k.jpg"}], ad: "Tenis Bileklik", grup: "Bileklik", kategori: "Suyolu", fiyat: "1.500 ₺" },
     { gorsel: "images/bileklik-damla-pave-ince.jpg", kucuk: "images/bileklik-damla-pave-ince-k.jpg", ad: "Damla Taşlı İnce Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "800 ₺" },
     { gorsel: "images/bileklik-kalp-sarkitli-atac.jpg", kucuk: "images/bileklik-kalp-sarkitli-atac-k.jpg", ad: "Kalpli Sarkıt Taşlı Ataç Zincir Bileklik", grup: "Bileklik" },
     { gorsel: "images/bileklik-saat-model-pave.jpg", kucuk: "images/bileklik-saat-model-pave-k.jpg", ad: "Taşlı Saat Model Bileklik", grup: "Bileklik" },
