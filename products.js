@@ -9,6 +9,7 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Küpe","Çocuk"],
   urunler: [
+    { gorsel: "images/tasli-bileklik-3.jpg", kucuk: "images/tasli-bileklik-3-k.jpg", ekGorseller: [{"gorsel":"images/tasli-bileklik-4.jpg","kucuk":"images/tasli-bileklik-4-k.jpg"}], ad: "Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "4.400 ₺" },
     { gorsel: "images/boncuk-kupe.jpg", kucuk: "images/boncuk-kupe-k.jpg", ekGorseller: [{"gorsel":"images/boncuk-kupe-2.jpg","kucuk":"images/boncuk-kupe-2-k.jpg"}], ad: "Boncuk Küpe", grup: "Küpe", kategori: "Charm", fiyat: "1.050 ₺" },
     { gorsel: "images/kupe-sonbahar.jpg", kucuk: "images/kupe-sonbahar-k.jpg", ekGorseller: [{"gorsel":"images/kupe-sonbahar-2.jpg","kucuk":"images/kupe-sonbahar-2-k.jpg"}], ad: "Küpe Sonbahar", grup: "Küpe", kategori: "Taşlı", fiyat: "1.200 ₺" },
     { gorsel: "images/kupe-hilal-halka.jpg", kucuk: "images/kupe-hilal-halka-k.jpg", ekGorseller: [{"gorsel":"images/hilal-sallantili-halka-kupe.jpg","kucuk":"images/hilal-sallantili-halka-kupe-k.jpg"}], ad: "Hilal Sallantılı Halka Küpe", grup: "Küpe", kategori: "Charm", fiyat: "1.050 ₺" },
