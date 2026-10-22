@@ -34,12 +34,19 @@ main{padding:26px 0 60px}
 .tile img{display:block;width:100%;height:auto;transition:transform .7s cubic-bezier(.2,.7,.2,1),opacity .6s}
 .tile img.pre{opacity:0}
 .tile:hover img{transform:scale(1.045)}
-.tile .cap{position:absolute;left:0;right:0;bottom:0;padding:34px 14px 12px;color:#fff;background:linear-gradient(transparent,rgba(20,16,10,.55));opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
-.tile .cap b{display:block;font:500 20px/1.15 var(--f-head)}
-.tile .cap em.p{display:block;margin-top:6px;font:500 17px/1 var(--f-head);font-style:normal;letter-spacing:.02em}
-.tile .cap span{font:500 11px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;opacity:.85}
+.tile .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 9px;color:#fff;background:linear-gradient(transparent,rgba(20,16,10,.55));opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.tile .cap b{display:block;font:500 17px/1.15 var(--f-head)}
+.tile .cap em.p{display:block;margin-top:4px;font:500 15px/1 var(--f-head);font-style:normal;letter-spacing:.02em}
+.tile .cap span{font:500 10px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;opacity:.85}
 .tile:hover .cap,.tile:focus-visible .cap{opacity:1;transform:none}
-@media (hover:none){.tile .cap{opacity:1;transform:none;padding-top:26px}.tile .cap b{font-size:17px}}
+@media (hover:none){
+  .tile{background:transparent;border-radius:0}
+  .tile img{border-radius:4px}
+  .tile .cap{position:static;opacity:1;transform:none;background:none;color:var(--ink);padding:7px 2px 2px}
+  .tile .cap b{font-size:15px;line-height:1.2}
+  .tile .cap span{font-size:9px;letter-spacing:.16em;color:var(--muted);opacity:1}
+  .tile .cap em.p{margin-top:4px;font-size:14px}
+}
 .tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
