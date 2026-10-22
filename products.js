@@ -7,7 +7,7 @@ window.SHOWROOM = {
   aciklama: "Koleksiyonumuzdan seçtiklerimiz.",
   altYazi: "© {yil} Mihra Store",
   whatsapp: "905416714581",
-  gruplar: ["Kolye","Bileklik","Küpe","Çocuk"],
+  gruplar: ["Kolye","Bileklik","Kelepçe","Küpe","Çocuk"],
   urunler: [
     { gorsel: "images/suyolu-kolye.jpg", kucuk: "images/suyolu-kolye-k.jpg", ekGorseller: [{"gorsel":"images/suyolu-kolye-2.jpg","kucuk":"images/suyolu-kolye-2-k.jpg"}], ad: "Suyolu Kolye", grup: "Kolye", kategori: "Gold", fiyat: "4.250 ₺" },
     { gorsel: "images/kare-tasli-bileklik.jpg", kucuk: "images/kare-tasli-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/kare-tasli-bileklik-2.jpg","kucuk":"images/kare-tasli-bileklik-2-k.jpg"}], ad: "Kare Taşlı Bileklik", grup: "Bileklik", kategori: "Gold", fiyat: "7.300 ₺" },
@@ -228,6 +228,12 @@ window.SHOWROOM = {
     { gorsel: "images/cift-kalp-cift-zincir-bileklik-gumus.jpg", kucuk: "images/cift-kalp-cift-zincir-bileklik-gumus-k.jpg", ekGorseller: [{"gorsel":"images/cift-kalp-cift-zincir-bileklik-gumus-2.jpg","kucuk":"images/cift-kalp-cift-zincir-bileklik-gumus-2-k.jpg"}], ad: "Çift Kalp Çift Zincir Bileklik · Gümüş", grup: "Bileklik", kategori: "Kalp", fiyat: "2.700 ₺" },
     { gorsel: "images/kalp-top-sallantili-bileklik-gumus.jpg", kucuk: "images/kalp-top-sallantili-bileklik-gumus-k.jpg", ekGorseller: [{"gorsel":"images/kalp-top-sallantili-bileklik-gumus-2.jpg","kucuk":"images/kalp-top-sallantili-bileklik-gumus-2-k.jpg"}], ad: "Kalp ve Top Sallantılı Bileklik · Gümüş", grup: "Bileklik", kategori: "Kalp", fiyat: "2.200 ₺" },
     { gorsel: "images/tas-sallantili-cift-zincir-bileklik-gumus.jpg", kucuk: "images/tas-sallantili-cift-zincir-bileklik-gumus-k.jpg", ekGorseller: [{"gorsel":"images/tas-sallantili-cift-zincir-bileklik-gumus-2.jpg","kucuk":"images/tas-sallantili-cift-zincir-bileklik-gumus-2-k.jpg"}], ad: "Taş Sallantılı Çift Zincir Bileklik · Gümüş", grup: "Bileklik", kategori: "Taşlı", fiyat: "2.100 ₺" },
-    { gorsel: "images/suyolu-kolye-gumus.jpg", kucuk: "images/suyolu-kolye-gumus-k.jpg", ekGorseller: [{"gorsel":"images/suyolu-kolye-gumus-2.jpg","kucuk":"images/suyolu-kolye-gumus-2-k.jpg"}], ad: "Suyolu Kolye · Gümüş", grup: "Kolye", kategori: "Taşlı", fiyat: "3.950 ₺" }
+    { gorsel: "images/suyolu-kolye-gumus.jpg", kucuk: "images/suyolu-kolye-gumus-k.jpg", ekGorseller: [{"gorsel":"images/suyolu-kolye-gumus-2.jpg","kucuk":"images/suyolu-kolye-gumus-2-k.jpg"}], ad: "Suyolu Kolye · Gümüş", grup: "Kolye", kategori: "Taşlı", fiyat: "3.950 ₺" },
+    { gorsel: "images/tasli-t-bilezik-gold.jpg", kucuk: "images/tasli-t-bilezik-gold-k.jpg", ekGorseller: [{"gorsel":"images/tasli-t-bilezik-gold-2.jpg","kucuk":"images/tasli-t-bilezik-gold-2-k.jpg"},{"gorsel":"images/tasli-t-bilezik-gold-3.jpg","kucuk":"images/tasli-t-bilezik-gold-3-k.jpg"}], ad: "Taşlı T Bilezik", grup: "Kelepçe", kategori: "Gold", fiyat: "3.400 ₺" },
+    { gorsel: "images/t-bilezik-gumus.jpg", kucuk: "images/t-bilezik-gumus-k.jpg", ad: "T Bilezik", grup: "Kelepçe", kategori: "Gümüş", fiyat: "3.100 ₺" },
+    { gorsel: "images/duz-kelepce-gold.jpg", kucuk: "images/duz-kelepce-gold-k.jpg", ekGorseller: [{"gorsel":"images/duz-kelepce-gold-2.jpg","kucuk":"images/duz-kelepce-gold-2-k.jpg"}], ad: "Düz Kelepçe", grup: "Kelepçe", kategori: "Gold", fiyat: "4.100 ₺" },
+    { gorsel: "images/burgu-kelepce-gold.jpg", kucuk: "images/burgu-kelepce-gold-k.jpg", ad: "Burgu Kelepçe", grup: "Kelepçe", kategori: "Gold", fiyat: "3.850 ₺" },
+    { gorsel: "images/tasli-ince-kelepce-gumus.jpg", kucuk: "images/tasli-ince-kelepce-gumus-k.jpg", ad: "Taşlı İnce Kelepçe", grup: "Kelepçe", kategori: "Gümüş", fiyat: "5.300 ₺" },
+    { gorsel: "images/damla-tasli-kelepce-gold.jpg", kucuk: "images/damla-tasli-kelepce-gold-k.jpg", ad: "Damla Taşlı Kelepçe", grup: "Kelepçe", kategori: "Gold", fiyat: "7.500 ₺" }
   ]
 };
