@@ -17,6 +17,8 @@
     (Array.isArray(u.ekGorseller) ? u.ekGorseller : []).forEach(function (e) { if (e && e.gorsel) a.push({ g: e.gorsel, k: e.kucuk || e.gorsel }); });
     return a;
   }
+  /* Fiyat kutusuna "SATILDI" yazılan ürünler */
+  function satildi(u) { return /^\s*sat[ıi]ld[ıi]\s*$/i.test(String(u.fiyat || '').replace(/İ/g, 'i').replace(/I/g, 'ı')); }
   function etiket(u) { var g = grupOf(u), k = altOf(u); return k ? g + ' · ' + k : g; }
 
   document.title = marka + (S.slogan ? ' · ' + S.slogan : '');
@@ -64,14 +66,18 @@
       if (cur === 'Tümü') return true;
       return grupOf(u) === cur && (!sub || altOf(u) === sub);
     });
+    /* satılanlar listenin sonuna */
+    shown = shown.filter(function (u) { return !satildi(u); }).concat(shown.filter(satildi));
     var g = $('grid');
     g.innerHTML = shown.map(function (u, i) {
       var et = etiket(u), np = pics(u).length;
-      return '<button type="button" class="tile reveal" data-i="' + i + '" aria-label="' + esc(u.ad || 'Ürün') + ' büyüt' + (np > 1 ? ', ' + np + ' fotoğraf' : '') + '">' +
+      var sold = satildi(u);
+      return '<button type="button" class="tile reveal' + (sold ? ' sold' : '') + '" data-i="' + i + '" aria-label="' + esc(u.ad || 'Ürün') + (sold ? ', satıldı' : '') + ' büyüt' + (np > 1 ? ', ' + np + ' fotoğraf' : '') + '">' +
         (np > 1 ? '<span class="multi" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12"><rect x="4.5" y="1.5" width="10" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 4.5v9a1 1 0 0 0 1 1h9" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>' + np + '</span>' : '') +
+        (sold ? '<span class="soldtag" aria-hidden="true">Satıldı</span>' : '') +
         '<img class="pre" src="' + esc(u.kucuk || u.gorsel) + '" alt="' + esc(u.ad || '') + '" loading="' + (i < 6 ? 'eager' : 'lazy') + '" decoding="async">' +
         ((u.ad || et || u.fiyat) ? '<span class="cap"><b>' + esc(u.ad || '') + '</b><span>' + esc(et) + '</span>' +
-          (u.fiyat ? '<em class="p">' + esc(u.fiyat) + '</em>' : '') + '</span>' : '') + '</button>';
+          (u.fiyat ? '<em class="p">' + (sold ? 'Satıldı' : esc(u.fiyat)) + '</em>' : '') + '</span>' : '') + '</button>';
     }).join('');
     $('empty').hidden = shown.length > 0;
     Array.prototype.forEach.call(g.querySelectorAll('img'), function (im) {
@@ -106,7 +112,9 @@
     resetZoom();
     $('lbi').src = ph.g; $('lbi').alt = (u.ad || '') + (n > 1 ? ' – fotoğraf ' + (pidx + 1) : '');
     $('lbt').textContent = u.ad || ''; $('lbc').textContent = etiket(u);
-    $('lbf').textContent = u.fiyat || ''; $('lbf').hidden = !u.fiyat;
+    var sold = satildi(u);
+    lb.classList.toggle('sold', sold);
+    $('lbf').textContent = sold ? 'Satıldı' : (u.fiyat || ''); $('lbf').hidden = !u.fiyat;
     var gl = $('lbg');
     gl.hidden = n < 2;
     gl.innerHTML = n < 2 ? '' : ps.map(function (q, j) {
@@ -114,8 +122,10 @@
     }).join('');
     var w = $('lbw'); w.hidden = !wa;
     if (wa) {
-      w.href = waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.fiyat ? ' (' + u.fiyat + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(ph.g, location.href).href);
-      w.textContent = u.fiyat ? 'WhatsApp\'tan sipariş ver' : 'WhatsApp\'tan fiyat sor';
+      w.href = sold
+        ? waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '" satılmış. Benzeri var mı?\n' + new URL(ph.g, location.href).href)
+        : waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.fiyat ? ' (' + u.fiyat + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(ph.g, location.href).href);
+      w.textContent = sold ? 'Benzerini sor' : u.fiyat ? 'WhatsApp\'tan sipariş ver' : 'WhatsApp\'tan fiyat sor';
     }
     $('lbk').textContent = (idx + 1) + ' / ' + shown.length + (n > 1 ? ' · Fotoğraf ' + (pidx + 1) + ' / ' + n : '') + '\n' + zoomHint;
     var multi = shown.length > 1 || n > 1; $('lbp').hidden = !multi; $('lbn').hidden = !multi;
