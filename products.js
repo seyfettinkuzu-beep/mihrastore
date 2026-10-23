@@ -9,6 +9,10 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Kelepçe","Küpe","Çocuk","Şahmeran","Halhal"],
   urunler: [
+    { gorsel: "images/cicek-kolye-ucu.jpg", kucuk: "images/cicek-kolye-ucu-k.jpg", ad: "Çiçek Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
+    { gorsel: "images/cilek-kolye-ucu.jpg", kucuk: "images/cilek-kolye-ucu-k.jpg", ad: "Çilek Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
+    { gorsel: "images/ananas-kolye-ucu.jpg", kucuk: "images/ananas-kolye-ucu-k.jpg", ad: "Ananas Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
+    { gorsel: "images/kiraz-kolye-ucu.jpg", kucuk: "images/kiraz-kolye-ucu-k.jpg", ad: "Kiraz Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
     { gorsel: "images/pembe-tasli-halhal.jpg", kucuk: "images/pembe-tasli-halhal-k.jpg", ekGorseller: [{"gorsel":"images/pembe-tasli-halhal-2.jpg","kucuk":"images/pembe-tasli-halhal-2-k.jpg"}], ad: "Pembe Taşlı Halhal", grup: "Halhal", fiyat: "1.600 ₺" },
     { gorsel: "images/gold-halhal.jpg", kucuk: "images/gold-halhal-k.jpg", ekGorseller: [{"gorsel":"images/gold-halhal-2.jpg","kucuk":"images/gold-halhal-2-k.jpg"}], ad: "Gold Halhal", grup: "Halhal", fiyat: "1.200 ₺" },
     { gorsel: "images/kiraz-halhal.jpg", kucuk: "images/kiraz-halhal-k.jpg", ekGorseller: [{"gorsel":"images/kiraz-halhal-2.jpg","kucuk":"images/kiraz-halhal-2-k.jpg"}], ad: "Kiraz Halhal", grup: "Halhal", fiyat: "1.250 ₺" },
