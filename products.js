@@ -9,6 +9,7 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Kelepçe","Küpe","Çocuk","Şahmeran","Halhal"],
   urunler: [
+    { gorsel: "images/inci-kolye-ucu.jpg", kucuk: "images/inci-kolye-ucu-k.jpg", ekGorseller: [{"gorsel":"images/inci-kolye-ucu-2.jpg","kucuk":"images/inci-kolye-ucu-2-k.jpg"},{"gorsel":"images/inci-kolye-ucu-3.jpg","kucuk":"images/inci-kolye-ucu-3-k.jpg"}], ad: "Inci Kolye Ucu", grup: "Kolye", kategori: "Kolye Ucu", fiyat: "1.000 ₺" },
     { gorsel: "images/cicek-kolye-ucu.jpg", kucuk: "images/cicek-kolye-ucu-k.jpg", ad: "Çiçek Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
     { gorsel: "images/cilek-kolye-ucu.jpg", kucuk: "images/cilek-kolye-ucu-k.jpg", ad: "Çilek Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
     { gorsel: "images/ananas-kolye-ucu.jpg", kucuk: "images/ananas-kolye-ucu-k.jpg", ad: "Ananas Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
