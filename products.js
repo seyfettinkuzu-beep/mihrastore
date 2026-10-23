@@ -9,6 +9,7 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Kelepçe","Küpe","Çocuk","Şahmeran","Halhal"],
   urunler: [
+    { gorsel: "images/tasli-halka-kupe.jpg", kucuk: "images/tasli-halka-kupe-k.jpg", ekGorseller: [{"gorsel":"images/tasli-halka-kupe-2.jpg","kucuk":"images/tasli-halka-kupe-2-k.jpg"},{"gorsel":"images/tasli-halka-kupe-3.jpg","kucuk":"images/tasli-halka-kupe-3-k.jpg"}], ad: "Taşlı Halka Küpe", grup: "Küpe", kategori: "Taşlı", fiyat: "800 ₺" },
     { gorsel: "images/inci-kolye-ucu.jpg", kucuk: "images/inci-kolye-ucu-k.jpg", ekGorseller: [{"gorsel":"images/inci-kolye-ucu-2.jpg","kucuk":"images/inci-kolye-ucu-2-k.jpg"},{"gorsel":"images/inci-kolye-ucu-3.jpg","kucuk":"images/inci-kolye-ucu-3-k.jpg"}], ad: "Inci Kolye Ucu", grup: "Kolye", kategori: "Kolye Ucu", fiyat: "1.000 ₺" },
     { gorsel: "images/cicek-kolye-ucu.jpg", kucuk: "images/cicek-kolye-ucu-k.jpg", ad: "Çiçek Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
     { gorsel: "images/cilek-kolye-ucu.jpg", kucuk: "images/cilek-kolye-ucu-k.jpg", ad: "Çilek Kolye Ucu", grup: "Çocuk", fiyat: "250 ₺" },
