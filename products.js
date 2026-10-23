@@ -9,6 +9,8 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Kelepçe","Küpe","Çocuk","Şahmeran","Halhal"],
   urunler: [
+    { gorsel: "images/cicek-sahmeran.jpg", kucuk: "images/cicek-sahmeran-k.jpg", ekGorseller: [{"gorsel":"images/cicek-sahmeran-2.jpg","kucuk":"images/cicek-sahmeran-2-k.jpg"}], ad: "Çiçek Şahmeran", grup: "Şahmeran", fiyat: "2.500 ₺" },
+    { gorsel: "images/kalp-imci-kolye.jpg", kucuk: "images/kalp-imci-kolye-k.jpg", ekGorseller: [{"gorsel":"images/kalp-imci-kolye-2.jpg","kucuk":"images/kalp-imci-kolye-2-k.jpg"},{"gorsel":"images/kalp-imci-kolye-3.jpg","kucuk":"images/kalp-imci-kolye-3-k.jpg"}], ad: "Kalp Imci Kolye", grup: "Kolye", kategori: "İnci", fiyat: "1.800 ₺" },
     { gorsel: "images/zirkonlu-kolye.jpg", kucuk: "images/zirkonlu-kolye-k.jpg", ekGorseller: [{"gorsel":"images/zirkonlu-kolye-2.jpg","kucuk":"images/zirkonlu-kolye-2-k.jpg"}], ad: "Zirkonlu Kolye", grup: "Kolye", kategori: "Taşlı", fiyat: "3.500 ₺" },
     { gorsel: "images/tektas-dalgali-kolye.jpg", kucuk: "images/tektas-dalgali-kolye-k.jpg", ekGorseller: [{"gorsel":"images/tektas-dalgali-kolye-2.jpg","kucuk":"images/tektas-dalgali-kolye-2-k.jpg"}], ad: "Tektaş Dalgalı Kolye", grup: "Bileklik", kategori: "Taşlı", fiyat: "950 ₺" },
     { gorsel: "images/dalgali-kalpli-bileklik.jpg", kucuk: "images/dalgali-kalpli-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/dalgali-kalpli-bileklik-2.jpg","kucuk":"images/dalgali-kalpli-bileklik-2-k.jpg"},{"gorsel":"images/dalgali-kalpli-bileklik-3.jpg","kucuk":"images/dalgali-kalpli-bileklik-3-k.jpg"}], ad: "Dalgalı Kalpli Bileklik", grup: "Bileklik", kategori: "Kalp", fiyat: "1.300 ₺" },
