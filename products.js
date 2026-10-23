@@ -6,7 +6,7 @@ window.SHOWROOM = {
   slogan: "",
   aciklama: "Koleksiyonumuzdan seçtiklerimiz.",
   altYazi: "© {yil} Mihra Store",
-  whatsapp: "905416714581",
+  whatsapp: "905411600296",
   gruplar: ["Kolye","Bileklik","Kelepçe","Küpe","Çocuk","Şahmeran","Halhal"],
   urunler: [
     { gorsel: "images/gold-bonvuk-bileklik.jpg", kucuk: "images/gold-bonvuk-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/gold-bonvuk-bileklik-2.jpg","kucuk":"images/gold-bonvuk-bileklik-2-k.jpg"}], ad: "Gold Bonvuk Bileklik", grup: "Bileklik", kategori: "Taşsız", fiyat: "850 ₺" },
