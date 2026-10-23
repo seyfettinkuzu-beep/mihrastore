@@ -56,7 +56,9 @@
     if (groups.length < 3) { nav.hidden = true; return; }
     f.innerHTML = groups.map(function (c) { return chip(c, c, c === cur, 'c'); }).join('');
     var subs = cur === 'Tümü' ? [] : subsFor(cur);
-    if (subs.length < 2) { sf.hidden = true; sf.innerHTML = ''; sub = ''; return; }
+    /* Tek alt kategori varsa da (ör. Yüzük > Tektaş) diğer ürünler alt kategorisizse süzgeç gösterilir. */
+    var loose = subs.length === 1 && all.some(function (u) { return grupOf(u) === cur && !altOf(u); });
+    if (subs.length < 2 && !loose) { sf.hidden = true; sf.innerHTML = ''; sub = ''; return; }
     sf.hidden = false;
     sf.innerHTML = chip('Hepsi', '', sub === '', 's') + subs.map(function (s) { return chip(s, s, s === sub, 's'); }).join('');
   }
