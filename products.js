@@ -9,6 +9,8 @@ window.SHOWROOM = {
   whatsapp: "905416714581",
   gruplar: ["Kolye","Bileklik","Kelepçe","Küpe","Çocuk","Şahmeran","Halhal"],
   urunler: [
+    { gorsel: "images/zirkonlu-kolye.jpg", kucuk: "images/zirkonlu-kolye-k.jpg", ekGorseller: [{"gorsel":"images/zirkonlu-kolye-2.jpg","kucuk":"images/zirkonlu-kolye-2-k.jpg"}], ad: "Zirkonlu Kolye", grup: "Kolye", kategori: "Taşlı", fiyat: "3.500 ₺" },
+    { gorsel: "images/tektas-dalgali-kolye.jpg", kucuk: "images/tektas-dalgali-kolye-k.jpg", ekGorseller: [{"gorsel":"images/tektas-dalgali-kolye-2.jpg","kucuk":"images/tektas-dalgali-kolye-2-k.jpg"}], ad: "Tektaş Dalgalı Kolye", grup: "Bileklik", kategori: "Taşlı", fiyat: "950 ₺" },
     { gorsel: "images/dalgali-kalpli-bileklik.jpg", kucuk: "images/dalgali-kalpli-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/dalgali-kalpli-bileklik-2.jpg","kucuk":"images/dalgali-kalpli-bileklik-2-k.jpg"},{"gorsel":"images/dalgali-kalpli-bileklik-3.jpg","kucuk":"images/dalgali-kalpli-bileklik-3-k.jpg"}], ad: "Dalgalı Kalpli Bileklik", grup: "Bileklik", kategori: "Kalp", fiyat: "1.300 ₺" },
     { gorsel: "images/cilek-bileklik.jpg", kucuk: "images/cilek-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/cilek-bileklik-2.jpg","kucuk":"images/cilek-bileklik-2-k.jpg"},{"gorsel":"images/cilek-bileklik-3.jpg","kucuk":"images/cilek-bileklik-3-k.jpg"}], ad: "Çilek Bileklik", grup: "Bileklik", kategori: "Çiçek", fiyat: "1.100 ₺" },
     { gorsel: "images/tasli-bileklik-13.jpg", kucuk: "images/tasli-bileklik-13-k.jpg", ekGorseller: [{"gorsel":"images/tasli-bileklik-14.jpg","kucuk":"images/tasli-bileklik-14-k.jpg"}], ad: "Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "1.000 ₺" },
