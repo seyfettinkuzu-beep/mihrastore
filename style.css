@@ -117,6 +117,11 @@ body.lock .wa-fab{display:none}
 nav.filters .chip[data-c="İndirim"]{color:var(--accent)}
 nav.filters .chip[data-c="İndirim"][aria-pressed="true"]{border-color:var(--accent)}
 
+/* Bilgisayar/tablet: ana kategoriler tek satıra sığsın */
+@media (min-width:720px){
+  nav.filters .row:not(.sub){gap:2px}
+  nav.filters .row:not(.sub) .chip{padding:8px 13px;font-size:12.5px;letter-spacing:.1em}
+}
 /* Telefonda tüm kategoriler kaydırmadan görünsün: düğmeler alt satıra geçer, menü sabit kalmaz */
 @media (max-width:719px){
   nav.filters{position:static;padding:12px 10px}
