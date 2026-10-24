@@ -108,3 +108,13 @@ body.lock .wa-fab{display:none}
 .tile .soldtag{position:absolute;top:50%;left:50%;z-index:1;transform:translate(-50%,-50%);background:rgba(255,255,255,.92);color:var(--ink);border:1px solid var(--ink);font:500 11px/1 var(--f-body);letter-spacing:.24em;text-transform:uppercase;padding:9px 14px 9px 17px;white-space:nowrap;pointer-events:none}
 .tile.sold .cap em.p{color:var(--muted);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;font:500 11px/1 var(--f-body)}
 .lb.sold .price{color:var(--muted);font:500 12px/1 var(--f-body);letter-spacing:.22em;text-transform:uppercase}
+
+/* indirim */
+.tile .saletag{position:absolute;top:10px;left:10px;z-index:1;background:var(--accent);color:#fff;font:500 10px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;padding:6px 9px;border-radius:99px;pointer-events:none}
+.tile .cap em.p s,.lb .price s{opacity:.6;font-size:.85em;margin-right:4px}
+.tile .cap em.p ins,.lb .price ins{text-decoration:none}
+@media (hover:none){.tile.ind .cap em.p ins{color:var(--accent)}}
+.lb .price ins{color:var(--accent)}
+.lb .price .pct{display:inline-block;vertical-align:middle;margin-left:8px;background:var(--accent);color:#fff;font:500 10px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;padding:5px 8px;border-radius:99px}
+nav.filters .chip[data-c="İndirim"]{color:var(--accent)}
+nav.filters .chip[data-c="İndirim"][aria-pressed="true"]{border-color:var(--accent)}

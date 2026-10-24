@@ -94,7 +94,8 @@ input:focus,select:focus{border-color:var(--ink)}
 .th:hover span,.th:focus-visible span{opacity:1}
 .f{display:grid;gap:8px;min-width:0}
 .f .ad{font-weight:500}
-.sub3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.sub3{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.sub3 input.ind{border-color:#A88650}
 .sub3 input{padding:8px 10px;font-size:15px}
 .ops{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
 .ops .row{display:flex;gap:6px}
@@ -133,7 +134,6 @@ select.gsel{padding:8px 10px;font-size:15px}
   .item{grid-template-columns:64px minmax(0,1fr);gap:12px;padding:14px}
   .th{width:64px}
   .sub3{grid-template-columns:1fr 1fr}
-  .sub3 .fi{grid-column:1/-1}
   .ops{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}
   .top .brand small{display:none}
   .top .in{gap:8px}
@@ -268,6 +268,7 @@ select.gsel{padding:8px 10px;font-size:15px}
           <option value="">Tüm durumlar</option>
           <option value="nofiyat">Fiyatı olmayanlar</option>
           <option value="fiyat">Fiyatı olanlar</option>
+          <option value="indirim">İndirimli olanlar</option>
           <option value="gizli">Gizlenenler</option>
         </select>
       </div>
@@ -366,7 +367,7 @@ select.gsel{padding:8px 10px;font-size:15px}
       var o = {};
       Object.keys(u).forEach(function (k) { o[k] = u[k]; });
       if (!o.grup) { o.grup = o.kategori || ''; o.kategori = ''; }
-      ['ad', 'grup', 'kategori', 'fiyat'].forEach(function (k) { o[k] = o[k] == null ? '' : String(o[k]); });
+      ['ad', 'grup', 'kategori', 'fiyat', 'indirimli'].forEach(function (k) { o[k] = o[k] == null ? '' : String(o[k]); });
       o.kucuk = o.kucuk || o.gorsel;
       o.gizli = !!o.gizli;
       o.ekGorseller = (Array.isArray(o.ekGorseller) ? o.ekGorseller : []).filter(function (e) { return e && e.gorsel; })
@@ -387,7 +388,7 @@ select.gsel{padding:8px 10px;font-size:15px}
 
   function serialize(d) {
     var q = JSON.stringify;
-    var order = ['gorsel', 'kucuk', 'ekGorseller', 'ad', 'grup', 'kategori', 'fiyat', 'gizli'];
+    var order = ['gorsel', 'kucuk', 'ekGorseller', 'ad', 'grup', 'kategori', 'fiyat', 'indirimli', 'gizli'];
     function item(u) {
       var keys = order.concat(Object.keys(u).filter(function (k) { return order.indexOf(k) < 0; }));
       var parts = [];
@@ -610,6 +611,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     if (ff === 'nofiyat' && u.fiyat) return false;
     if (ff === 'fiyat' && !u.fiyat) return false;
     if (ff === 'gizli' && !u.gizli) return false;
+    if (ff === 'indirim' && !u.indirimli) return false;
     if (q && low(u.ad + ' ' + u.grup + ' ' + u.kategori + ' ' + u.fiyat).indexOf(q) < 0) return false;
     return true;
   }
@@ -625,6 +627,7 @@ select.gsel{padding:8px 10px;font-size:15px}
           '<select class="gsel" data-k="grup" aria-label="Kategori">' + groupOptions(u.grup) + '</select>' +
           '<input data-k="kategori" list="dlKat" value="' + esc(u.kategori) + '" placeholder="Alt kategori" aria-label="Alt kategori">' +
           '<input class="fi" data-k="fiyat" value="' + esc(u.fiyat) + '" placeholder="Fiyat (ör. 1250)" aria-label="Fiyat">' +
+          '<input class="fi ind" data-k="indirimli" value="' + esc(u.indirimli) + '" placeholder="İndirimli fiyat" title="Doldurursan ürün sitede indirimli görünür; silersen indirim biter" aria-label="İndirimli fiyat">' +
         '</div>' +
         '<div class="gal"><span class="lbl">Diğer fotoğraflar' + (ek.length ? ' (' + ek.length + ')' : '') + ':</span>' +
           ek.map(function (e, j) {
@@ -812,7 +815,7 @@ select.gsel{padding:8px 10px;font-size:15px}
   list.addEventListener('change', function (e) {
     var k = e.target.getAttribute('data-k'); if (!k) return;
     var row = e.target.closest('.item'), u = data.urunler[+row.getAttribute('data-i')];
-    if (k === 'fiyat') { u.fiyat = fmtPrice(e.target.value); e.target.value = u.fiyat; }
+    if (k === 'fiyat' || k === 'indirimli') { u[k] = fmtPrice(e.target.value); e.target.value = u[k]; }
     else if (k !== 'gizli') { u[k] = e.target.value.trim(); e.target.value = u[k]; }
     if (k === 'grup' || k === 'kategori') renderLists();
     if (k === 'fiyat') { var n = data.urunler.filter(function (x) { return x.fiyat; }).length; $('cnt').textContent = $('cnt').textContent.replace(/\d+ fiyatlı$/, n + ' fiyatlı'); }
