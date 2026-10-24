@@ -41,7 +41,25 @@
   var groups = ['Tümü'];
   (Array.isArray(S.gruplar) ? S.gruplar : []).forEach(function (g) { if (has[g] && groups.indexOf(g) < 0) groups.push(g); });
   all.forEach(function (u) { var g = grupOf(u); if (g && groups.indexOf(g) < 0) groups.push(g); });
-  var cur = 'Tümü', sub = '', shown = [], io = null, last = null;
+  var cur = 'Tümü', sub = '', fb = '', shown = [], io = null, last = null;
+
+  /* Fiyat aralığı süzgeci: fiyatı "1.250 ₺" gibi yazılmış ürünler; fiyatsız ve satılmış ürünler aralık seçilince gösterilmez. */
+  var BANDS = [
+    { id: 'a', ad: '1.000 ₺ altı', min: 0, max: 1000 },
+    { id: 'b', ad: '1.000 – 2.000 ₺', min: 1000, max: 2000 },
+    { id: 'c', ad: '2.000 – 3.000 ₺', min: 2000, max: 3000 },
+    { id: 'd', ad: '3.000 ₺ üstü', min: 3000, max: Infinity }
+  ];
+  function fiyatNum(u) {
+    if (satildi(u)) return NaN;
+    var s = String(u.fiyat || '').replace(/[^\d,]/g, '').replace(',', '.');
+    return s ? parseFloat(s) : NaN;
+  }
+  function inBand(u, id) {
+    var b = BANDS.filter(function (x) { return x.id === id; })[0], n = fiyatNum(u);
+    return !b || (n >= b.min && n < b.max);
+  }
+  function inCat(u) { return cur === 'Tümü' || (grupOf(u) === cur && (!sub || altOf(u) === sub)); }
 
   function subsFor(g) {
     var s = [];
@@ -62,12 +80,19 @@
     sf.hidden = false;
     sf.innerHTML = chip('Hepsi', '', sub === '', 's') + subs.map(function (s) { return chip(s, s, s === sub, 's'); }).join('');
   }
+  /* Yalnızca seçili kategoride ürünü olan fiyat aralıkları gösterilir. */
+  function priceChips() {
+    var pf = $('pricefilters');
+    var inC = all.filter(inCat);
+    var bs = BANDS.filter(function (b) { return inC.some(function (u) { return inBand(u, b.id); }); });
+    if (fb && !bs.some(function (b) { return b.id === fb; })) fb = '';
+    if (bs.length < 2) { pf.hidden = true; pf.innerHTML = ''; fb = ''; return; }
+    pf.hidden = false;
+    pf.innerHTML = '<span class="lbl">Fiyat</span>' + chip('Tümü', '', fb === '', 'f') + bs.map(function (b) { return chip(b.ad, b.id, b.id === fb, 'f'); }).join('');
+  }
 
   function draw() {
-    shown = all.filter(function (u) {
-      if (cur === 'Tümü') return true;
-      return grupOf(u) === cur && (!sub || altOf(u) === sub);
-    });
+    shown = all.filter(function (u) { return inCat(u) && (!fb || inBand(u, fb)); });
     /* satılanlar listenin sonuna */
     shown = shown.filter(function (u) { return !satildi(u); }).concat(shown.filter(satildi));
     var g = $('grid');
@@ -81,6 +106,7 @@
         ((u.ad || et || u.fiyat) ? '<span class="cap"><b>' + esc(u.ad || '') + '</b><span>' + esc(et) + '</span>' +
           (u.fiyat ? '<em class="p">' + (sold ? 'Satıldı' : esc(u.fiyat)) + '</em>' : '') + '</span>' : '') + '</button>';
     }).join('');
+    $('empty').textContent = fb ? 'Bu fiyat aralığında ürün yok.' : 'Bu kategoride henüz ürün yok.';
     $('empty').hidden = shown.length > 0;
     Array.prototype.forEach.call(g.querySelectorAll('img'), function (im) {
       var ok = function () { im.classList.remove('pre'); };
@@ -97,10 +123,11 @@
   }
 
   $('nav').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-c],[data-s]'); if (!b) return;
+    var b = e.target.closest('[data-c],[data-s],[data-f]'); if (!b) return;
     if (b.hasAttribute('data-c')) { cur = b.getAttribute('data-c'); sub = ''; }
-    else sub = b.getAttribute('data-s');
-    chips(); draw();
+    else if (b.hasAttribute('data-s')) sub = b.getAttribute('data-s');
+    else fb = b.getAttribute('data-f');
+    chips(); priceChips(); draw();
   });
 
   /* büyük görünüm */
@@ -262,5 +289,5 @@
   }, { passive: false });
   window.addEventListener('resize', function () { if (Z.s > 1) { clamp(); apply(false); } });
 
-  chips(); draw();
+  chips(); priceChips(); draw();
 })();

@@ -20,6 +20,8 @@ nav.filters .row{display:flex;gap:6px;justify-content:flex-start;flex-wrap:nowra
 nav.filters .row::-webkit-scrollbar{display:none}
 nav.filters .row.sub{margin-top:8px;gap:4px}
 nav.filters .row.sub .chip{padding:6px 14px;font-size:11px;letter-spacing:.12em}
+nav.filters .row.price{align-items:center}
+nav.filters .row.price .lbl{flex:none;font:500 11px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding:0 6px 0 2px}
 .chip{flex:none;appearance:none;background:transparent;border:1px solid transparent;border-radius:99px;padding:8px 18px;font:500 13px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s,border-color .2s,background .2s}
 .chip:hover{color:var(--ink)}
 .chip[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
@@ -73,6 +75,7 @@ body.lock{overflow:hidden}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
 
 .chip:first-child{margin-left:auto}.chip:last-child{margin-right:auto}
+nav.filters .row.price .lbl{margin-left:auto}
 
 .lb .price{display:block;margin-top:6px;font:500 20px/1 var(--f-head);color:var(--ink);letter-spacing:.02em;text-transform:none}
 .lb .wa,.wa-fab{display:inline-block;margin-top:10px;background:#1F1B16;color:#fff;text-decoration:none;font:500 12px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;padding:12px 22px;border-radius:99px}
