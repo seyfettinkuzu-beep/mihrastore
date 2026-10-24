@@ -16,7 +16,7 @@ header.hero{text-align:center;padding:max(44px,env(safe-area-inset-top,0px)) 0 2
 [hidden]{display:none!important}
 nav.filters{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   border-bottom:1px solid var(--line);margin:0 -16px;padding:12px 16px}
-nav.filters .row{display:flex;gap:6px;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+nav.filters .row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
 nav.filters .row::-webkit-scrollbar{display:none}
 nav.filters .row.sub{margin-top:8px;gap:4px}
 nav.filters .row.sub .chip{padding:6px 14px;font-size:11px;letter-spacing:.12em}
@@ -74,8 +74,6 @@ footer{border-top:1px solid var(--line);text-align:center;padding:30px 0 calc(34
 body.lock{overflow:hidden}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
 
-.chip:first-child{margin-left:auto}.chip:last-child{margin-right:auto}
-nav.filters .row.price .lbl{margin-left:auto}
 
 .lb .price{display:block;margin-top:6px;font:500 20px/1 var(--f-head);color:var(--ink);letter-spacing:.02em;text-transform:none}
 .lb .wa,.wa-fab{display:inline-block;margin-top:10px;background:#1F1B16;color:#fff;text-decoration:none;font:500 12px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;padding:12px 22px;border-radius:99px}
@@ -118,3 +116,12 @@ body.lock .wa-fab{display:none}
 .lb .price .pct{display:inline-block;vertical-align:middle;margin-left:8px;background:var(--accent);color:#fff;font:500 10px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;padding:5px 8px;border-radius:99px}
 nav.filters .chip[data-c="İndirim"]{color:var(--accent)}
 nav.filters .chip[data-c="İndirim"][aria-pressed="true"]{border-color:var(--accent)}
+
+/* Telefonda tüm kategoriler kaydırmadan görünsün: düğmeler alt satıra geçer, menü sabit kalmaz */
+@media (max-width:719px){
+  nav.filters{position:static;padding:12px 10px}
+  nav.filters .row{gap:4px 2px}
+  .chip{padding:7px 11px;font-size:12px;letter-spacing:.1em}
+  nav.filters .row.sub{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+  nav.filters .row.sub .chip{padding:6px 10px;font-size:10.5px;letter-spacing:.1em}
+}
