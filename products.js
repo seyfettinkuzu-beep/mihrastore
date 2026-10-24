@@ -7,7 +7,7 @@ window.SHOWROOM = {
   aciklama: "Koleksiyonumuzdan seçtiklerimiz.",
   altYazi: "© {yil} Mihra Store",
   whatsapp: "905411600296",
-  gruplar: ["Kolye","Bileklik","Kelepçe","Küpe","Çocuk","Şahmeran","Halhal","Yüzük"],
+  gruplar: ["Kolye","Bileklik","Küpe","Kelepçe","Yüzük","Çocuk","Şahmeran","Halhal"],
   urunler: [
     { gorsel: "images/markiz-tasli-yuzuk.jpg", kucuk: "images/markiz-tasli-yuzuk-k.jpg", ekGorseller: [{"gorsel":"images/markiz-tasli-yuzuk-2.jpg","kucuk":"images/markiz-tasli-yuzuk-2-k.jpg"}], ad: "Markiz Taşlı Yüzük", grup: "Yüzük", kategori: "Tektaş", fiyat: "1.500 ₺" },
     { gorsel: "images/asscher-tasli-yuzuk.jpg", kucuk: "images/asscher-tasli-yuzuk-k.jpg", ekGorseller: [{"gorsel":"images/asscher-tasli-yuzuk-2.jpg","kucuk":"images/asscher-tasli-yuzuk-2-k.jpg"}], ad: "Kare Taşlı Yüzük", grup: "Yüzük", kategori: "Tektaş", fiyat: "1.200 ₺" },
