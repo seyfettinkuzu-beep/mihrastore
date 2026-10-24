@@ -99,6 +99,17 @@ input:focus,select:focus{border-color:var(--ink)}
 .sub3 input{padding:8px 10px;font-size:15px}
 .ops{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
 .ops .row{display:flex;gap:6px}
+.ord{display:flex;align-items:center;gap:6px}
+.drag{appearance:none;width:36px;height:36px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:grab;display:grid;place-items:center;font-size:18px;line-height:1;color:var(--muted);touch-action:none;user-select:none;-webkit-user-select:none}
+.drag:hover{border-color:var(--ink);color:var(--ink)}
+.pos{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.pos input{width:62px;padding:7px 6px;font-size:15px;text-align:center;border:1px solid var(--line);border-radius:6px;background:#fff}
+.item.dragging{opacity:.35}
+.item.flash{animation:flash 1.4s ease}
+@keyframes flash{0%,40%{background:rgba(168,134,80,.18)}100%{background:transparent}}
+body.dragmode,body.dragmode *{cursor:grabbing!important;user-select:none!important;-webkit-user-select:none!important}
+.dropline{position:fixed;left:0;right:0;height:3px;background:var(--accent);z-index:60;pointer-events:none;box-shadow:0 0 0 2px rgba(168,134,80,.25)}
+.dragtip{position:fixed;z-index:61;pointer-events:none;background:var(--ink);color:#fff;font-size:13px;padding:6px 10px;border-radius:99px;white-space:nowrap;max-width:70vw;overflow:hidden;text-overflow:ellipsis}
 .ib{appearance:none;width:36px;height:36px;border:1px solid var(--line);background:#fff;border-radius:50%;cursor:pointer;display:grid;place-items:center;font-size:16px;line-height:1}
 .ib:hover{border-color:var(--ink)}
 .ib:disabled{opacity:.3;cursor:default;border-color:var(--line)}
@@ -640,6 +651,8 @@ select.gsel{padding:8px 10px;font-size:15px}
         (isNew ? '<span class="badge">Yeni · henüz kaydedilmedi</span>' : '') +
       '</div>' +
       '<div class="ops">' +
+        '<div class="ord"><button type="button" class="drag" data-drag title="Basılı tutup sürükle" aria-label="Sürükleyerek taşı">&#10303;</button>' +
+          '<label class="pos" title="Sıra numarasını yazıp Enter\'a bas">Sıra <input type="number" data-pos min="1" max="' + total + '" value="' + (pos + 1) + '" inputmode="numeric" aria-label="Sıra numarası"></label></div>' +
         '<label class="check"><input type="checkbox" data-k="gizli"' + (u.gizli ? ' checked' : '') + '> Gizle</label>' +
         '<div class="row">' +
           '<button type="button" class="ib" data-act="up" title="Yukarı taşı" aria-label="Yukarı taşı"' + (pos === 0 ? ' disabled' : '') + '>&#8593;</button>' +
@@ -870,6 +883,89 @@ select.gsel{padding:8px 10px;font-size:15px}
     if (nb && !nb.disabled) nb.focus();
     else { var r = list.querySelector('.item[data-i="' + target + '"]'); if (r) r.querySelector('.th').focus(); }
   });
+  /* ---------- sıralama: sıra numarası ve sürükle-bırak ---------- */
+  function moveObj(u, ref, after) {
+    var a = data.urunler; a.splice(a.indexOf(u), 1);
+    var r = a.indexOf(ref); a.splice(after ? r + 1 : r, 0, u);
+  }
+  function afterMove(u) {
+    renderList(); updateBar();
+    var row = list.querySelector('.item[data-i="' + data.urunler.indexOf(u) + '"]');
+    if (row) {
+      row.classList.add('flash');
+      var r = row.getBoundingClientRect();
+      if (r.top < 90 || r.bottom > innerHeight) row.scrollIntoView({ block: 'center' });
+      setTimeout(function () { row.classList.remove('flash'); }, 1500);
+    }
+  }
+  var moving = false;
+  list.addEventListener('change', function (e) {
+    if (!e.target.hasAttribute('data-pos') || moving) return; /* liste yeniden çizilirken tetiklenen ikinci olayı yok say */
+    var row = e.target.closest('.item');
+    if (!row || !list.contains(row)) return;
+    var i = +row.getAttribute('data-i'), u = data.urunler[i];
+    var v = visIdx(), cur = v.indexOf(i), n = parseInt(e.target.value, 10);
+    if (isNaN(n)) { e.target.value = cur + 1; return; }
+    n = Math.max(1, Math.min(v.length, n));
+    if (n - 1 === cur) { e.target.value = n; return; }
+    moving = true;
+    try { moveObj(u, data.urunler[v[n - 1]], n - 1 > cur); afterMove(u); } finally { moving = false; }
+    toast('"' + (u.ad || 'Ürün') + '" ' + n + '. sıraya taşındı. Siteye göndermek için Kaydet\'e bas.');
+  });
+  var drag = null, dline = document.createElement('div'), dtip = document.createElement('div');
+  dline.className = 'dropline'; dline.hidden = true; dtip.className = 'dragtip'; dtip.hidden = true;
+  document.body.appendChild(dline); document.body.appendChild(dtip);
+  function dragTarget() {
+    var lr = list.getBoundingClientRect(), x = lr.left + Math.min(40, lr.width / 2);
+    var y = Math.max(lr.top + 1, Math.min(lr.bottom - 1, drag.y));
+    var el = document.elementFromPoint(x, y), r = el && el.closest && el.closest('.item');
+    if (!r || !list.contains(r)) return;
+    var rc = r.getBoundingClientRect(), after = drag.y > rc.top + rc.height / 2;
+    if (r === drag.row) { drag.ref = null; dline.hidden = true; return; }
+    drag.ref = data.urunler[+r.getAttribute('data-i')]; drag.after = after;
+    dline.style.left = lr.left + 'px'; dline.style.width = lr.width + 'px';
+    dline.style.top = ((after ? rc.bottom : rc.top) - 1) + 'px'; dline.hidden = false;
+  }
+  function dragLoop() {
+    if (!drag) return;
+    var edge = 90, sp = 0;
+    if (drag.y < edge) sp = -Math.ceil((edge - drag.y) / 4);
+    else if (drag.y > innerHeight - edge) sp = Math.ceil((drag.y - (innerHeight - edge)) / 4);
+    if (sp) scrollBy(0, sp);
+    dragTarget();
+    drag.raf = requestAnimationFrame(dragLoop);
+  }
+  list.addEventListener('pointerdown', function (e) {
+    var h = e.target.closest('[data-drag]'); if (!h || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    e.preventDefault();
+    var row = h.closest('.item');
+    drag = { row: row, h: h, u: data.urunler[+row.getAttribute('data-i')], y: e.clientY, ref: null, after: false };
+    try { h.setPointerCapture(e.pointerId); } catch (x) {}
+    row.classList.add('dragging'); document.body.classList.add('dragmode');
+    dtip.textContent = drag.u.ad || 'Ürün'; dtip.hidden = false;
+    dtip.style.left = (e.clientX + 14) + 'px'; dtip.style.top = (e.clientY - 34) + 'px';
+    dragLoop();
+  });
+  document.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    drag.y = e.clientY;
+    dtip.style.left = Math.min(e.clientX + 14, innerWidth - 120) + 'px'; dtip.style.top = (e.clientY - 34) + 'px';
+  });
+  function dragEnd(ok) {
+    if (!drag) return;
+    var d = drag; drag = null; cancelAnimationFrame(d.raf);
+    d.row.classList.remove('dragging'); document.body.classList.remove('dragmode');
+    dline.hidden = true; dtip.hidden = true;
+    if (ok && d.ref && d.ref !== d.u) {
+      moveObj(d.u, d.ref, d.after);
+      afterMove(d.u);
+      toast('"' + (d.u.ad || 'Ürün') + '" taşındı. Siteye göndermek için Kaydet\'e bas.');
+    }
+  }
+  document.addEventListener('pointerup', function () { dragEnd(true); });
+  document.addEventListener('pointercancel', function () { dragEnd(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') dragEnd(false); });
+
   $('replFile').addEventListener('change', function () {
     var f = this.files && this.files[0], i = replTarget; this.value = '';
     if (!f || i < 0 || !data.urunler[i]) return;
