@@ -152,7 +152,7 @@
     for (var i = 1; i < arr.length; i++) {
       if (arr[i].g !== arr[i - 1].g) continue;
       for (var j = i + 1; j < arr.length && j < i + 12; j++) {
-        if (arr[j].g !== arr[i - 1].g && (j + 1 >= arr.length || arr[j + 1].g !== arr[i].g || true)) { var x = arr[i]; arr[i] = arr[j]; arr[j] = x; break; }
+        if (arr[j].g !== arr[i - 1].g) { var x = arr[i]; arr[i] = arr[j]; arr[j] = x; break; }
       }
     }
     return arr.map(function (x) { return x.u; });
