@@ -7,8 +7,20 @@
 
 var KAYIT = 'Kayıtlar', OZET = 'Özet';
 
+/* Tabloya bağlı açıldıysa o tabloyu, script.google.com'dan ayrı proje olarak açıldıysa
+   ilk çalıştırmada "Mihra Beğeniler" adında yeni bir tablo oluşturup onu kullanır. */
+function tablo_() {
+  var a = SpreadsheetApp.getActiveSpreadsheet();
+  if (a) return a;
+  var p = PropertiesService.getScriptProperties(), id = p.getProperty('TABLO');
+  if (id) { try { return SpreadsheetApp.openById(id); } catch (x) {} }
+  var s = SpreadsheetApp.create('Mihra Beğeniler');
+  p.setProperty('TABLO', s.getId());
+  return s;
+}
+
 function sayfalar_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = tablo_();
   var k = ss.getSheetByName(KAYIT);
   if (!k) {
     k = ss.insertSheet(KAYIT);
@@ -22,7 +34,10 @@ function sayfalar_() {
   return k;
 }
 
-function kurulum() { sayfalar_(); }
+function kurulum() {
+  sayfalar_();
+  Logger.log('Kurulum tamam. Tablo: ' + tablo_().getUrl());
+}
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
