@@ -45,14 +45,26 @@
   function waLink(txt) { return 'https://wa.me/' + wa + '?text=' + encodeURIComponent(txt); }
   if (wa) { var fab = $('wafab'); fab.href = waLink('Merhaba, ' + marka + ' ürünleri hakkında bilgi almak istiyorum.'); fab.hidden = false; }
 
+  /* Beğendiklerim: müşterinin kalp verdiği ürünler yalnızca kendi tarayıcısında saklanır (ürün fotoğrafının yoluyla) */
+  var FAV = 'Beğendiklerim', FKEY = 'mihra-begenilen', favs = [];
+  try { favs = JSON.parse(localStorage.getItem(FKEY) || '[]'); if (!Array.isArray(favs)) favs = []; } catch (x) { favs = []; }
+  favs = favs.filter(function (k) { return all.some(function (u) { return u.gorsel === k; }); });
+  function isFav(u) { return favs.indexOf(u.gorsel) >= 0; }
+  function saveFavs() { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch (x) {} }
+  var HEART = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 20.6s-7.6-4.6-9.4-9.3C1.4 8 3.4 4.6 6.9 4.6c2.1 0 3.5 1.1 5.1 3 1.6-1.9 3-3 5.1-3 3.5 0 5.5 3.4 4.3 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>';
+
   /* Kategori sırası: yönetici panelindeki sıra (gruplar), ardından listede olup orada olmayanlar. Ürünü olmayan kategori gösterilmez. */
-  var has = {};
+  var has = {}, groups = [];
   all.forEach(function (u) { has[grupOf(u)] = 1; });
-  var groups = ['Tümü'];
-  (Array.isArray(S.gruplar) ? S.gruplar : []).forEach(function (g) { if (has[g] && groups.indexOf(g) < 0) groups.push(g); });
-  all.forEach(function (u) { var g = grupOf(u); if (g && groups.indexOf(g) < 0) groups.push(g); });
-  /* İndirimli ürün varsa ana kategorilerin sonuna "İndirim" düğmesi */
-  if (all.some(indirimde) && groups.indexOf(IND) < 0) groups.push(IND);
+  function buildGroups() {
+    groups = ['Tümü'];
+    (Array.isArray(S.gruplar) ? S.gruplar : []).forEach(function (g) { if (has[g] && groups.indexOf(g) < 0) groups.push(g); });
+    all.forEach(function (u) { var g = grupOf(u); if (g && groups.indexOf(g) < 0) groups.push(g); });
+    /* İndirimli ürün varsa ana kategorilerin sonuna "İndirim" düğmesi */
+    if (all.some(indirimde) && groups.indexOf(IND) < 0) groups.push(IND);
+    if (favs.length) groups.push(FAV);
+  }
+  buildGroups();
   var cur = 'Tümü', sub = '', fb = '', shown = [], io = null, last = null;
 
   /* Fiyat aralığı süzgeci: fiyatı "1.250 ₺" gibi yazılmış ürünler; fiyatsız ve satılmış ürünler aralık seçilince gösterilmez. */
@@ -70,7 +82,7 @@
     var b = BANDS.filter(function (x) { return x.id === id; })[0], n = fiyatNum(u);
     return !b || (n >= b.min && n < b.max);
   }
-  function inCat(u) { return cur === 'Tümü' || (cur === IND ? indirimde(u) : (grupOf(u) === cur && (!sub || altOf(u) === sub))); }
+  function inCat(u) { return cur === 'Tümü' || (cur === FAV ? isFav(u) : cur === IND ? indirimde(u) : (grupOf(u) === cur && (!sub || altOf(u) === sub))); }
 
   function subsFor(g) {
     var s = [];
@@ -83,8 +95,8 @@
   function chips() {
     var f = $('filters'), sf = $('subfilters'), nav = $('nav');
     if (groups.length < 3) { nav.hidden = true; return; }
-    f.innerHTML = groups.map(function (c) { return chip(c, c, c === cur, 'c'); }).join('');
-    var subs = cur === 'Tümü' || cur === IND ? [] : subsFor(cur);
+    f.innerHTML = groups.map(function (c) { return chip(c === FAV ? '♥ ' + FAV + ' (' + favs.length + ')' : c, c, c === cur, 'c'); }).join('');
+    var subs = cur === 'Tümü' || cur === IND || cur === FAV ? [] : subsFor(cur);
     /* Tek alt kategori varsa da (ör. Yüzük > Tektaş) diğer ürünler alt kategorisizse süzgeç gösterilir. */
     var loose = subs.length === 1 && all.some(function (u) { return grupOf(u) === cur && !altOf(u); });
     if (subs.length < 2 && !loose) { sf.hidden = true; sf.innerHTML = ''; sub = ''; return; }
@@ -110,19 +122,22 @@
     g.innerHTML = shown.map(function (u, i) {
       var et = etiket(u), np = pics(u).length;
       var sold = satildi(u), ind = indirimde(u), yz = ind ? yuzde(u) : 0;
-      return '<button type="button" class="tile reveal' + (sold ? ' sold' : '') + (ind ? ' ind' : '') + '" data-i="' + i + '" aria-label="' + esc(u.ad || 'Ürün') + (sold ? ', satıldı' : '') + ' büyüt' + (np > 1 ? ', ' + np + ' fotoğraf' : '') + '">' +
+      var fv = isFav(u);
+      return '<div class="cell reveal"><button type="button" class="fav' + (fv ? ' on' : '') + '" data-fav="' + i + '" aria-pressed="' + fv + '" aria-label="' + esc(u.ad || 'Ürün') + (fv ? ' beğenilerden çıkar' : ' beğen') + '">' + HEART + '</button>' +
+        '<button type="button" class="tile' + (sold ? ' sold' : '') + (ind ? ' ind' : '') + '" data-i="' + i + '" aria-label="' + esc(u.ad || 'Ürün') + (sold ? ', satıldı' : '') + ' büyüt' + (np > 1 ? ', ' + np + ' fotoğraf' : '') + '">' +
         (np > 1 ? '<span class="multi" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12"><rect x="4.5" y="1.5" width="10" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 4.5v9a1 1 0 0 0 1 1h9" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>' + np + '</span>' : '') +
         (sold ? '<span class="soldtag" aria-hidden="true">Satıldı</span>' : '') +
         (ind ? '<span class="saletag" aria-hidden="true">' + (yz ? '%' + yz + ' İndirim' : 'İndirim') + '</span>' : '') +
         '<img class="pre" src="' + esc(u.kucuk || u.gorsel) + '" alt="' + esc(u.ad || '') + '" loading="' + (i < 6 ? 'eager' : 'lazy') + '" decoding="async">' +
         ((u.ad || et || u.fiyat) ? '<span class="cap"><b>' + esc(u.ad || '') + '</b><span>' + esc(et) + '</span>' +
-          (gecerliFiyat(u) ? '<em class="p">' + (sold ? 'Satıldı' : fiyatHtml(u)) + '</em>' : '') + '</span>' : '') + '</button>';
+          (gecerliFiyat(u) ? '<em class="p">' + (sold ? 'Satıldı' : fiyatHtml(u)) + '</em>' : '') + '</span>' : '') + '</button></div>';
     }).join('');
     $('empty').textContent = fb ? 'Bu fiyat aralığında ürün yok.' : 'Bu kategoride henüz ürün yok.';
+    favBar();
     $('empty').hidden = shown.length > 0;
     Array.prototype.forEach.call(g.querySelectorAll('img'), function (im) {
       var ok = function () { im.classList.remove('pre'); };
-      var bad = function () { var t = im.closest('.tile'); if (t) t.style.display = 'none'; };
+      var bad = function () { var t = im.closest('.cell'); if (t) t.style.display = 'none'; };
       if (im.complete) { if (im.naturalWidth) ok(); else bad(); }
       else { im.addEventListener('load', ok); im.addEventListener('error', bad); }
     });
@@ -143,6 +158,7 @@
   });
 
   /* büyük görünüm */
+  $('lbfav').addEventListener('click', function () { toggleFav(shown[idx], this); });
   var lb = $('lb'), idx = 0, pidx = 0;
   function show(i, p) {
     if (!shown.length) return;
@@ -153,6 +169,7 @@
     resetZoom();
     $('lbi').src = ph.g; $('lbi').alt = (u.ad || '') + (n > 1 ? ' – fotoğraf ' + (pidx + 1) : '');
     $('lbt').textContent = u.ad || ''; $('lbc').textContent = etiket(u);
+    setHeart($('lbfav'), isFav(u)); $('lbfav').classList.remove('pop');
     var sold = satildi(u);
     lb.classList.toggle('sold', sold);
     var yz = yuzde(u);
@@ -185,11 +202,53 @@
     lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); document.body.classList.add('lock'); $('lbx').focus();
   }
   function close() {
+    if (favDirty) { favDirty = false; if (!favs.length && cur === FAV) cur = 'Tümü'; buildGroups(); chips(); priceChips(); draw(); }
     resetZoom();
     lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); document.body.classList.remove('lock');
     if (last && last.focus) last.focus();
   }
-  $('grid').addEventListener('click', function (e) { var t = e.target.closest('.tile'); if (t) open(Number(t.getAttribute('data-i'))); });
+  $('grid').addEventListener('click', function (e) {
+    var h = e.target.closest('[data-fav]');
+    if (h) { toggleFav(shown[Number(h.getAttribute('data-fav'))], h); return; }
+    var t = e.target.closest('.tile'); if (t) open(Number(t.getAttribute('data-i')));
+  });
+
+  /* kalp: beğen / beğenilerden çıkar */
+  function setHeart(b, on, ad) {
+    b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
+    if (b.id === 'lbfav') b.lastChild.textContent = on ? ' Beğenildi' : ' Beğen';
+    else b.setAttribute('aria-label', (ad || 'Ürün') + (on ? ' beğenilerden çıkar' : ' beğen'));
+    if (on) { b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
+  }
+  var favDirty = false;
+  function toggleFav(u, btn) {
+    if (!u) return;
+    var on = !isFav(u);
+    if (on) favs.push(u.gorsel); else favs.splice(favs.indexOf(u.gorsel), 1);
+    saveFavs();
+    buildGroups();
+    if (cur === FAV && !on && btn && btn.id === 'lbfav') { favDirty = true; setHeart(btn, false); chips(); return; } /* liste büyük görünüm kapanınca yenilenir */
+    if (cur === FAV && !on) {
+      if (!favs.length) cur = 'Tümü';
+      chips(); priceChips(); draw(); return;
+    }
+    if (btn) setHeart(btn, on, u.ad);
+    var tb = btn && btn.id === 'lbfav' ? $('grid').querySelector('[data-fav="' + shown.indexOf(u) + '"]') : null;
+    if (tb) setHeart(tb, on, u.ad);
+    chips();
+    favBar();
+  }
+  function favBar() {
+    var b = $('favbar');
+    if (cur !== FAV || !favs.length) { b.hidden = true; return; }
+    b.hidden = false;
+    var list = all.filter(isFav);
+    $('favtxt').textContent = list.length + ' ürün beğendin. Listen bu tarayıcıda saklanır.';
+    var w = $('favwa'); w.hidden = !wa;
+    if (wa) w.href = waLink('Merhaba, ' + marka + '\'da beğendiğim ürünler:\n' + list.map(function (u) {
+      return '• ' + (u.ad || 'Ürün') + (satildi(u) ? ' (satıldı)' : gecerliFiyat(u) ? ' – ' + gecerliFiyat(u) : '');
+    }).join('\n'));
+  }
   $('lbx').addEventListener('click', close);
   $('lbp').addEventListener('click', function () { step(-1); });
   $('lbg').addEventListener('click', function (e) { var b = e.target.closest('[data-p]'); if (b) show(idx, +b.getAttribute('data-p')); });
