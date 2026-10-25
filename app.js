@@ -142,10 +142,28 @@
     pf.innerHTML = '<span class="lbl">Fiyat</span>' + chip('Tümü', '', fb === '', 'f') + bs.map(function (b) { return chip(b.ad, b.id, b.id === fb, 'f'); }).join('');
   }
 
+  function karistir(list) {
+    var by = {}, keys = [];
+    list.forEach(function (u) { var g = grupOf(u); if (!by[g]) { by[g] = []; keys.push(g); } by[g].push(u); });
+    var arr = [];
+    keys.forEach(function (g, gi) { var n = by[g].length; by[g].forEach(function (u, i) { arr.push({ u: u, g: g, k: (i + 0.5) / n, gi: gi }); }); });
+    arr.sort(function (a, b) { return a.k - b.k || a.gi - b.gi; });
+    /* aynı kategoriden iki ürün yan yana geldiyse, ileride farklı kategoriden ilk ürünle yer değiştir */
+    for (var i = 1; i < arr.length; i++) {
+      if (arr[i].g !== arr[i - 1].g) continue;
+      for (var j = i + 1; j < arr.length && j < i + 12; j++) {
+        if (arr[j].g !== arr[i - 1].g && (j + 1 >= arr.length || arr[j + 1].g !== arr[i].g || true)) { var x = arr[i]; arr[i] = arr[j]; arr[j] = x; break; }
+      }
+    }
+    return arr.map(function (x) { return x.u; });
+  }
+
   function draw() {
     shown = all.filter(function (u) { return inCat(u) && (!fb || inBand(u, fb)); });
     /* satılanlar listenin sonuna */
     shown = shown.filter(function (u) { return !satildi(u); }).concat(shown.filter(satildi));
+    /* "Tümü"de kategoriler karışık gösterilir: her kategori listeye eşit aralıklarla dağıtılır, kategori içindeki sıra paneldeki gibi kalır */
+    if (cur === 'Tümü') shown = karistir(shown.filter(function (u) { return !satildi(u); })).concat(karistir(shown.filter(satildi)));
     var g = $('grid');
     g.innerHTML = shown.map(function (u, i) {
       var et = etiket(u), np = pics(u).length;
