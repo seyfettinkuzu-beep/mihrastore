@@ -50,6 +50,16 @@
   try { favs = JSON.parse(localStorage.getItem(FKEY) || '[]'); if (!Array.isArray(favs)) favs = []; } catch (x) { favs = []; }
   favs = favs.filter(function (k) { return all.some(function (u) { return u.gorsel === k; }); });
   function isFav(u) { return favs.indexOf(u.gorsel) >= 0; }
+  /* Beğeni sayacı: panelde "Beğeni bağlantısı" girildiyse her beğeni/geri alma isimsiz olarak Google E-Tablo'ya bildirilir */
+  var BURL = /^https:\/\/script\.google(usercontent)?\.com\//.test(String(S.begeniAdresi || '')) ? S.begeniAdresi : '';
+  function bildir(u, v) {
+    if (!BURL) return;
+    var body = JSON.stringify({ g: u.gorsel, ad: u.ad || '', grup: grupOf(u), v: v });
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(BURL, new Blob([body], { type: 'text/plain' }))) return;
+    } catch (x) {}
+    try { fetch(BURL, { method: 'POST', mode: 'no-cors', body: body, keepalive: true }); } catch (x) {}
+  }
   function saveFavs() { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch (x) {} }
   var HEART = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 20.6s-7.6-4.6-9.4-9.3C1.4 8 3.4 4.6 6.9 4.6c2.1 0 3.5 1.1 5.1 3 1.6-1.9 3-3 5.1-3 3.5 0 5.5 3.4 4.3 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>';
 
@@ -225,7 +235,7 @@
     if (!u) return;
     var on = !isFav(u);
     if (on) favs.push(u.gorsel); else favs.splice(favs.indexOf(u.gorsel), 1);
-    saveFavs();
+    saveFavs(); bildir(u, on ? 1 : -1);
     buildGroups();
     if (cur === FAV && !on && btn && btn.id === 'lbfav') { favDirty = true; setHeart(btn, false); chips(); return; } /* liste büyük görünüm kapanınca yenilenir */
     if (cur === FAV && !on) {
