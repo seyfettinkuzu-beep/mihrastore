@@ -60,6 +60,24 @@
     } catch (x) {}
     try { fetch(BURL, { method: 'POST', mode: 'no-cors', body: body, keepalive: true }); } catch (x) {}
   }
+  /* Ziyaretçi sayacı: her tarayıcı günde bir kez sayılır; açılan ürünler de günde bir kez. Yönetici paneli açılan tarayıcı sayılmaz. */
+  function gunKey() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (x) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (x) {} }
+  function gonder(o) {
+    if (!BURL || lsGet('mihra-yonetici')) return;
+    var body = JSON.stringify(o);
+    try { if (navigator.sendBeacon && navigator.sendBeacon(BURL, new Blob([body], { type: 'text/plain' }))) return; } catch (x) {}
+    try { fetch(BURL, { method: 'POST', mode: 'no-cors', body: body, keepalive: true }); } catch (x) {}
+  }
+  if (lsGet('mihra-ziyaret') !== gunKey()) { lsSet('mihra-ziyaret', gunKey()); gonder({ t: 'site' }); }
+  var bakilan = {}, lbU = null;
+  try { var bk = JSON.parse(lsGet('mihra-bakilan') || '{}'); if (bk && bk.g === gunKey() && bk.l) bakilan = bk.l; } catch (x) {}
+  function urunBakildi(u) {
+    if (!u || bakilan[u.gorsel]) return;
+    bakilan[u.gorsel] = 1; lsSet('mihra-bakilan', JSON.stringify({ g: gunKey(), l: bakilan }));
+    gonder({ t: 'urun', g: u.gorsel, ad: u.ad || '' });
+  }
   function saveFavs() { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch (x) {} }
   var HEART = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 20.6s-7.6-4.6-9.4-9.3C1.4 8 3.4 4.6 6.9 4.6c2.1 0 3.5 1.1 5.1 3 1.6-1.9 3-3 5.1-3 3.5 0 5.5 3.4 4.3 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>';
 
@@ -174,6 +192,7 @@
     if (!shown.length) return;
     idx = (i + shown.length) % shown.length;
     var u = shown[idx], ps = pics(u), n = ps.length;
+    if (u !== lbU) { lbU = u; urunBakildi(u); }
     pidx = p == null ? 0 : p < 0 ? n - 1 : Math.min(p, n - 1);
     var ph = ps[pidx];
     resetZoom();
@@ -212,6 +231,7 @@
     lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); document.body.classList.add('lock'); $('lbx').focus();
   }
   function close() {
+    lbU = null;
     if (favDirty) { favDirty = false; if (!favs.length && cur === FAV) cur = 'Tümü'; buildGroups(); chips(); priceChips(); draw(); }
     resetZoom();
     lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); document.body.classList.remove('lock');

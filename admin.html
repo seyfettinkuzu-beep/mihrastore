@@ -44,6 +44,17 @@ main{max-width:1000px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-ri
 .tag.on{background:#E3EEE5;color:var(--ok)}
 
 .hint{color:var(--muted);font-size:14px;margin:0 0 14px}
+.vstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.vstat{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:12px 10px;text-align:center}
+.vstat b{display:block;font:500 28px/1 var(--f-head)}
+.vstat span{font-size:12px;color:var(--muted)}
+.vchart{display:flex;align-items:flex-end;gap:3px;height:120px;padding:0 2px 20px;margin-bottom:14px;border-bottom:1px solid var(--line);position:relative}
+.vchart i{flex:1;background:var(--accent,#A88650);border-radius:3px 3px 0 0;min-height:2px;position:relative;opacity:.85}
+.vchart i:hover{opacity:1}
+.vchart i.t{background:var(--ink)}
+.vchart .ax{position:absolute;bottom:2px;font-size:11px;color:var(--muted)}
+.vtop h3{font:500 18px/1.2 var(--f-head);margin:0 0 8px}
+@media (max-width:680px){.vstats{grid-template-columns:repeat(2,1fr)}}
 .likes{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 .like{display:grid;grid-template-columns:28px 44px minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
 .like .r{font-size:13px;color:var(--muted);text-align:center}
@@ -228,6 +239,20 @@ select.gsel{padding:8px 10px;font-size:15px}
           <label class="field"><span>WhatsApp numarası (90 ile başlar)</span><input data-s="whatsapp" inputmode="tel" placeholder="905XXXXXXXXX"></label>
           <label class="field wide"><span>Beğeni bağlantısı (Google Apps Script web uygulaması adresi)</span><input data-s="begeniAdresi" placeholder="https://script.google.com/macros/s/…/exec" spellcheck="false"></label>
         </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- Ziyaretçiler -->
+  <section class="card">
+    <details id="visitBox">
+      <summary>Ziyaretçiler <span class="tag" id="visitTag"></span></summary>
+      <div class="body">
+        <p class="hint" id="visitHint"></p>
+        <div class="vstats" id="vstats"></div>
+        <div class="vchart" id="vchart"></div>
+        <div id="vtop"></div>
+        <button class="btn" type="button" id="visitRefresh" hidden>Yenile</button>
       </div>
     </details>
   </section>
@@ -688,7 +713,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     var fi = data.urunler.filter(function (u) { return u.fiyat; }).length;
     $('cnt').textContent = (v.length === n ? n + ' ürün' : v.length + ' / ' + n + ' ürün') + ' · ' + fi + ' fiyatlı';
   }
-  function renderAll() { renderSite(); renderLists(); renderList(); fillConn(); updateBar(); likeState(); }
+  function renderAll() { renderSite(); renderLists(); renderList(); fillConn(); updateBar(); likeState(); visitState(); }
 
   /* ---------- en çok beğenilenler ---------- */
   var likeLoaded = false;
@@ -728,6 +753,53 @@ select.gsel{padding:8px 10px;font-size:15px}
       $('likeHint').textContent = 'Beğeniler okunamadı. Bağlantının doğru olduğundan ve web uygulamasının "Herkes" erişimiyle yayınlandığından emin ol.';
     });
   }
+  /* ---------- ziyaretçiler ---------- */
+  try { localStorage.setItem('mihra-yonetici', '1'); } catch (x) {} /* bu tarayıcıdan yapılan site ziyaretleri sayılmasın */
+  var visitLoaded = false;
+  function visitState() {
+    var u = likeUrl();
+    $('visitRefresh').hidden = !u;
+    if (!u) { $('visitHint').textContent = 'Ziyaretçi sayacı, beğeni sayacıyla aynı Google bağlantısını kullanır. Önce Site bilgileri > "Beğeni bağlantısı"nı gir.'; return; }
+    if (!visitLoaded) $('visitHint').textContent = 'Görmek için bu bölümü aç.';
+  }
+  function gunStr(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function loadVisits() {
+    var u = likeUrl(); if (!u) return visitState();
+    $('visitHint').textContent = 'Yükleniyor…';
+    fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now()).then(function (r) { return r.json(); }).then(function (j) {
+      visitLoaded = true;
+      if (!j || !j.ziyaret) {
+        $('visitHint').textContent = 'Google Apps Script kodu henüz güncellenmemiş. Yeni kodu yapıştırıp dağıtımı "Neue Version" ile güncelledikten sonra sayım başlar.';
+        $('vstats').innerHTML = $('vchart').innerHTML = $('vtop').innerHTML = ''; return;
+      }
+      var gun = j.ziyaret.gunler || {}, bugun = j.ziyaret.bugun ? new Date(j.ziyaret.bugun + 'T12:00:00') : new Date();
+      var son = []; for (var i = 29; i >= 0; i--) { var d = new Date(bugun.getTime() - i * 864e5), k = gunStr(d); son.push({ k: k, d: d, n: gun[k] || 0 }); }
+      var sum = function (a) { return a.reduce(function (s, x) { return s + x.n; }, 0); };
+      var t0 = son[29].n, t1 = son[28].n, w = sum(son.slice(23)), m = sum(son);
+      $('visitTag').textContent = t0 ? 'bugün ' + t0 : '';
+      $('vstats').innerHTML = [['Bugün', t0], ['Dün', t1], ['Son 7 gün', w], ['Son 30 gün', m]].map(function (x) {
+        return '<div class="vstat"><b>' + x[1] + '</b><span>' + x[0] + '</span></div>';
+      }).join('');
+      var mx = Math.max.apply(null, son.map(function (x) { return x.n; }).concat([1]));
+      var ay = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+      $('vchart').innerHTML = son.map(function (x, i) {
+        return '<i' + (i === 29 ? ' class="t"' : '') + ' style="height:' + Math.round(x.n / mx * 100) + '%" title="' + x.d.getDate() + ' ' + ay[x.d.getMonth()] + ': ' + x.n + ' ziyaretçi"></i>';
+      }).join('') + '<span class="ax" style="left:2px">' + son[0].d.getDate() + ' ' + ay[son[0].d.getMonth()] + '</span><span class="ax" style="right:2px">Bugün</span>';
+      $('visitHint').textContent = 'Her ziyaretçi günde bir kez sayılır. Bu tarayıcıdan (yönetici) yapılan ziyaretler sayılmaz. Çubukların üzerine gelince günlük sayıyı görürsün.';
+      var ur = j.ziyaret.urunler || {}, byG = {};
+      data.urunler.forEach(function (p) { byG[p.gorsel] = p; });
+      var top = Object.keys(ur).filter(function (g) { return byG[g]; }).sort(function (a, b) { return ur[b] - ur[a]; }).slice(0, 10);
+      $('vtop').innerHTML = top.length ? '<div class="vtop"><h3>Son 30 günde en çok bakılan ürünler</h3><div class="likes">' + top.map(function (g, n) {
+        var p = byG[g];
+        return '<div class="like"><span class="r">' + (n + 1) + '</span><img src="' + esc(src(p.kucuk || p.gorsel)) + '" alt="" loading="lazy">' +
+          '<span class="nm"><b>' + esc(p.ad || 'Ürün') + '</b><small>' + esc(p.grup + (p.fiyat ? ' · ' + p.fiyat : '')) + '</small></span>' +
+          '<span class="c" style="color:var(--ink)">' + ur[g] + ' bakış</span></div>';
+      }).join('') + '</div></div>' : '';
+    }).catch(function () { $('visitHint').textContent = 'Ziyaretçiler okunamadı. Bağlantıyı ve Apps Script dağıtımını kontrol et.'; });
+  }
+  $('visitBox').addEventListener('toggle', function () { if (this.open && !visitLoaded) loadVisits(); });
+  $('visitRefresh').addEventListener('click', loadVisits);
+
   $('likeBox').addEventListener('toggle', function () { if (this.open && !likeLoaded) loadLikes(); });
   $('likeRefresh').addEventListener('click', loadLikes);
 
@@ -790,7 +862,7 @@ select.gsel{padding:8px 10px;font-size:15px}
   $('siteForm').addEventListener('input', function (e) {
     var k = e.target.getAttribute('data-s'); if (!k || !data) return;
     data[k] = k === 'whatsapp' ? e.target.value.replace(/[^\d+\s]/g, '') : e.target.value;
-    if (k === 'begeniAdresi') { data[k] = data[k].trim(); likeLoaded = false; likeState(); }
+    if (k === 'begeniAdresi') { data[k] = data[k].trim(); likeLoaded = visitLoaded = false; likeState(); visitState(); }
     updateBar();
   });
 
