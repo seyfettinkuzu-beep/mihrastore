@@ -7,6 +7,7 @@ window.SHOWROOM = {
   aciklama: "Koleksiyonumuzdan seçtiklerimiz.",
   altYazi: "© {yil} Mihra Store",
   whatsapp: "905411600296",
+  begeniAdresi: "https://script.google.com/macros/s/AKfycbyC3Gm8P9LADvIKujXwKfvB1y1YK5Jqt9jwKb8i3jiOIpwdxAKsJa33-hP1-FdEQrz6/exec",
   gruplar: ["Kolye","Bileklik","Küpe","Kelepçe","Yüzük","Çocuk","Şahmeran","Halhal"],
   urunler: [
     { gorsel: "images/markiz-tasli-yuzuk.jpg", kucuk: "images/markiz-tasli-yuzuk-k.jpg", ekGorseller: [{"gorsel":"images/markiz-tasli-yuzuk-2.jpg","kucuk":"images/markiz-tasli-yuzuk-2-k.jpg"}], ad: "Markiz Taşlı Yüzük", grup: "Yüzük", kategori: "Tektaş", fiyat: "1.500 ₺" },
