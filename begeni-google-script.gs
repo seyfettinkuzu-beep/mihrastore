@@ -29,7 +29,7 @@ function sayfalar_() {
   }
   if (!ss.getSheetByName(OZET)) {
     var o = ss.insertSheet(OZET, 0);
-    o.getRange('A1').setFormula("=QUERY('" + KAYIT + "'!B:E,\"select C, D, sum(E) where B is not null group by B, C, D order by sum(E) desc label C 'Ürün', D 'Kategori', sum(E) 'Beğeni'\",1)");
+    o.getRange('A1').setFormula("=QUERY('" + KAYIT + "'!C:E,\"select C, D, sum(E) where C <> '' group by C, D order by sum(E) desc label C 'Ürün', D 'Kategori', sum(E) 'Beğeni'\",1)");
   }
   return k;
 }
