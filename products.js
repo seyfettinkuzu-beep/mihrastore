@@ -10,6 +10,8 @@ window.SHOWROOM = {
   begeniAdresi: "https://script.google.com/macros/s/AKfycbyC3Gm8P9LADvIKujXwKfvB1y1YK5Jqt9jwKb8i3jiOIpwdxAKsJa33-hP1-FdEQrz6/exec",
   gruplar: ["Kolye","Bileklik","Küpe","Kelepçe","Yüzük","Çocuk","Şahmeran","Halhal","Set"],
   urunler: [
+    { gorsel: "images/gumus-oynar-tasli-uzun-set.jpg", kucuk: "images/gumus-oynar-tasli-uzun-set-k.jpg", ekGorseller: [{"gorsel":"images/gumus-oynar-tasli-uzun-set-2.jpg","kucuk":"images/gumus-oynar-tasli-uzun-set-2-k.jpg"}], ad: "Gümüş Oynar Taşlı Uzun Set", grup: "Set", fiyat: "" },
+    { gorsel: "images/gumus-tasli-civi-set.jpg", kucuk: "images/gumus-tasli-civi-set-k.jpg", ekGorseller: [{"gorsel":"images/gumus-tasli-civi-set-2.jpg","kucuk":"images/gumus-tasli-civi-set-2-k.jpg"}], ad: "Gümüş Taşlı Çivi Set", grup: "Set", fiyat: "" },
     { gorsel: "images/gold-oynar-tasli-ucgen-set.jpg", kucuk: "images/gold-oynar-tasli-ucgen-set-k.jpg", ekGorseller: [{"gorsel":"images/gold-oynar-tasli-ucgen-set-2.jpg","kucuk":"images/gold-oynar-tasli-ucgen-set-2-k.jpg"}], ad: "Gold Oynar Taşlı Üçgen Set", grup: "Set", fiyat: "" },
     { gorsel: "images/gold-oynar-tasli-baget-oval-set.jpg", kucuk: "images/gold-oynar-tasli-baget-oval-set-k.jpg", ekGorseller: [{"gorsel":"images/gold-oynar-tasli-baget-oval-set-2.jpg","kucuk":"images/gold-oynar-tasli-baget-oval-set-2-k.jpg"}], ad: "Gold Oynar Taşlı Baget Oval Set", grup: "Set", fiyat: "" },
     { gorsel: "images/gumus-oynar-tasli-baget-oval-set.jpg", kucuk: "images/gumus-oynar-tasli-baget-oval-set-k.jpg", ekGorseller: [{"gorsel":"images/gumus-oynar-tasli-baget-oval-set-2.jpg","kucuk":"images/gumus-oynar-tasli-baget-oval-set-2-k.jpg"}], ad: "Gümüş Oynar Taşlı Baget Oval Set", grup: "Set", fiyat: "" },
