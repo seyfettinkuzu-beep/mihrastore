@@ -413,7 +413,7 @@ window.SHOWROOM = {
     { gorsel: "images/bileklik-bezel-tenis-ince-2.jpg", kucuk: "images/bileklik-bezel-tenis-ince-2-k.jpg", ad: "Bezel Taşlı İnce Tenis Bileklik · 2", grup: "Bileklik", kategori: "Suyolu", fiyat: "3.000 ₺" },
     { gorsel: "images/bileklik-disk-sarkit.jpg", kucuk: "images/bileklik-disk-sarkit-k.jpg", ad: "Pullu Bileklik", grup: "Bileklik", kategori: "Taşsız", fiyat: "1.750 ₺" },
     { gorsel: "images/cocuk-plakali-kunye.jpg", kucuk: "images/cocuk-plakali-kunye-k.jpg", ad: "Plakalı Künye Bileklik", grup: "Çocuk", kategori: "Bileklik", fiyat: "1.000 ₺" },
-    { gorsel: "images/cocuk-gurmet-zincirli-kunye.jpg", kucuk: "images/cocuk-gurmet-zincirli-kunye-k.jpg", ad: "Gurmet Zincirli Künye Bileklik", grup: "Çocuk", kategori: "Bileklik", fiyat: "1.000 ₺" },
+    { gorsel: "images/cocuk-gurmet-zincirli-kunye.jpg", kucuk: "images/cocuk-gurmet-zincirli-kunye-k.jpg", ad: "Gurmet Zincirli Künye Bileklik", grup: "Çocuk", kategori: "Bileklik", fiyat: "SATILDI" },
     { gorsel: "images/kelebekli-cocuk-kunye-bileklik.jpg", kucuk: "images/kelebekli-cocuk-kunye-bileklik-k.jpg", ad: "Kelebekli Çocuk Künye Bileklik", grup: "Çocuk", kategori: "Bileklik", fiyat: "1.600 ₺" },
     { gorsel: "images/tek-tas-bezel-bileklik.jpg", kucuk: "images/tek-tas-bezel-bileklik-k.jpg", ekGorseller: [{"gorsel":"images/tek-tas-bezel-bileklik-2.jpg","kucuk":"images/tek-tas-bezel-bileklik-2-k.jpg"}], ad: "Tek Taş Bezel Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.400 ₺" },
     { gorsel: "images/bileklik-top-kare-pave.jpg", kucuk: "images/bileklik-top-kare-pave-k.jpg", ad: "Top ve Kare Taşlı Bileklik", grup: "Bileklik", kategori: "Taşlı", fiyat: "3.400 ₺" },
