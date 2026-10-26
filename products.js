@@ -8,8 +8,12 @@ window.SHOWROOM = {
   altYazi: "© {yil} Mihra Store",
   whatsapp: "905411600296",
   begeniAdresi: "https://script.google.com/macros/s/AKfycbyC3Gm8P9LADvIKujXwKfvB1y1YK5Jqt9jwKb8i3jiOIpwdxAKsJa33-hP1-FdEQrz6/exec",
-  gruplar: ["Kolye","Bileklik","Küpe","Kelepçe","Yüzük","Çocuk","Şahmeran","Halhal"],
+  gruplar: ["Kolye","Bileklik","Küpe","Kelepçe","Yüzük","Çocuk","Şahmeran","Halhal","Set"],
   urunler: [
+    { gorsel: "images/gold-oynar-tasli-ucgen-set.jpg", kucuk: "images/gold-oynar-tasli-ucgen-set-k.jpg", ekGorseller: [{"gorsel":"images/gold-oynar-tasli-ucgen-set-2.jpg","kucuk":"images/gold-oynar-tasli-ucgen-set-2-k.jpg"}], ad: "Gold Oynar Taşlı Üçgen Set", grup: "Set", fiyat: "" },
+    { gorsel: "images/gold-oynar-tasli-baget-oval-set.jpg", kucuk: "images/gold-oynar-tasli-baget-oval-set-k.jpg", ekGorseller: [{"gorsel":"images/gold-oynar-tasli-baget-oval-set-2.jpg","kucuk":"images/gold-oynar-tasli-baget-oval-set-2-k.jpg"}], ad: "Gold Oynar Taşlı Baget Oval Set", grup: "Set", fiyat: "" },
+    { gorsel: "images/gumus-oynar-tasli-baget-oval-set.jpg", kucuk: "images/gumus-oynar-tasli-baget-oval-set-k.jpg", ekGorseller: [{"gorsel":"images/gumus-oynar-tasli-baget-oval-set-2.jpg","kucuk":"images/gumus-oynar-tasli-baget-oval-set-2-k.jpg"}], ad: "Gümüş Oynar Taşlı Baget Oval Set", grup: "Set", fiyat: "" },
+    { gorsel: "images/gold-oynar-tasli-yuvarlak-set.jpg", kucuk: "images/gold-oynar-tasli-yuvarlak-set-k.jpg", ekGorseller: [{"gorsel":"images/gold-oynar-tasli-yuvarlak-set-2.jpg","kucuk":"images/gold-oynar-tasli-yuvarlak-set-2-k.jpg"}], ad: "Gold Oynar Taşlı Yuvarlak Set", grup: "Set", fiyat: "" },
     { gorsel: "images/markiz-tasli-halka-kupe.jpg", kucuk: "images/markiz-tasli-halka-kupe-k.jpg", ekGorseller: [{"gorsel":"images/kupe-markiz-tasli-halka.jpg","kucuk":"images/kupe-markiz-tasli-halka-k.jpg"}], ad: "Markiz Taşlı Halka Küpe", grup: "Küpe", kategori: "Gold", fiyat: "1.550 ₺" },
     { gorsel: "images/asscher-tasli-yuzuk.jpg", kucuk: "images/asscher-tasli-yuzuk-k.jpg", ekGorseller: [{"gorsel":"images/asscher-tasli-yuzuk-2.jpg","kucuk":"images/asscher-tasli-yuzuk-2-k.jpg"}], ad: "Kare Taşlı Yüzük", grup: "Yüzük", kategori: "Tektaş", fiyat: "1.200 ₺" },
     { gorsel: "images/pave-tasli-capraz-yuzuk.jpg", kucuk: "images/pave-tasli-capraz-yuzuk-k.jpg", ekGorseller: [{"gorsel":"images/pave-tasli-capraz-yuzuk-2.jpg","kucuk":"images/pave-tasli-capraz-yuzuk-2-k.jpg"}], ad: "Pave Taşlı Çapraz Yüzük", grup: "Yüzük", fiyat: "1.500 ₺" },
