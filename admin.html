@@ -111,7 +111,8 @@ input:focus,select:focus{border-color:var(--ink)}
 .th:hover span,.th:focus-visible span{opacity:1}
 .f{display:grid;gap:8px;min-width:0}
 .f .ad{font-weight:500}
-.sub3{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.sub3{display:grid;grid-template-columns:.7fr 1fr 1fr 1fr 1fr;gap:8px}
+.sub3 input.kod{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;letter-spacing:.04em}
 .sub3 input.ind{border-color:#A88650}
 .sub3 input{padding:8px 10px;font-size:15px}
 .ops{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
@@ -343,6 +344,18 @@ select.gsel{padding:8px 10px;font-size:15px}
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  /* Ürün kodu: kategori kısaltması + sıra numarası (ör. KP-012) */
+  var KODPFX = {"Kolye":"KL","Bileklik":"BL","Küpe":"KP","Kelepçe":"KE","Yüzük":"YZ","Çocuk":"CC","Şahmeran":"SH","Halhal":"HH","Set":"ST"};
+  function kodOnek(g) {
+    if (KODPFX[g]) return KODPFX[g];
+    var s = String(g || 'UR').toLocaleUpperCase('tr').replace(/Ç/g, 'C').replace(/Ğ/g, 'G').replace(/İ/g, 'I').replace(/Ö/g, 'O').replace(/Ş/g, 'S').replace(/Ü/g, 'U').replace(/[^A-Z]/g, '');
+    return (s + 'UR').slice(0, 2);
+  }
+  function yeniKod(g, list) {
+    var p = kodOnek(g) + '-', mx = 0;
+    list.forEach(function (u) { var k = String(u.kod || ''); if (k.indexOf(p) === 0) { var n = parseInt(k.slice(p.length), 10); if (n > mx) mx = n; } });
+    return p + String(mx + 1).padStart(3, '0');
+  }
   var low = function (s) { return String(s || '').toLocaleLowerCase('tr'); };
   var CFG_KEY = 'mihra-admin-baglanti';
 
@@ -422,7 +435,7 @@ select.gsel{padding:8px 10px;font-size:15px}
       var o = {};
       Object.keys(u).forEach(function (k) { o[k] = u[k]; });
       if (!o.grup) { o.grup = o.kategori || ''; o.kategori = ''; }
-      ['ad', 'grup', 'kategori', 'fiyat', 'indirimli'].forEach(function (k) { o[k] = o[k] == null ? '' : String(o[k]); });
+      ['ad', 'kod', 'grup', 'kategori', 'fiyat', 'indirimli'].forEach(function (k) { o[k] = o[k] == null ? '' : String(o[k]); });
       o.kucuk = o.kucuk || o.gorsel;
       o.gizli = !!o.gizli;
       o.ekGorseller = (Array.isArray(o.ekGorseller) ? o.ekGorseller : []).filter(function (e) { return e && e.gorsel; })
@@ -432,6 +445,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     var g = Array.isArray(d.gruplar) ? d.gruplar.map(function (x) { return String(x || '').trim(); }).filter(Boolean) : [];
     d.urunler.forEach(function (u) { if (u.grup && g.indexOf(u.grup) < 0) g.push(u.grup); });
     d.gruplar = g.filter(function (x, i) { return g.indexOf(x) === i; });
+    for (var j = d.urunler.length - 1; j >= 0; j--) if (!d.urunler[j].kod) d.urunler[j].kod = yeniKod(d.urunler[j].grup, d.urunler);
     return d;
   }
   function refPaths() {
@@ -443,7 +457,7 @@ select.gsel{padding:8px 10px;font-size:15px}
 
   function serialize(d) {
     var q = JSON.stringify;
-    var order = ['gorsel', 'kucuk', 'ekGorseller', 'ad', 'grup', 'kategori', 'fiyat', 'indirimli', 'gizli'];
+    var order = ['gorsel', 'kucuk', 'ekGorseller', 'ad', 'kod', 'grup', 'kategori', 'fiyat', 'indirimli', 'gizli'];
     function item(u) {
       var keys = order.concat(Object.keys(u).filter(function (k) { return order.indexOf(k) < 0; }));
       var parts = [];
@@ -668,7 +682,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     if (ff === 'fiyat' && !u.fiyat) return false;
     if (ff === 'gizli' && !u.gizli) return false;
     if (ff === 'indirim' && !u.indirimli) return false;
-    if (q && low(u.ad + ' ' + u.grup + ' ' + u.kategori + ' ' + u.fiyat).indexOf(q) < 0) return false;
+    if (q && low(u.ad + ' ' + u.kod + ' ' + u.grup + ' ' + u.kategori + ' ' + u.fiyat).indexOf(q) < 0) return false;
     return true;
   }
   function visIdx() { var r = []; for (var i = 0; i < data.urunler.length; i++) if (visible(i)) r.push(i); return r; }
@@ -680,6 +694,7 @@ select.gsel{padding:8px 10px;font-size:15px}
       '<div class="f">' +
         '<input class="ad" data-k="ad" value="' + esc(u.ad) + '" placeholder="Ürün adı" aria-label="Ürün adı">' +
         '<div class="sub3">' +
+          '<input class="kod" data-k="kod" value="' + esc(u.kod) + '" placeholder="Kod" title="Ürün kodu: müşteriler sitede bu kodla arayabilir" aria-label="Ürün kodu">' +
           '<select class="gsel" data-k="grup" aria-label="Kategori">' + groupOptions(u.grup) + '</select>' +
           '<input data-k="kategori" list="dlKat" value="' + esc(u.kategori) + '" placeholder="Alt kategori" aria-label="Alt kategori">' +
           '<input class="fi" data-k="fiyat" value="' + esc(u.fiyat) + '" placeholder="Fiyat (ör. 1250)" aria-label="Fiyat">' +
@@ -940,7 +955,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     if (!grup) return fail('Bir kategori seç. Yoksa önce Kategoriler bölümünden ekle.');
     makeMany(addFiles, ad).then(function (ps) {
       var p = ps[0];
-      var u = { gorsel: p.gorsel, kucuk: p.kucuk, ekGorseller: ps.slice(1), ad: ad, grup: grup, kategori: $('aKat').value.trim(), fiyat: fmtPrice($('aFiyat').value), gizli: false };
+      var u = { gorsel: p.gorsel, kucuk: p.kucuk, ekGorseller: ps.slice(1), ad: ad, kod: yeniKod(grup, data.urunler), grup: grup, kategori: $('aKat').value.trim(), fiyat: fmtPrice($('aFiyat').value), gizli: false };
       if ($('aTop').checked) data.urunler.unshift(u); else data.urunler.push(u);
       $('aAd').value = ''; $('aFiyat').value = ''; setAddFiles(null);
       $('q').value = ''; $('ff').value = '';
@@ -964,6 +979,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     var row = e.target.closest('.item'), u = data.urunler[+row.getAttribute('data-i')];
     if (k === 'fiyat' || k === 'indirimli') { u[k] = fmtPrice(e.target.value); e.target.value = u[k]; }
     else if (k !== 'gizli') { u[k] = e.target.value.trim(); e.target.value = u[k]; }
+    if (k === 'kod') { u.kod = u.kod.toLocaleUpperCase('tr'); e.target.value = u.kod; }
     if (k === 'grup' || k === 'kategori') renderLists();
     if (k === 'fiyat') { var n = data.urunler.filter(function (x) { return x.fiyat; }).length; $('cnt').textContent = $('cnt').textContent.replace(/\d+ fiyatlı$/, n + ' fiyatlı'); }
     updateBar();

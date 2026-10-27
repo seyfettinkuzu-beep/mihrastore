@@ -29,6 +29,29 @@
     if (!indirimde(u)) return esc(u.fiyat);
     return (u.fiyat ? '<s>' + esc(u.fiyat) + '</s> ' : '') + '<ins>' + esc(u.indirimli) + '</ins>';
   }
+  /* Arama: Türkçe karakterlerden bağımsız, ürün adı / kodu / kategori içinde */
+  function sade(s) {
+    return String(s || '').toLocaleLowerCase('tr').replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ş/g, 's').replace(/ü/g, 'u').replace(/â/g, 'a').replace(/î/g, 'i').replace(/û/g, 'u');
+  }
+  function samanlik(u) {
+    if (!u._s) u._s = sade([u.ad, u.kod, String(u.kod || '').replace(/[^a-z0-9]/gi, ''), grupOf(u), altOf(u)].join(' '));
+    return u._s;
+  }
+  var ara = '', araKod = '';
+  /* "kp12", "KP 12", "kp-012" gibi kod aramaları: tam kod eşleşmesi varsa yalnızca o ürün gösterilir */
+  function kodAyikla(q) {
+    var m = /^([a-z]{2})[\s-]*(\d{1,4})$/.exec(q);
+    if (!m) return '';
+    var k = m[1] + String(parseInt(m[2], 10)).padStart(3, '0');
+    return all.some(function (u) { return sade(u.kod).replace(/[^a-z0-9]/g, '') === k; }) ? k : '';
+  }
+  function eslesir(u) {
+    if (!ara) return true;
+    if (araKod) return sade(u.kod).replace(/[^a-z0-9]/g, '') === araKod;
+    var h = samanlik(u);
+    return ara.split(/\s+/).every(function (w) { return h.indexOf(w) >= 0 || h.indexOf(w.replace(/[^a-z0-9]/g, '')) >= 0; });
+  }
+  function tamKod(u) { var k = sade(u.kod).replace(/[^a-z0-9]/g, ''); return k && k === ara.replace(/[^a-z0-9]/g, ''); }
   function etiket(u) { var g = grupOf(u), k = altOf(u); return k ? g + ' · ' + k : g; }
 
   document.title = marka + (S.slogan ? ' · ' + S.slogan : '');
@@ -134,7 +157,7 @@
   /* Yalnızca seçili kategoride ürünü olan fiyat aralıkları gösterilir. */
   function priceChips() {
     var pf = $('pricefilters');
-    var inC = all.filter(inCat);
+    var inC = all.filter(function (u) { return inCat(u) && eslesir(u); });
     var bs = BANDS.filter(function (b) { return inC.some(function (u) { return inBand(u, b.id); }); });
     if (fb && !bs.some(function (b) { return b.id === fb; })) fb = '';
     if (bs.length < 2) { pf.hidden = true; pf.innerHTML = ''; fb = ''; return; }
@@ -159,11 +182,13 @@
   }
 
   function draw() {
-    shown = all.filter(function (u) { return inCat(u) && (!fb || inBand(u, fb)); });
+    shown = all.filter(function (u) { return inCat(u) && eslesir(u) && (!fb || inBand(u, fb)); });
     /* satılanlar listenin sonuna */
     shown = shown.filter(function (u) { return !satildi(u); }).concat(shown.filter(satildi));
     /* "Tümü"de kategoriler karışık gösterilir: her kategori listeye eşit aralıklarla dağıtılır, kategori içindeki sıra paneldeki gibi kalır */
     if (cur === 'Tümü') shown = karistir(shown.filter(function (u) { return !satildi(u); })).concat(karistir(shown.filter(satildi)));
+    /* kodu birebir yazılan ürün en başa */
+    if (ara) shown = shown.filter(tamKod).concat(shown.filter(function (u) { return !tamKod(u); }));
     var g = $('grid');
     g.innerHTML = shown.map(function (u, i) {
       var et = etiket(u), np = pics(u).length;
@@ -175,10 +200,11 @@
         (sold ? '<span class="soldtag" aria-hidden="true">Satıldı</span>' : '') +
         (ind ? '<span class="saletag" aria-hidden="true">' + (yz ? '%' + yz + ' İndirim' : 'İndirim') + '</span>' : '') +
         '<img class="pre" src="' + esc(u.kucuk || u.gorsel) + '" alt="' + esc(u.ad || '') + '" loading="' + (i < 6 ? 'eager' : 'lazy') + '" decoding="async">' +
-        ((u.ad || et || u.fiyat) ? '<span class="cap"><b>' + esc(u.ad || '') + '</b><span>' + esc(et) + '</span>' +
+        ((u.ad || et || u.fiyat) ? '<span class="cap"><b>' + esc(u.ad || '') + '</b><span>' + esc(et) + (u.kod ? ' · ' + esc(u.kod) : '') + '</span>' +
           (gecerliFiyat(u) ? '<em class="p">' + (sold ? 'Satıldı' : fiyatHtml(u)) + '</em>' : '') + '</span>' : '') + '</button></div>';
     }).join('');
-    $('empty').textContent = fb ? 'Bu fiyat aralığında ürün yok.' : 'Bu kategoride henüz ürün yok.';
+    $('empty').textContent = ara ? 'Aramanla eşleşen ürün bulunamadı.' : fb ? 'Bu fiyat aralığında ürün yok.' : 'Bu kategoride henüz ürün yok.';
+    var sr = $('sres'); sr.hidden = !ara; sr.textContent = ara ? (shown.length ? shown.length + ' ürün bulundu' : '') : '';
     favBar();
     $('empty').hidden = shown.length > 0;
     Array.prototype.forEach.call(g.querySelectorAll('img'), function (im) {
@@ -194,6 +220,19 @@
       Array.prototype.forEach.call(els, function (el) { io.observe(el); });
     } else Array.prototype.forEach.call(els, function (el) { el.classList.add('in'); });
   }
+
+  var araT = null;
+  $('q').addEventListener('input', function () {
+    var v = this.value;
+    clearTimeout(araT);
+    araT = setTimeout(function () {
+      var yeni = sade(v.trim()).replace(/\s+/g, ' ');
+      if (yeni && !ara) { cur = 'Tümü'; sub = ''; fb = ''; } /* aramaya başlayınca tüm ürünlerde ara */
+      ara = yeni; araKod = kodAyikla(yeni);
+      chips(); priceChips(); draw();
+    }, 150);
+  });
+  $('q').addEventListener('keydown', function (e) { if (e.key === 'Escape' && this.value) { this.value = ''; this.dispatchEvent(new Event('input')); } });
 
   $('nav').addEventListener('click', function (e) {
     var b = e.target.closest('[data-c],[data-s],[data-f]'); if (!b) return;
@@ -215,7 +254,7 @@
     var ph = ps[pidx];
     resetZoom();
     $('lbi').src = ph.g; $('lbi').alt = (u.ad || '') + (n > 1 ? ' – fotoğraf ' + (pidx + 1) : '');
-    $('lbt').textContent = u.ad || ''; $('lbc').textContent = etiket(u);
+    $('lbt').textContent = u.ad || ''; $('lbc').textContent = etiket(u) + (u.kod ? ' · Kod: ' + u.kod : '');
     setHeart($('lbfav'), isFav(u)); $('lbfav').classList.remove('pop');
     var sold = satildi(u);
     lb.classList.toggle('sold', sold);
@@ -229,8 +268,8 @@
     var w = $('lbw'); w.hidden = !wa;
     if (wa) {
       w.href = sold
-        ? waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '" satılmış. Benzeri var mı?\n' + new URL(ph.g, location.href).href)
-        : waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (gecerliFiyat(u) ? ' (' + (indirimde(u) ? 'indirimli ' : '') + gecerliFiyat(u) + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(ph.g, location.href).href);
+        ? waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.kod ? ' [' + u.kod + ']' : '') + ' satılmış. Benzeri var mı?\n' + new URL(ph.g, location.href).href)
+        : waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.kod ? ' [' + u.kod + ']' : '') + (gecerliFiyat(u) ? ' (' + (indirimde(u) ? 'indirimli ' : '') + gecerliFiyat(u) + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(ph.g, location.href).href);
       w.textContent = sold ? 'Benzerini sor' : gecerliFiyat(u) ? 'WhatsApp\'tan sipariş ver' : 'WhatsApp\'tan fiyat sor';
     }
     $('lbk').textContent = (idx + 1) + ' / ' + shown.length + (n > 1 ? ' · Fotoğraf ' + (pidx + 1) + ' / ' + n : '') + '\n' + zoomHint;

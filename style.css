@@ -151,3 +151,11 @@ nav.filters .chip[data-c="Beğendiklerim"][aria-pressed="true"]{border-color:#C2
 .lb figcaption .lbfav span{color:inherit;letter-spacing:.14em;font-size:11px}
 .tile .multi{right:52px;top:15px}
 .lb figcaption .lbfav{position:static;width:max-content;height:auto;display:flex;border-radius:99px;font:500 11px/1 var(--f-body);padding:7px 13px;margin:8px auto 6px}
+
+/* arama */
+nav.filters .search{position:relative;max-width:440px;margin:0 auto 10px}
+nav.filters .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+nav.filters .search input{width:100%;appearance:none;border:1px solid var(--line);background:#fff;border-radius:99px;padding:10px 16px 10px 40px;font:400 15px/1.2 var(--f-body);color:var(--ink);outline:none}
+nav.filters .search input:focus{border-color:var(--accent)}
+nav.filters .search input::placeholder{color:var(--muted);opacity:.8}
+.sres{text-align:center;color:var(--muted);font-size:13px;margin:0 0 14px}
