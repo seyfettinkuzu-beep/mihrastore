@@ -159,3 +159,12 @@ nav.filters .search input{width:100%;appearance:none;border:1px solid var(--line
 nav.filters .search input:focus{border-color:var(--accent)}
 nav.filters .search input::placeholder{color:var(--muted);opacity:.8}
 .sres{text-align:center;color:var(--muted);font-size:13px;margin:0 0 14px}
+
+/* Telefonda başlık alanı daha sade: açıklama yazısı gizli, boşluklar az */
+@media (max-width:719px){
+  header.hero{padding:max(18px,env(safe-area-inset-top,0px)) 0 10px}
+  .brand{font-size:40px}
+  .lead{display:none}
+  .rule{margin-top:12px;width:44px}
+  nav.filters{padding-top:10px}
+}
