@@ -111,6 +111,7 @@ input:focus,select:focus{border-color:var(--ink)}
 .th:hover span,.th:focus-visible span{opacity:1}
 .f{display:grid;gap:8px;min-width:0}
 .f .ad{font-weight:500}
+.f input.aciklama{padding:8px 10px;font-size:14px}
 .sub3{display:grid;grid-template-columns:.7fr 1fr 1fr 1fr 1fr;gap:8px}
 .sub3 input.kod{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;letter-spacing:.04em}
 .sub3 input.ind{border-color:#A88650}
@@ -345,7 +346,7 @@ select.gsel{padding:8px 10px;font-size:15px}
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   /* Ürün kodu: kategori kısaltması + sıra numarası (ör. KP-012) */
-  var KODPFX = {"Kolye":"KL","Bileklik":"BL","Küpe":"KP","Kelepçe":"KE","Yüzük":"YZ","Çocuk":"CC","Şahmeran":"SH","Halhal":"HH","Set":"ST"};
+  var KODPFX = {"Kolye":"KL","Bileklik":"BL","Küpe":"KP","Kelepçe":"KE","Yüzük":"YZ","Çocuk":"CC","Bebek":"BB","Şahmeran":"SH","Halhal":"HH","Set":"ST"};
   function kodOnek(g) {
     if (KODPFX[g]) return KODPFX[g];
     var s = String(g || 'UR').toLocaleUpperCase('tr').replace(/Ç/g, 'C').replace(/Ğ/g, 'G').replace(/İ/g, 'I').replace(/Ö/g, 'O').replace(/Ş/g, 'S').replace(/Ü/g, 'U').replace(/[^A-Z]/g, '');
@@ -700,6 +701,7 @@ select.gsel{padding:8px 10px;font-size:15px}
           '<input class="fi" data-k="fiyat" value="' + esc(u.fiyat) + '" placeholder="Fiyat (ör. 1250)" aria-label="Fiyat">' +
           '<input class="fi ind" data-k="indirimli" value="' + esc(u.indirimli) + '" placeholder="İndirimli fiyat" title="Doldurursan ürün sitede indirimli görünür; silersen indirim biter" aria-label="İndirimli fiyat">' +
         '</div>' +
+        '<input class="aciklama" data-k="aciklama" value="' + esc(u.aciklama || '') + '" placeholder="Açıklama (isteğe bağlı, ürün büyütülünce görünür)" aria-label="Açıklama">' +
         '<div class="gal"><span class="lbl">Diğer fotoğraflar' + (ek.length ? ' (' + ek.length + ')' : '') + ':</span>' +
           ek.map(function (e, j) {
             return '<div class="gi' + (pending[e.gorsel] ? ' nw' : '') + '"><img src="' + esc(src(e.kucuk || e.gorsel)) + '" alt="" loading="lazy" decoding="async">' +
@@ -714,6 +716,7 @@ select.gsel{padding:8px 10px;font-size:15px}
         '<div class="ord"><button type="button" class="drag" data-drag title="Basılı tutup sürükle" aria-label="Sürükleyerek taşı">&#10303;</button>' +
           '<label class="pos" title="Sıra numarasını yazıp Enter\'a bas">Sıra <input type="number" data-pos min="1" max="' + total + '" value="' + (pos + 1) + '" inputmode="numeric" aria-label="Sıra numarası"></label></div>' +
         '<label class="check"><input type="checkbox" data-k="gizli"' + (u.gizli ? ' checked' : '') + '> Gizle</label>' +
+        '<label class="check" title="İşaretlersen sitede sipariş yerine ön sipariş başvuru formu çıkar"><input type="checkbox" data-k="onSiparis"' + (u.onSiparis ? ' checked' : '') + '> Ön sipariş</label>' +
         '<div class="row">' +
           '<button type="button" class="ib" data-act="up" title="Yukarı taşı" aria-label="Yukarı taşı"' + (pos === 0 ? ' disabled' : '') + '>&#8593;</button>' +
           '<button type="button" class="ib" data-act="down" title="Aşağı taşı" aria-label="Aşağı taşı"' + (pos === total - 1 ? ' disabled' : '') + '>&#8595;</button>' +
@@ -971,6 +974,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     var k = e.target.getAttribute('data-k'); if (!k) return;
     var row = e.target.closest('.item'), u = data.urunler[+row.getAttribute('data-i')];
     if (k === 'gizli') { u.gizli = e.target.checked; row.classList.toggle('off', u.gizli); }
+    else if (k === 'onSiparis') u.onSiparis = e.target.checked;
     else u[k] = e.target.value;
     updateBar();
   });
@@ -978,7 +982,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     var k = e.target.getAttribute('data-k'); if (!k) return;
     var row = e.target.closest('.item'), u = data.urunler[+row.getAttribute('data-i')];
     if (k === 'fiyat' || k === 'indirimli') { u[k] = fmtPrice(e.target.value); e.target.value = u[k]; }
-    else if (k !== 'gizli') { u[k] = e.target.value.trim(); e.target.value = u[k]; }
+    else if (k !== 'gizli' && k !== 'onSiparis') { u[k] = e.target.value.trim(); e.target.value = u[k]; }
     if (k === 'kod') { u.kod = u.kod.toLocaleUpperCase('tr'); e.target.value = u.kod; }
     if (k === 'grup' || k === 'kategori') renderLists();
     if (k === 'fiyat') { var n = data.urunler.filter(function (x) { return x.fiyat; }).length; $('cnt').textContent = $('cnt').textContent.replace(/\d+ fiyatlı$/, n + ' fiyatlı'); }

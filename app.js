@@ -25,6 +25,8 @@
   function indirimde(u) { return !!String(u.indirimli || '').trim() && !satildi(u); }
   function gecerliFiyat(u) { return indirimde(u) ? u.indirimli : (u.fiyat || ''); }
   function yuzde(u) { var a = num(u.fiyat), b = num(u.indirimli); return a > 0 && b > 0 && b < a ? Math.round((1 - b / a) * 100) : 0; }
+  /* Ön sipariş: panelde "Ön sipariş" işaretlenen ürünler (satılanlar hariç) başvuru formuyla istenir */
+  function onSip(u) { return !!u.onSiparis && !satildi(u); }
   function fiyatHtml(u) {
     if (!indirimde(u)) return esc(u.fiyat);
     return (u.fiyat ? '<s>' + esc(u.fiyat) + '</s> ' : '') + '<ins>' + esc(u.indirimli) + '</ins>';
@@ -199,10 +201,14 @@
         (np > 1 ? '<span class="multi" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12"><rect x="4.5" y="1.5" width="10" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 4.5v9a1 1 0 0 0 1 1h9" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>' + np + '</span>' : '') +
         (sold ? '<span class="soldtag" aria-hidden="true">Satıldı</span>' : '') +
         (ind ? '<span class="saletag" aria-hidden="true">' + (yz ? '%' + yz + ' İndirim' : 'İndirim') + '</span>' : '') +
+        (onSip(u) && !ind ? '<span class="saletag pretag" aria-hidden="true">Ön sipariş</span>' : '') +
         '<img class="pre" src="' + esc(u.kucuk || u.gorsel) + '" alt="' + esc(u.ad || '') + '" loading="' + (i < 6 ? 'eager' : 'lazy') + '" decoding="async">' +
         ((u.ad || et || u.fiyat) ? '<span class="cap"><b>' + esc(u.ad || '') + '</b><span>' + esc(et) + (u.kod ? ' · ' + esc(u.kod) : '') + '</span>' +
-          (gecerliFiyat(u) ? '<em class="p">' + (sold ? 'Satıldı' : fiyatHtml(u)) + '</em>' : '') + '</span>' : '') + '</button></div>';
+          (gecerliFiyat(u) ? '<em class="p">' + (sold ? 'Satıldı' : fiyatHtml(u)) + '</em>' : onSip(u) ? '<em class="p pre-p">Ön sipariş</em>' : '') + '</span>' : '') + '</button></div>';
     }).join('');
+    var cn = $('catnote'), cnOn = !ara && cur !== 'Tümü' && cur !== FAV && cur !== IND && shown.some(onSip);
+    cn.hidden = !cnOn;
+    if (cnOn) cn.textContent = 'Bu ürünler ön siparişle hazırlanır. Beğendiğin ürünü aç, "Ön sipariş başvurusu yap" ile formu doldur; ürünün hazır olunca seninle iletişime geçelim. Teslim elden yapılır.';
     $('empty').textContent = ara ? 'Aramanla eşleşen ürün bulunamadı.' : fb ? 'Bu fiyat aralığında ürün yok.' : 'Bu kategoride henüz ürün yok.';
     var sr = $('sres'); sr.hidden = !ara; sr.textContent = ara ? (shown.length ? shown.length + ' ürün bulundu' : '') : '';
     favBar();
@@ -265,8 +271,10 @@
     gl.innerHTML = n < 2 ? '' : ps.map(function (q, j) {
       return '<button type="button" data-p="' + j + '" aria-label="Fotoğraf ' + (j + 1) + '"' + (j === pidx ? ' aria-current="true"' : '') + '><img src="' + esc(q.k) + '" alt=""></button>';
     }).join('');
-    var w = $('lbw'); w.hidden = !wa;
-    if (wa) {
+    var d = $('lbd'); d.textContent = u.aciklama || ''; d.hidden = !u.aciklama;
+    var ob = $('lbo'), os = onSip(u); ob.hidden = !os;
+    var w = $('lbw'); w.hidden = !wa || os;
+    if (wa && !os) {
       w.href = sold
         ? waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.kod ? ' [' + u.kod + ']' : '') + ' satılmış. Benzeri var mı?\n' + new URL(ph.g, location.href).href)
         : waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.kod ? ' [' + u.kod + ']' : '') + (gecerliFiyat(u) ? ' (' + (indirimde(u) ? 'indirimli ' : '') + gecerliFiyat(u) + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(ph.g, location.href).href);
@@ -345,7 +353,7 @@
     if (e.target === lb || e.target.tagName === 'FIGURE') { if (Z.s > 1) zoomTo(1, 0, 0, true); else close(); }
   });
   document.addEventListener('keydown', function (e) {
-    if (!lb.classList.contains('open')) return;
+    if (!lb.classList.contains('open') || osDlg.open) return;
     if (e.key === 'Escape') { if (Z.s > 1) zoomTo(1, 0, 0, true); else close(); }
     else if (e.key === 'ArrowLeft') step(-1); else if (e.key === 'ArrowRight') step(1);
     else if (e.key === '+' || e.key === '=') zoomCenter(Z.s * 1.5);
@@ -447,6 +455,45 @@
     zoomTo(Z.s * Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0025)), e.clientX, e.clientY, false);
   }, { passive: false });
   window.addEventListener('resize', function () { if (Z.s > 1) { clamp(); apply(false); } });
+
+  /* ---------- Ön sipariş başvurusu: form WhatsApp mesajı olarak gönderilir ---------- */
+  var osDlg = $('os'), osF = $('osf'), osU = null;
+  $('lbo').addEventListener('click', function () {
+    osU = shown[idx]; if (!osU) return;
+    $('osurun').textContent = (osU.ad || 'Ürün') + (osU.kod ? ' · ' + osU.kod : '');
+    $('osyz').hidden = !(osU.yuzuk || altOf(osU) === 'Yüzük');
+    $('osok').hidden = true; osF.hidden = false;
+    try { var k = JSON.parse(lsGet('mihra-onsiparis') || '{}'); ['ad', 'tel', 'ilce'].forEach(function (n) { if (k[n] && !osF.elements[n].value) osF.elements[n].value = k[n]; }); } catch (x) {}
+    if (osDlg.showModal) osDlg.showModal(); else osDlg.setAttribute('open', '');
+    osF.elements.ad.focus();
+  });
+  function osKapat() { if (osDlg.close) osDlg.close(); else osDlg.removeAttribute('open'); }
+  $('osx').addEventListener('click', osKapat);
+  $('osk').addEventListener('click', osKapat);
+  osDlg.addEventListener('click', function (e) { if (e.target === osDlg) osKapat(); });
+  osF.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!osU) return;
+    var f = osF.elements, v = function (n) { return String(f[n].value || '').trim(); };
+    lsSet('mihra-onsiparis', JSON.stringify({ ad: v('ad'), tel: v('tel'), ilce: v('ilce') }));
+    var yz = !$('osyz').hidden;
+    var satir = [
+      'Merhaba, ' + marka + ' ön sipariş başvurusu:',
+      'Ürün: ' + (osU.ad || 'Ürün') + (osU.kod ? ' [' + osU.kod + ']' : ''),
+      'Ad Soyad: ' + v('ad'),
+      'Telefon: ' + v('tel'),
+      'İlçe / Semt: ' + v('ilce'),
+      'Bebeğin yaşı: ' + v('yas')
+    ];
+    if (yz) satir.push('Yüzük ölçüsü: ' + v('olcu'));
+    satir.push('Adet: ' + (v('adet') || '1'));
+    if (v('not')) satir.push('Not: ' + v('not'));
+    satir.push(new URL(osU.gorsel, location.href).href);
+    var link = waLink(satir.join('\n'));
+    var win = null; try { win = window.open(link, '_blank', 'noopener'); } catch (x) {}
+    if (!win) location.href = link;
+    osF.hidden = true; $('osok').hidden = false; $('osk').focus();
+  });
 
   chips(); priceChips(); draw();
 })();

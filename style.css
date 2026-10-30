@@ -168,3 +168,30 @@ nav.filters .search input::placeholder{color:var(--muted);opacity:.8}
   .rule{margin-top:12px;width:44px}
   nav.filters{padding-top:10px}
 }
+
+/* Ön sipariş */
+.tile .pretag{background:#1F1B16}
+.cap em.pre-p{color:var(--accent);font-style:normal}
+.catnote{max-width:62ch;margin:18px auto 0;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
+.lb .desc{max-width:52ch;margin:10px auto 0;color:var(--muted);font-size:13px;line-height:1.55;text-transform:none;letter-spacing:0}
+.lb .osbtn{position:static;width:auto;height:auto;border:0;border-radius:99px;display:inline-block;background:var(--accent);color:#fff;font:500 12px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;padding:13px 22px}
+.lb .osbtn:hover{background:#1F1B16;border:0}
+.lb .osbtn[hidden]{display:none}
+dialog.os{border:0;padding:0;border-radius:10px;background:var(--bg);color:var(--ink);width:min(460px,calc(100vw - 24px));max-height:calc(100vh - 24px);box-shadow:0 30px 80px rgba(40,30,15,.25);z-index:60}
+dialog.os::backdrop{background:rgba(31,27,22,.45)}
+.os .osin{position:relative;padding:26px 22px 22px;overflow:auto;max-height:calc(100vh - 24px)}
+.os h2{margin:0;font:500 30px/1.15 var(--f-head)}
+.os .osurun{margin:6px 0 16px;font:500 11px/1.4 var(--f-body);letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.os .osx{position:absolute;top:10px;right:10px;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:var(--bg);font-size:22px;cursor:pointer;color:var(--ink)}
+.os form{display:grid;gap:12px}
+.os label{display:grid;gap:5px;font-size:13px;color:var(--ink)}
+.os label[hidden]{display:none}
+.os small{color:var(--muted)}
+.os input,.os select,.os textarea{font:400 16px/1.3 var(--f-body);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:11px 12px;width:100%}
+.os input:focus,.os select:focus,.os textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.os .oscheck{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);line-height:1.45}
+.os .oscheck input{width:18px;height:18px;flex:none;margin:1px 0 0;accent-color:var(--ink)}
+.os .ossend{appearance:none;border:0;cursor:pointer;background:#1F1B16;color:#fff;font:500 12px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;padding:15px 22px;border-radius:99px;min-height:44px}
+.os .ossend:hover{background:var(--accent)}
+.os .osnote{margin:0;font-size:12px;color:var(--muted);text-align:center}
+.os .osok p{margin:0 0 16px;line-height:1.6}
