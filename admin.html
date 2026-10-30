@@ -346,7 +346,7 @@ select.gsel{padding:8px 10px;font-size:15px}
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   /* Ürün kodu: kategori kısaltması + sıra numarası (ör. KP-012) */
-  var KODPFX = {"Kolye":"KL","Bileklik":"BL","Küpe":"KP","Kelepçe":"KE","Yüzük":"YZ","Çocuk":"CC","Bebek":"BB","Şahmeran":"SH","Halhal":"HH","Set":"ST"};
+  var KODPFX = {"Kolye":"KL","Bileklik":"BL","Küpe":"KP","Kelepçe":"KE","Yüzük":"YZ","Çocuk":"CC","Şahmeran":"SH","Halhal":"HH","Set":"ST"};
   function kodOnek(g) {
     if (KODPFX[g]) return KODPFX[g];
     var s = String(g || 'UR').toLocaleUpperCase('tr').replace(/Ç/g, 'C').replace(/Ğ/g, 'G').replace(/İ/g, 'I').replace(/Ö/g, 'O').replace(/Ş/g, 'S').replace(/Ü/g, 'U').replace(/[^A-Z]/g, '');

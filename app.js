@@ -208,7 +208,7 @@
     }).join('');
     var cn = $('catnote'), cnOn = !ara && cur !== 'Tümü' && cur !== FAV && cur !== IND && shown.some(onSip);
     cn.hidden = !cnOn;
-    if (cnOn) cn.textContent = 'Bu ürünler ön siparişle hazırlanır. Beğendiğin ürünü aç, "Ön sipariş başvurusu yap" ile formu doldur; ürünün hazır olunca seninle iletişime geçelim. Teslim elden yapılır.';
+    if (cnOn) cn.textContent = '"Ön sipariş" etiketli ürünler siparişe özel hazırlanır. Beğendiğin ürünü aç, "Ön sipariş başvurusu yap" ile formu doldur; ürünün hazır olunca seninle iletişime geçelim. Teslim elden yapılır.';
     $('empty').textContent = ara ? 'Aramanla eşleşen ürün bulunamadı.' : fb ? 'Bu fiyat aralığında ürün yok.' : 'Bu kategoride henüz ürün yok.';
     var sr = $('sres'); sr.hidden = !ara; sr.textContent = ara ? (shown.length ? shown.length + ' ürün bulundu' : '') : '';
     favBar();
