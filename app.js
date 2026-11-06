@@ -502,7 +502,7 @@
   function anaGruplar() { return groups.filter(function (g) { return g !== 'Tümü' && g !== FAV; }); }
   /* Kategori kutusu fotoğrafı: seçilmiş ürün hâlâ listedeyse o, yoksa kategorinin ilk satılmamış ürünü */
   /* Kategori kapakları: assets/ içindeki çekimler (panel bu klasöre dokunmaz). Listede olmayan kategoride seçili ürün ya da ilk satılmamış ürün. */
-  var KAPAK = { 'Kolye': 'assets/kat-kolye.jpg', 'Bileklik': 'assets/kat-bileklik.jpg', 'Küpe': 'assets/kat-kupe.jpg', 'Yüzük': 'assets/kat-yuzuk.jpg', 'Kelepçe': 'assets/kat-kelepce.jpg', 'Halhal': 'assets/kat-halhal.jpg', 'Set': 'assets/kat-set.jpg', 'Çocuk': 'assets/kat-cocuk.jpg', 'Şahmeran': 'images/oval-tasli-sahmeran.jpg', 'İndirim': 'images/bileklik-uc-renk-sonsuzluk.jpg' };
+  var KAPAK = { 'Kolye': 'assets/kat-kolye.jpg', 'Bileklik': 'assets/kat-bileklik.jpg', 'Küpe': 'assets/kat-kupe.jpg', 'Yüzük': 'assets/kat-yuzuk.jpg', 'Kelepçe': 'assets/kat-kelepce.jpg', 'Halhal': 'assets/kat-halhal.jpg', 'Set': 'assets/kat-set.jpg', 'Çocuk': 'assets/kat-cocuk.jpg', 'Şahmeran': 'images/oval-tasli-sahmeran.jpg', 'İndirim': 'assets/kat-indirim.jpg' };
   function kapak(g) {
     if (/^assets\//.test(KAPAK[g] || '')) return KAPAK[g];
     var hepsi = all.filter(function (u) { return g === IND ? indirimde(u) : grupOf(u) === g; });
