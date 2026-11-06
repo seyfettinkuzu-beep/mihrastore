@@ -357,3 +357,10 @@ nav.filters .chip[data-c="Beğendiklerim"][aria-pressed="true"]{color:#fff;backg
   .ft .b{flex-direction:column}
 }
 @media (prefers-reduced-motion:reduce){.slide{transition:none}}
+/* küçük telefonlar (≤380 px): başlık sığsın */
+@media (max-width:380px){
+  .logo .wm{font-size:12.5px;letter-spacing:.07em}.logo .wm small{font-size:7px;letter-spacing:.22em}
+  .mark{width:54px;height:38px}.mark .sg{font-size:29px;padding-bottom:6px}.mark .dia{width:25px;height:22px}
+  .ib{width:36px;height:36px}.ib svg{width:20px;height:20px}
+  .hrow{grid-template-columns:32px 1fr auto}
+}
