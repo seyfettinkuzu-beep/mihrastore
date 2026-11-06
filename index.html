@@ -14,43 +14,111 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#FAF8F5">
+<meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css?v=20">
 </head>
 <body>
-<div class="wrap">
-  <header class="hero">
-    <h1 class="brand" id="brand"></h1>
-    <p class="slogan" id="slogan"></p>
-    <p class="lead" id="lead"></p>
-  </header>
-  <section class="evb" aria-labelledby="evbh">
-    <svg class="evb-ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9v11h13V9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 12.2l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5 2.2-.3z" fill="currentColor"/></svg>
-    <div class="evb-t">
-      <p class="evb-k">Randevu ile · Kadınlara özel</p>
-      <h2 id="evbh">Takılarımız evinize geliyor</h2>
-      <p class="evb-d">Arkadaşlarınızı toplayın, koleksiyonumuzla evinize gelelim; takıları yerinde görüp deneyin. Ev sahibine hediye takı ya da satıştan pay. <span>Samsun içi · En az 2.500 ₺ alışveriş</span></p>
+<a class="skip" href="#urunler">Ürünlere geç</a>
+<div class="ann">Randevu ile <b>evinize geliyoruz</b> · Samsun içi · Kadınlara özel</div>
+
+<header class="site">
+  <div class="hrow">
+    <div class="loc"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Samsun · TR</span></div>
+    <a class="logo" href="./" aria-label="Ana sayfa">
+      <svg class="emb" viewBox="0 0 48 56" width="40" height="47" aria-hidden="true"><path d="M24 2.5 43.5 12.5V35.5C43.5 44 34 50 24 53.5 14 50 4.5 44 4.5 35.5V12.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M33 16.5H18.5L13.5 24.5 34.5 31.5 29.5 39.5H15" fill="none" stroke="var(--champ)" stroke-width="2.8" stroke-linecap="square"/></svg>
+      <span class="wm"><span id="brand"></span><small>925 Ayar · Samsun</small></span>
+    </a>
+    <div class="tools">
+      <button type="button" class="ib" id="hsearch" aria-label="Ürün ara"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+      <button type="button" class="ib" id="hfav" aria-label="Beğendiklerim"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 20.6s-7.6-4.6-9.4-9.3C1.4 8 3.4 4.6 6.9 4.6c2.1 0 3.5 1.1 5.1 3 1.6-1.9 3-3 5.1-3 3.5 0 5.5 3.4 4.3 6.7-1.8 4.7-9.4 9.3-9.4 9.3z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span class="badge" id="hfavn" hidden></span></button>
+      <a class="ib" id="hwa" target="_blank" rel="noopener" aria-label="WhatsApp ile yaz" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-1 .8c-1-.5-1.8-1.3-2.3-2.3l.8-1-1-2z" fill="currentColor"/></svg></a>
     </div>
-    <a class="evb-b" id="evbtn" target="_blank" rel="noopener">Randevu al</a>
-  </section>
-  <nav class="filters" id="nav" aria-label="Kategoriler">
-    <div class="search"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Ürün adı veya kodu ile ara" aria-label="Ürün ara" autocomplete="off" enterkeyhint="search"></div>
-    <div class="row" id="filters"></div>
-    <div class="row sub" id="subfilters" hidden></div>
-    <div class="row sub price" id="pricefilters" hidden aria-label="Fiyat aralığı"></div>
-  </nav>
-  <main>
-    <div class="favbar" id="favbar" hidden><span id="favtxt"></span><a class="favwa" id="favwa" target="_blank" rel="noopener">Beğendiklerimi WhatsApp'tan gönder</a></div>
-    <p class="sres" id="sres" hidden></p>
-    <p class="catnote" id="catnote" hidden></p>
-    <div class="grid" id="grid"></div>
-    <p class="empty" id="empty" hidden>Bu kategoride henüz ürün yok.</p>
-  </main>
-  <footer id="foot"></footer>
-</div>
+  </div>
+  <nav class="topnav" id="topnav" aria-label="Kategoriler"></nav>
+</header>
+
+<section class="hero" id="hero" aria-roledescription="slayt gösterisi" aria-label="Öne çıkanlar">
+  <div class="slide on" aria-roledescription="slayt" aria-label="1 / 2">
+    <div class="ph trio"><img src="assets/hero-1.jpg" alt="" style="object-position:50% 40%"><img src="assets/hero-2.jpg" alt="" style="object-position:50% 45%"><img src="assets/hero-3.jpg" alt="" style="object-position:50% 50%"></div>
+    <div class="tx">
+      <p class="kick">Yeni sezon · 925 ayar gümüş</p>
+      <h1 class="H">Zarafet<br><span>kapınızda</span></h1>
+      <p class="lead">Kolye, bileklik, küpe ve yüzükte yüzlerce model. Beğendiğinizi WhatsApp'tan sorun ya da koleksiyonu evinize getirelim.</p>
+      <div class="btns"><a class="btn" href="#urunler" data-go="Tümü">Koleksiyonu gör →</a><a class="btn o js-randevu" target="_blank" rel="noopener" href="#ev">Randevu al</a></div>
+    </div>
+  </div>
+  <div class="slide" aria-roledescription="slayt" aria-label="2 / 2">
+    <div class="ph"><img src="assets/ev-bulusmasi.jpg" alt="Bir evde masa etrafında toplanmış kadınlar gümüş takıları inceliyor" style="object-position:50% 45%"></div>
+    <div class="tx">
+      <p class="kick">Ev buluşmaları</p>
+      <h2 class="H">Ev buluşmaları<br><span>böyle geçiyor</span></h2>
+      <p class="lead">Arkadaşlarınızı toplayın; çayınızı içerken takıları yerinde görün, deneyin, beğendiğinizi alın.</p>
+      <div class="btns"><a class="btn js-randevu" target="_blank" rel="noopener" href="#ev">Randevu al →</a><a class="btn o" href="#ev">Nasıl çalışır?</a></div>
+    </div>
+    <span class="temsili">Temsili görseldir</span>
+  </div>
+  <a class="side" href="#ev">Ev buluşması</a>
+  <div class="dots" role="tablist" aria-label="Slayt seç"><button type="button" role="tab" aria-selected="true" aria-label="1. slayt"></button><button type="button" role="tab" aria-selected="false" aria-label="2. slayt"></button></div>
+</section>
+
+<section class="prom" aria-label="Sözümüz">
+  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M9 3l3 6 3-6M12 9v12"/></svg><h3>925 ayar gümüş</h3><p>Tüm takılarımız 925 ayar gümüşten.</p></div>
+  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg><h3>Evinize geliyoruz</h3><p>Samsun içinde randevu ile ev buluşması.</p></div>
+  <div><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="1"/><path d="M3 11h18M7 15h4"/></svg><h3>Elden teslim</h3><p>Ödeme ve teslim elden yapılır.</p></div>
+  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/></svg><h3>WhatsApp destek</h3><p>Her ürünü tek tıkla sorabilirsiniz.</p></div>
+</section>
+
+<section class="cats" aria-labelledby="kath">
+  <h2 class="H sh" id="kath">Kategoriler</h2>
+  <div class="cg" id="cats"></div>
+</section>
+
+<section class="ev" id="ev" aria-labelledby="evbh">
+  <div class="tx">
+    <p class="kick">Randevu ile · Kadınlara özel</p>
+    <h2 class="H" id="evbh">Takılarımız<br><span>evinize geliyor</span></h2>
+    <p>Arkadaşlarınızı toplayın, koleksiyonumuzla evinize gelelim; takıları yerinde görüp deneyin. Ev sahibine hediye takı ya da satıştan pay.</p>
+    <ol class="steps"><li><b>01</b>WhatsApp'tan gün seçin</li><li><b>02</b>Arkadaşlarınızı davet edin</li><li><b>03</b>Deneyin, beğendiğinizi alın</li></ol>
+    <p class="evnote">Samsun içi · En az 2.500 ₺ alışveriş</p>
+    <a class="btn js-randevu" id="evbtn" target="_blank" rel="noopener">Randevu al →</a>
+  </div>
+  <div class="ph"><img src="assets/ev.jpg" alt="" loading="lazy"><div class="evbadge" aria-hidden="true"><div><b>2.500 ₺</b>ve üzeri<br>alışverişte</div></div></div>
+</section>
+
+<section class="catalog" id="urunler" aria-labelledby="kbas">
+  <div class="wrap">
+    <div class="ch"><h2 class="H" id="kbas">Tüm ürünler</h2><span class="cnt" id="kcnt"></span></div>
+    <nav class="filters" id="nav" aria-label="Ürün süzgeçleri">
+      <div class="search"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Ürün adı veya kodu ile ara" aria-label="Ürün ara" autocomplete="off" enterkeyhint="search"></div>
+      <div class="row" id="filters"></div>
+      <div class="row sub" id="subfilters" hidden></div>
+      <div class="row sub price" id="pricefilters" hidden aria-label="Fiyat aralığı"></div>
+    </nav>
+    <main>
+      <div class="favbar" id="favbar" hidden><span id="favtxt"></span><a class="favwa" id="favwa" target="_blank" rel="noopener">Beğendiklerimi WhatsApp'tan gönder</a></div>
+      <p class="sres" id="sres" hidden></p>
+      <p class="catnote" id="catnote" hidden></p>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>Bu kategoride henüz ürün yok.</p>
+    </main>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="t">
+    <div>
+      <a class="logo" href="./" aria-label="Ana sayfa"><svg class="emb" viewBox="0 0 48 56" width="40" height="47" aria-hidden="true"><path d="M24 2.5 43.5 12.5V35.5C43.5 44 34 50 24 53.5 14 50 4.5 44 4.5 35.5V12.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M33 16.5H18.5L13.5 24.5 34.5 31.5 29.5 39.5H15" fill="none" stroke="var(--champ)" stroke-width="2.8" stroke-linecap="square"/></svg><span class="wm"><span id="fbrand"></span><small>925 Ayar · Samsun</small></span></a>
+      <p class="fd">Samsun'dan 925 ayar gümüş takılar. Randevu ile evinize geliyoruz.</p>
+    </div>
+    <div><h4>Koleksiyon</h4><ul id="flinks"></ul></div>
+    <div><h4>Hizmet</h4><ul><li><a href="#ev">Ev buluşması</a></li><li><a href="#urunler" data-go="Beğendiklerim">Beğendiklerim</a></li><li><a class="js-wa" target="_blank" rel="noopener">WhatsApp sipariş</a></li></ul></div>
+    <div><h4>Bize ulaşın</h4><p>Sorularınız ve randevu için WhatsApp'tan yazın.</p><a class="btn js-wa" target="_blank" rel="noopener">WhatsApp'tan yaz →</a></div>
+  </div>
+  <div class="b"><span id="foot"></span><span>seyyargumus.com</span></div>
+</footer>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Büyük görünüm" aria-hidden="true">
   <button class="x" id="lbx" aria-label="Kapat">&times;</button>
@@ -90,7 +158,7 @@
 
 <a class="wa-fab" id="wafab" target="_blank" rel="noopener" aria-label="WhatsApp ile yaz" hidden>WhatsApp</a>
 <noscript><p style="text-align:center;padding:40px">Bu sayfanın görünmesi için JavaScript gerekir.</p></noscript>
-<script src="products.js?v=seyyar1"></script>
-<script src="app.js?v=13"></script>
+<script src="products.js?v=seyyar2"></script>
+<script src="app.js?v=20"></script>
 </body>
 </html>

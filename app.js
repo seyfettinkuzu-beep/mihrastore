@@ -58,20 +58,18 @@
 
   document.title = marka + (S.slogan ? ' · ' + S.slogan : '');
   $('brand').textContent = marka;
-  $('slogan').textContent = S.slogan || '';
-  $('slogan').hidden = !S.slogan;
-  $('lead').textContent = S.aciklama || '';
-  $('lead').hidden = !S.aciklama;
+  $('fbrand').textContent = marka;
   var alt = String(S.altYazi || '').replace(/\{yil\}/g, yil);
   $('foot').textContent = alt;
-  $('foot').hidden = !alt;
 
   var wa = String(S.whatsapp || '').replace(/\D/g, '');
   function waLink(txt) { return 'https://wa.me/' + wa + '?text=' + encodeURIComponent(txt); }
   /* Eve gelme hizmeti banner'ı: randevu WhatsApp'tan */
-  var evb = $('evbtn');
-  if (evb) { if (wa) evb.href = waLink('Merhaba, ' + marka + ' ev buluşması için randevu almak istiyorum.'); else evb.hidden = true; }
-  if (wa) { var fab = $('wafab'); fab.href = waLink('Merhaba, ' + marka + ' ürünleri hakkında bilgi almak istiyorum.'); fab.hidden = false; }
+  var randevu = wa ? waLink('Merhaba, ' + marka + ' ev buluşması için randevu almak istiyorum.') : '';
+  var genel = wa ? waLink('Merhaba, ' + marka + ' ürünleri hakkında bilgi almak istiyorum.') : '';
+  Array.prototype.forEach.call(document.querySelectorAll('.js-randevu'), function (a) { if (wa) a.href = randevu; else if (a.id === 'evbtn') a.hidden = true; else { a.removeAttribute('target'); a.href = '#ev'; } });
+  Array.prototype.forEach.call(document.querySelectorAll('.js-wa'), function (a) { if (wa) a.href = genel; else a.closest('li,div').hidden = true; });
+  if (wa) { var fab = $('wafab'); fab.href = genel; fab.hidden = false; $('hwa').href = genel; $('hwa').hidden = false; }
 
   /* Beğendiklerim: müşterinin kalp verdiği ürünler yalnızca kendi tarayıcısında saklanır (ürün fotoğrafının yoluyla) */
   var FAV = 'Beğendiklerim', FKEY = 'mihra-begenilen', favs = [];
@@ -149,6 +147,7 @@
     return '<button class="chip" type="button" data-' + kind + '="' + esc(val) + '" aria-pressed="' + on + '">' + esc(label) + '</button>';
   }
   function chips() {
+    ustMenu();
     var f = $('filters'), sf = $('subfilters'), nav = $('nav');
     if (groups.length < 3) { nav.hidden = true; return; }
     f.innerHTML = groups.map(function (c) { return chip(c === FAV ? '♥ ' + FAV + ' (' + favs.length + ')' : c, c, c === cur, 'c'); }).join('');
@@ -498,5 +497,69 @@
     osF.hidden = true; $('osok').hidden = false; $('osk').focus();
   });
 
+  /* ---------- Ana sayfa: başlık menüsü, kategori kutuları, slayt ---------- */
+  function adet(g) { return all.filter(function (u) { return (g === IND ? indirimde(u) : grupOf(u) === g) && !satildi(u); }).length; }
+  function anaGruplar() { return groups.filter(function (g) { return g !== 'Tümü' && g !== FAV; }); }
+  /* Kategori kutusu fotoğrafı: seçilmiş ürün hâlâ listedeyse o, yoksa kategorinin ilk satılmamış ürünü */
+  var KAPAK = { 'Kolye': 'images/markiz-tasli-yildiz-cicek-kolye.jpg', 'Bileklik': 'images/tasli-gold-bileklik.jpg', 'Küpe': 'images/yelpaze-kupe-3.jpg', 'Yüzük': 'images/asscher-tasli-yuzuk.jpg', 'Kelepçe': 'images/tasli-t-bilezik-gold.jpg', 'Halhal': 'images/gold-tasli-sallantili-halhal.jpg', 'Şahmeran': 'images/oval-tasli-sahmeran.jpg', 'Set': 'images/gold-oynar-tasli-ucgen-set.jpg', 'Çocuk': 'images/cocuk-papatya-kupe.jpg', 'İndirim': 'images/bileklik-uc-renk-sonsuzluk.jpg' };
+  function kapak(g) {
+    var hepsi = all.filter(function (u) { return g === IND ? indirimde(u) : grupOf(u) === g; });
+    var u = hepsi.filter(function (x) { return x.gorsel === KAPAK[g]; })[0] || hepsi.filter(function (x) { return !satildi(x); })[0] || hepsi[0];
+    return u ? (u.kucuk || u.gorsel) : '';
+  }
+  function ustMenu() {
+    var html = anaGruplar().map(function (g) {
+      return '<a href="#urunler" data-go="' + esc(g) + '"' + (g === IND ? ' class="ind"' : '') + ' aria-current="' + (g === cur) + '">' + esc(g) + '</a>';
+    }).join('');
+    $('topnav').innerHTML = html;
+    $('flinks').innerHTML = anaGruplar().map(function (g) { return '<li><a href="#urunler" data-go="' + esc(g) + '">' + esc(g) + '</a></li>'; }).join('');
+    $('kbas').textContent = cur === 'Tümü' ? 'Tüm ürünler' : cur;
+    var n = $('hfavn'); n.hidden = !favs.length; n.textContent = favs.length;
+  }
+  function kutular() {
+    $('cats').innerHTML = anaGruplar().map(function (g, i) {
+      var k = kapak(g), n = adet(g), ind = g === IND;
+      return '<a class="ct' + (ind ? ' sale' : '') + '" href="#urunler" data-go="' + esc(g) + '"><div class="ci">' +
+        (k ? '<img src="' + esc(k) + '" alt="" decoding="async">' : '') +
+        (ind ? '<span class="tg">Fırsat</span>' : '') + '</div><div class="cn"><b>' + esc(g) + '</b><span>' + (ind ? 'Fırsatlar' : n + ' model') + ' →</span></div></a>';
+    }).join('');
+  }
+  function sayac() { var c = $('kcnt'); c.textContent = shown.length ? shown.length + ' ürün' : ''; }
+  var drawEski = draw;
+  draw = function () { drawEski(); sayac(); };
+  function kategoriyeGit(g) {
+    if (g === FAV && !favs.length) g = 'Tümü';
+    if (groups.indexOf(g) < 0) g = 'Tümü';
+    if (ara) { $('q').value = ''; ara = ''; araKod = ''; }
+    cur = g; sub = ''; fb = '';
+    chips(); priceChips(); draw();
+    $('urunler').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-go]'); if (!a) return;
+    e.preventDefault(); kategoriyeGit(a.getAttribute('data-go'));
+  });
+  $('hfav').addEventListener('click', function () { kategoriyeGit(FAV); });
+  $('hsearch').addEventListener('click', function () { $('urunler').scrollIntoView({ behavior: 'smooth' }); setTimeout(function () { $('q').focus({ preventScroll: true }); }, 450); });
+
+  /* Kapak slaytı: 6 saniyede bir geçer; fareyle üzerine gelince ya da hareket azaltma açıksa durur */
+  var sl = document.querySelectorAll('#hero .slide'), dt = document.querySelectorAll('#hero .dots button'), si = 0, st = null;
+  function slayt(i) {
+    si = (i + sl.length) % sl.length;
+    Array.prototype.forEach.call(sl, function (x, j) { x.classList.toggle('on', j === si); x.setAttribute('aria-hidden', String(j !== si)); });
+    Array.prototype.forEach.call(dt, function (x, j) { x.setAttribute('aria-selected', String(j === si)); });
+  }
+  function oynat() { clearInterval(st); if (sl.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) st = setInterval(function () { if (!document.hidden) slayt(si + 1); }, 6000); }
+  Array.prototype.forEach.call(dt, function (b, j) { b.addEventListener('click', function () { slayt(j); oynat(); }); });
+  var hero = $('hero');
+  hero.addEventListener('mouseenter', function () { clearInterval(st); });
+  hero.addEventListener('mouseleave', oynat);
+  hero.addEventListener('focusin', function () { clearInterval(st); });
+  var tx0 = null;
+  hero.addEventListener('touchstart', function (e) { tx0 = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener('touchend', function (e) { if (tx0 == null) return; var d = e.changedTouches[0].clientX - tx0; tx0 = null; if (Math.abs(d) > 50) { slayt(si + (d < 0 ? 1 : -1)); oynat(); } }, { passive: true });
+  slayt(0); oynat();
+
+  kutular();
   chips(); priceChips(); draw();
 })();
