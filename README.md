@@ -1,5 +1,8 @@
 # Mihra Store · Showroom sitesi
 
+Site adresi: https://seyyargumus.com · Panel: https://seyyargumus.com/admin.html
+(Alan adı `CNAME` dosyasında; Cloudflare DNS → GitHub Pages.)
+
 ## İlk kurulum
 1. GitHub'da bir repo aç (örn. `showroom`), bu klasörün **içindekileri** yükle (klasörün kendisini değil).
 2. Settings → Pages → Branch: `main` / `(root)` → Save. Site birkaç dakika içinde `https://KULLANICI.github.io/showroom/` adresinde açılır.

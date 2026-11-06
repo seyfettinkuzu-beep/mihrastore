@@ -384,7 +384,10 @@ select.gsel{padding:8px 10px;font-size:15px}
     } catch (e) {}
   }
   function connected() { return !!(cfg.owner && cfg.repo && cfg.token); }
+  /* Özel alan adı: sitenin kendi adresi */
+  var ALAN_ADI = 'https://seyyargumus.com/';
   function siteGuess(o, r) {
+    if (ALAN_ADI) return ALAN_ADI;
     if (!o || !r) return '';
     o = o.toLowerCase();
     return r.toLowerCase() === o + '.github.io' ? 'https://' + o + '.github.io/' : 'https://' + o + '.github.io/' + r + '/';
@@ -496,7 +499,7 @@ select.gsel{padding:8px 10px;font-size:15px}
     html = setMeta(html, 'property', 'og:site_name', data.marka);
     html = setMeta(html, 'property', 'og:title', title);
     html = setMeta(html, 'property', 'og:description', data.aciklama || title);
-    var site = (cfg.site || siteGuess(cfg.owner, cfg.repo)).trim();
+    var site = (/\.github\.io/i.test(cfg.site || '') && ALAN_ADI ? ALAN_ADI : (cfg.site || siteGuess(cfg.owner, cfg.repo))).trim();
     if (site && !/\/$/.test(site)) site += '/';
     var first = data.urunler.filter(function (u) { return !u.gizli; })[0];
     if (site) {
@@ -824,7 +827,7 @@ select.gsel{padding:8px 10px;font-size:15px}
   /* ---------- bağlantı formu ---------- */
   function fillConn() {
     $('cOwner').value = cfg.owner || ''; $('cRepo').value = cfg.repo || ''; $('cBranch').value = cfg.branch || 'main';
-    $('cToken').value = cfg.token || ''; $('cSite').value = cfg.site || siteGuess(cfg.owner, cfg.repo);
+    $('cToken').value = cfg.token || ''; $('cSite').value = (/\.github\.io/i.test(cfg.site || '') && ALAN_ADI) ? ALAN_ADI : (cfg.site || siteGuess(cfg.owner, cfg.repo));
     $('cRemember').checked = cfg.remember !== false;
   }
   function autoSite() {
