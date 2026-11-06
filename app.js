@@ -119,7 +119,7 @@
     if (favs.length) groups.push(FAV);
   }
   buildGroups();
-  var cur = 'Tümü', sub = '', fb = '', shown = [], io = null, last = null;
+  var cur = 'Tümü', sub = '', fb = '', shown = [], io = null, last = null, ONIZ = 10;
 
   /* Fiyat aralığı süzgeci: fiyatı "1.250 ₺" gibi yazılmış ürünler; fiyatsız ve satılmış ürünler aralık seçilince gösterilmez. */
   var BANDS = [
@@ -190,11 +190,25 @@
     /* satılanlar listenin sonuna */
     shown = shown.filter(function (u) { return !satildi(u); }).concat(shown.filter(satildi));
     /* "Tümü"de kategoriler karışık gösterilir: her kategori listeye eşit aralıklarla dağıtılır, kategori içindeki sıra paneldeki gibi kalır */
-    if (cur === 'Tümü') shown = karistir(shown.filter(function (u) { return !satildi(u); })).concat(karistir(shown.filter(satildi)));
+    /* Ana sayfa ("Tümü", arama ve fiyat süzgeci yokken): her kategoriden ilk ONIZ ürün, kategori başlıklarıyla.
+       Ürünlerin tamamı yalnızca kendi kategorisinde gösterilir. */
+    var bolum = cur === 'Tümü' && !ara && !fb, bolumler = [];
+    if (bolum) {
+      var liste = [];
+      anaGruplar().filter(function (gr) { return gr !== IND; }).forEach(function (gr) {
+        var hepsi = shown.filter(function (u) { return grupOf(u) === gr; });
+        var sec = hepsi.filter(function (u) { return !satildi(u); }).slice(0, ONIZ);
+        if (sec.length < ONIZ) sec = sec.concat(hepsi.filter(satildi).slice(0, ONIZ - sec.length));
+        if (!sec.length) return;
+        bolumler.push({ g: gr, bas: liste.length, n: sec.length, top: hepsi.filter(function (u) { return !satildi(u); }).length });
+        liste = liste.concat(sec);
+      });
+      shown = liste;
+    } else if (cur === 'Tümü') shown = karistir(shown.filter(function (u) { return !satildi(u); })).concat(karistir(shown.filter(satildi)));
     /* kodu birebir yazılan ürün en başa */
     if (ara) shown = shown.filter(tamKod).concat(shown.filter(function (u) { return !tamKod(u); }));
     var g = $('grid');
-    g.innerHTML = shown.map(function (u, i) {
+    var kart = function (u, i) {
       var et = etiket(u), np = pics(u).length;
       var sold = satildi(u), ind = indirimde(u), yz = ind ? yuzde(u) : 0;
       var fv = isFav(u);
@@ -207,7 +221,15 @@
         '<img class="pre" src="' + esc(u.kucuk || u.gorsel) + '" alt="' + esc(u.ad || '') + '" loading="' + (i < 6 ? 'eager' : 'lazy') + '" decoding="async">' +
         ((u.ad || et || u.fiyat) ? '<span class="cap"><b>' + esc(u.ad || '') + '</b><span>' + esc(et) + (u.kod ? ' · ' + esc(u.kod) : '') + '</span>' +
           (gecerliFiyat(u) ? '<em class="p">' + (sold ? 'Satıldı' : fiyatHtml(u)) + '</em>' : onSip(u) ? '<em class="p pre-p">Ön sipariş</em>' : '') + '</span>' : '') + '</button></div>';
-    }).join('');
+    };
+    g.classList.toggle('bolumlu', bolum);
+    g.innerHTML = bolum ? bolumler.map(function (b) {
+      var cells = '';
+      for (var i = b.bas; i < b.bas + b.n; i++) cells += kart(shown[i], i);
+      return '<section class="gsec"><div class="gh"><h3 class="H">' + esc(b.g) + '</h3><a href="#urunler" data-go="' + esc(b.g) + '">Tümünü gör (' + b.top + ') →</a></div>' +
+        '<div class="grid">' + cells + '</div>' +
+        (b.top > b.n ? '<a class="gmore" href="#urunler" data-go="' + esc(b.g) + '">Tüm ' + esc(b.g.toLocaleLowerCase('tr')) + ' ürünleri (' + b.top + ') →</a>' : '') + '</section>';
+    }).join('') : shown.map(kart).join('');
     var cn = $('catnote'), cnOn = !ara && cur !== 'Tümü' && cur !== FAV && cur !== IND && shown.some(onSip);
     cn.hidden = !cnOn;
     if (cnOn) cn.textContent = '"Ön sipariş" etiketli ürünler siparişe özel hazırlanır. Beğendiğin ürünü aç, "Ön sipariş başvurusu yap" ile formu doldur; ürünün hazır olunca seninle iletişime geçelim. Teslim elden yapılır.';
@@ -526,7 +548,11 @@
         (ind ? '<span class="tg">Fırsat</span>' : '') + '</div><div class="cn"><b>' + esc(g) + '</b><span>' + (ind ? 'Fırsatlar' : n + ' model') + ' →</span></div></a>';
     }).join('');
   }
-  function sayac() { var c = $('kcnt'); c.textContent = shown.length ? shown.length + ' ürün' : ''; }
+  function sayac() {
+    var c = $('kcnt'), ana = cur === 'Tümü' && !ara && !fb;
+    c.textContent = ana ? 'Her kategoriden ' + ONIZ + ' ürün' : shown.length ? shown.length + ' ürün' : '';
+    $('kbas').textContent = ana ? 'Öne çıkanlar' : cur === 'Tümü' ? 'Tüm ürünler' : cur;
+  }
   var drawEski = draw;
   draw = function () { drawEski(); sayac(); };
   function kategoriyeGit(g) {

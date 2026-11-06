@@ -364,3 +364,24 @@ nav.filters .chip[data-c="Beğendiklerim"][aria-pressed="true"]{color:#fff;backg
   .ib{width:36px;height:36px}.ib svg{width:20px;height:20px}
   .hrow{grid-template-columns:32px 1fr auto}
 }
+
+/* ana sayfa: kategori başına önizleme bölümleri */
+#grid.bolumlu{column-count:auto!important;column-gap:0}
+.gsec{margin:0 0 54px}
+.gsec .gh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.gsec .gh h3{margin:0;font-size:clamp(22px,2.6vw,30px);line-height:1}
+.gsec .gh a,.gmore{font:600 11.5px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);text-decoration:none;white-space:nowrap}
+.gsec .gh a:hover{color:var(--accent)}
+.gmore{display:flex;align-items:center;justify-content:center;min-height:48px;margin-top:6px;border:1px solid var(--ink)}
+.gmore:hover{background:var(--ink);color:#fff}
+@media (max-width:719px){.gsec{margin-bottom:40px}.gsec .gh a{font-size:10px;letter-spacing:.1em}}
+.gsec .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;column-count:auto}
+.gsec .cell{margin:0}
+.gsec .tile img{aspect-ratio:4/5;object-fit:cover;height:auto}
+/* telefonda her kategori yana kaydırılan tek sıra: sayfa kısa kalır */
+@media (max-width:719px){
+  .gsec .grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px;scroll-padding-left:16px;scrollbar-width:none}
+  .gsec .grid::-webkit-scrollbar{display:none}
+  .gsec .cell{flex:0 0 44%;scroll-snap-align:start}
+  .gsec .gmore{margin-top:12px}
+}
