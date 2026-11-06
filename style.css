@@ -74,15 +74,16 @@ header.site{background:#000;color:#fff;padding:14px max(24px,env(safe-area-inset
 /* kategoriler */
 .cats{padding:64px 64px 0}
 .sh{margin:0 0 28px;font-size:clamp(32px,4.4vw,52px);line-height:1}
-.cg{display:grid;grid-template-columns:repeat(5,1fr);gap:22px 18px}
+.cg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 18px}
 .ct{display:block;color:var(--ink);text-decoration:none}
 .ci{position:relative;aspect-ratio:4/5;background:var(--card);overflow:hidden}
 .ci img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
 .ct:hover .ci img{transform:scale(1.045)}
 .ci .tg{position:absolute;top:12px;left:12px;background:var(--sale);color:#fff;font:600 10.5px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;padding:7px 9px}
-.cn{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:12px 0 10px;border-bottom:1px solid var(--line)}
+.cn{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 8px;min-width:0;padding:12px 0 10px;border-bottom:1px solid var(--line)}
 .cn b{font:700 20px/1 var(--f-head);text-transform:uppercase;letter-spacing:.01em}
 .cn span{font:500 11.5px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.cn b{min-width:0;overflow-wrap:anywhere}
 .ct.sale .cn b{color:var(--sale)}
 
 /* ev buluşması paneli */
@@ -308,7 +309,7 @@ nav.filters .chip[data-c="Beğendiklerim"][aria-pressed="true"]{color:#fff;backg
 
 /* tablet */
 @media (max-width:1080px){
-  .cg{grid-template-columns:repeat(5,1fr);gap:16px 12px}.cn b{font-size:15px}.cn span{font-size:9.5px;letter-spacing:.04em}
+  .cg{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px 12px}.cn b{font-size:15px}.cn span{font-size:9.5px;letter-spacing:.04em}
   .prom{grid-template-columns:1fr 1fr}.prom>div:nth-child(2){border-right:0}.prom>div:nth-child(-n+2){border-bottom:1px solid var(--line)}
   .ev{grid-template-columns:1fr}.ev .ph{order:-1;height:340px}.evbadge{left:auto;right:20px;bottom:-40px}
   .ft .t{grid-template-columns:1fr 1fr}
@@ -335,8 +336,8 @@ nav.filters .chip[data-c="Beğendiklerim"][aria-pressed="true"]{color:#fff;backg
   .dots{right:auto;left:20px;bottom:6px}
   .side{display:none}
   .prom{margin:20px 16px 0}.prom>div{padding:18px 12px}.prom h3{font-size:14px}.prom p{font-size:13px}
-  .cats{padding:44px 16px 0}
-  .cg{grid-template-columns:1fr 1fr;gap:16px 12px}
+  .cats{margin:0;padding:44px 16px 0}
+  .cg{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
   .cn b{font-size:16px}.cn span{font-size:10px;letter-spacing:.06em}
   .ev{margin:56px 0 0}.ev .ph{height:300px}.ev .tx{padding:56px 20px 40px}
   .steps{grid-template-columns:1fr;gap:10px}

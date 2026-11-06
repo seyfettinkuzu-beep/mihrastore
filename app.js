@@ -501,8 +501,10 @@
   function adet(g) { return all.filter(function (u) { return (g === IND ? indirimde(u) : grupOf(u) === g) && !satildi(u); }).length; }
   function anaGruplar() { return groups.filter(function (g) { return g !== 'Tümü' && g !== FAV; }); }
   /* Kategori kutusu fotoğrafı: seçilmiş ürün hâlâ listedeyse o, yoksa kategorinin ilk satılmamış ürünü */
-  var KAPAK = { 'Kolye': 'images/markiz-tasli-yildiz-cicek-kolye.jpg', 'Bileklik': 'images/tasli-gold-bileklik.jpg', 'Küpe': 'images/yelpaze-kupe-3.jpg', 'Yüzük': 'images/asscher-tasli-yuzuk.jpg', 'Kelepçe': 'images/tasli-t-bilezik-gold.jpg', 'Halhal': 'images/gold-tasli-sallantili-halhal.jpg', 'Şahmeran': 'images/oval-tasli-sahmeran.jpg', 'Set': 'images/gold-oynar-tasli-ucgen-set.jpg', 'Çocuk': 'images/cocuk-papatya-kupe.jpg', 'İndirim': 'images/bileklik-uc-renk-sonsuzluk.jpg' };
+  /* Kategori kapakları: assets/ içindeki çekimler (panel bu klasöre dokunmaz). Listede olmayan kategoride seçili ürün ya da ilk satılmamış ürün. */
+  var KAPAK = { 'Kolye': 'assets/kat-kolye.jpg', 'Bileklik': 'assets/kat-bileklik.jpg', 'Küpe': 'assets/kat-kupe.jpg', 'Yüzük': 'assets/kat-yuzuk.jpg', 'Kelepçe': 'assets/kat-kelepce.jpg', 'Halhal': 'assets/kat-halhal.jpg', 'Set': 'assets/kat-set.jpg', 'Çocuk': 'assets/kat-cocuk.jpg', 'Şahmeran': 'images/oval-tasli-sahmeran.jpg', 'İndirim': 'images/bileklik-uc-renk-sonsuzluk.jpg' };
   function kapak(g) {
+    if (/^assets\//.test(KAPAK[g] || '')) return KAPAK[g];
     var hepsi = all.filter(function (u) { return g === IND ? indirimde(u) : grupOf(u) === g; });
     var u = hepsi.filter(function (x) { return x.gorsel === KAPAK[g]; })[0] || hepsi.filter(function (x) { return !satildi(x); })[0] || hepsi[0];
     return u ? (u.kucuk || u.gorsel) : '';
