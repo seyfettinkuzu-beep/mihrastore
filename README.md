@@ -1,4 +1,4 @@
-# Mihra Store · Showroom sitesi
+# Seyyar Gümüş · Showroom sitesi
 
 Site adresi: https://seyyargumus.com · Panel: https://seyyargumus.com/admin.html
 (Alan adı `CNAME` dosyasında; Cloudflare DNS → GitHub Pages.)

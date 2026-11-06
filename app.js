@@ -68,6 +68,9 @@
 
   var wa = String(S.whatsapp || '').replace(/\D/g, '');
   function waLink(txt) { return 'https://wa.me/' + wa + '?text=' + encodeURIComponent(txt); }
+  /* Eve gelme hizmeti banner'ı: randevu WhatsApp'tan */
+  var evb = $('evbtn');
+  if (evb) { if (wa) evb.href = waLink('Merhaba, ' + marka + ' ev buluşması için randevu almak istiyorum.'); else evb.hidden = true; }
   if (wa) { var fab = $('wafab'); fab.href = waLink('Merhaba, ' + marka + ' ürünleri hakkında bilgi almak istiyorum.'); fab.hidden = false; }
 
   /* Beğendiklerim: müşterinin kalp verdiği ürünler yalnızca kendi tarayıcısında saklanır (ürün fotoğrafının yoluyla) */
@@ -276,8 +279,8 @@
     var w = $('lbw'); w.hidden = !wa || os;
     if (wa && !os) {
       w.href = sold
-        ? waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.kod ? ' [' + u.kod + ']' : '') + ' satılmış. Benzeri var mı?\n' + new URL(ph.g, location.href).href)
-        : waLink('Merhaba, ' + marka + '\'daki "' + (u.ad || 'ürün') + '"' + (u.kod ? ' [' + u.kod + ']' : '') + (gecerliFiyat(u) ? ' (' + (indirimde(u) ? 'indirimli ' : '') + gecerliFiyat(u) + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(ph.g, location.href).href);
+        ? waLink('Merhaba, ' + marka + ' sitesindeki "' + (u.ad || 'ürün') + '"' + (u.kod ? ' [' + u.kod + ']' : '') + ' satılmış. Benzeri var mı?\n' + new URL(ph.g, location.href).href)
+        : waLink('Merhaba, ' + marka + ' sitesindeki "' + (u.ad || 'ürün') + '"' + (u.kod ? ' [' + u.kod + ']' : '') + (gecerliFiyat(u) ? ' (' + (indirimde(u) ? 'indirimli ' : '') + gecerliFiyat(u) + ')' : '') + ' ürünüyle ilgileniyorum.\n' + new URL(ph.g, location.href).href);
       w.textContent = sold ? 'Benzerini sor' : gecerliFiyat(u) ? 'WhatsApp\'tan sipariş ver' : 'WhatsApp\'tan fiyat sor';
     }
     $('lbk').textContent = (idx + 1) + ' / ' + shown.length + (n > 1 ? ' · Fotoğraf ' + (pidx + 1) + ' / ' + n : '') + '\n' + zoomHint;
@@ -340,7 +343,7 @@
     var list = all.filter(isFav);
     $('favtxt').textContent = list.length + ' ürün beğendin. Listen bu tarayıcıda saklanır.';
     var w = $('favwa'); w.hidden = !wa;
-    if (wa) w.href = waLink('Merhaba, ' + marka + '\'da beğendiğim ürünler:\n' + list.map(function (u) {
+    if (wa) w.href = waLink('Merhaba, ' + marka + ' sitesinde beğendiğim ürünler:\n' + list.map(function (u) {
       return '• ' + (u.ad || 'Ürün') + (satildi(u) ? ' (satıldı)' : gecerliFiyat(u) ? ' – ' + gecerliFiyat(u) : '');
     }).join('\n'));
   }

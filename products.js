@@ -1,11 +1,11 @@
-/* Mihra Store ürün listesi.
+/* Seyyar Gümüş ürün listesi.
    Bu dosya yönetici panelinden (admin.html) güncellenir; istersen elle de düzenleyebilirsin.
    altYazi içindeki {yil} otomatik olarak bu yılla değişir. */
 window.SHOWROOM = {
-  marka: "Mihra Store",
+  marka: "Seyyar Gümüş",
   slogan: "",
   aciklama: "Koleksiyonumuzdan seçtiklerimiz.",
-  altYazi: "© {yil} Mihra Store",
+  altYazi: "© {yil} Seyyar Gümüş",
   whatsapp: "905411600296",
   begeniAdresi: "https://script.google.com/macros/s/AKfycbyC3Gm8P9LADvIKujXwKfvB1y1YK5Jqt9jwKb8i3jiOIpwdxAKsJa33-hP1-FdEQrz6/exec",
   gruplar: ["Kolye","Bileklik","Küpe","Kelepçe","Yüzük","Çocuk","Şahmeran","Halhal","Set"],
