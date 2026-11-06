@@ -27,9 +27,11 @@ header.site{background:#000;color:#fff;padding:14px max(24px,env(safe-area-inset
 .hrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
 .loc{display:flex;gap:8px;align-items:center;font:500 12px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:#d8d8d8}
 .logo{display:inline-flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
-.logo .emb{flex:none}
-.logo .wm{font:600 20px/1 var(--f-head);letter-spacing:.22em;text-transform:uppercase;white-space:nowrap}
-.logo .wm small{display:block;font:500 9.5px/1 var(--f-body);letter-spacing:.42em;color:var(--champ);margin-top:7px}
+.mark{position:relative;flex:none;width:96px;height:58px;display:grid;place-items:center}
+.mark .sg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:400 50px/1 "Great Vibes",cursive;letter-spacing:-.12em;padding:0 .12em 10px 0;color:var(--champ);white-space:nowrap}
+.mark .dia{position:relative;width:42px;height:37px}
+.logo .wm{font:500 21px/1 "Cormorant Garamond",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.logo .wm small{display:block;font:500 9.5px/1 var(--f-body);letter-spacing:.42em;color:var(--champ);margin-top:8px}
 .tools{display:flex;justify-content:flex-end;gap:4px}
 .ib{position:relative;appearance:none;background:none;border:0;color:#fff;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;padding:0;border-radius:50%;text-decoration:none}
 .ib:hover{background:#1b1b1b}
@@ -321,8 +323,8 @@ nav.filters .chip[data-c="Beğendiklerim"][aria-pressed="true"]{color:#fff;backg
   header.site{padding:10px 8px 0}
   .hrow{grid-template-columns:44px 1fr auto;gap:4px}
   .loc span{display:none}.loc{justify-content:center}
-  .logo{justify-self:center;gap:8px}.logo .emb{width:30px;height:35px}
-  .logo .wm{font-size:14px;letter-spacing:.14em}.logo .wm small{font-size:7.5px;letter-spacing:.3em;margin-top:5px}
+  .logo{justify-self:center;gap:4px}.mark{width:62px;height:42px}.mark .sg{font-size:33px;padding-bottom:7px}.mark .dia{width:28px;height:25px}
+  .logo .wm{font-size:14px;letter-spacing:.1em}.logo .wm small{font-size:7.5px;letter-spacing:.3em;margin-top:5px}
   .tools{gap:0}.ib{width:40px;height:40px}
   .topnav{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;gap:22px;padding:12px 8px 10px;scrollbar-width:none}
   .topnav::-webkit-scrollbar{display:none}
