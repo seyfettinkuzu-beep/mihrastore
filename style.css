@@ -43,10 +43,10 @@ header.site{background:#000;color:#fff;padding:14px max(24px,env(safe-area-inset
 .topnav a[aria-current="true"]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:7px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 7' preserveAspectRatio='none'><path d='M1 4 Q5 1 9 4 T17 4 T25 4 T33 4 T39 4' fill='none' stroke='%23E4C98F' stroke-width='1.6'/></svg>") center/100% 100% no-repeat}
 
 /* kapak slaytı */
-.hero{position:relative;height:min(640px,78vh);min-height:480px;background:#000;overflow:hidden;color:#fff}
+.hero{position:relative;height:clamp(480px,calc(100vw / 1.79),820px);min-height:480px;background:#000;overflow:hidden;color:#fff}
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility 0s .8s}
 .slide.on{opacity:1;visibility:visible;transition:opacity .8s ease}
-.slide .ph{position:absolute;inset:0;display:grid}
+.slide .ph{position:absolute;inset:0;display:grid;grid-template-rows:minmax(0,1fr)}
 .slide .ph.trio{grid-template-columns:1.25fr 1fr 1fr;gap:4px}
 .slide .ph img{width:100%;height:100%;object-fit:cover}
 .slide::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.4) 45%,rgba(0,0,0,.05) 78%),linear-gradient(0deg,rgba(0,0,0,.55),transparent 45%);pointer-events:none}
@@ -385,4 +385,14 @@ nav.filters .chip[data-c="Beğendiklerim"][aria-pressed="true"]{color:#fff;backg
   .gsec .grid::-webkit-scrollbar{display:none}
   .gsec .cell{flex:0 0 44%;scroll-snap-align:start}
   .gsec .gmore{margin-top:12px}
+}
+
+/* 2. slayt (ev buluşması): fotoğraf kesilmeden görünsün */
+.slide.stack .ph img{object-position:50% 50%!important}
+@media (max-width:719px){
+  .slide.stack .ph{inset:0 0 auto 0;height:calc(100vw / 1.79)}
+  .slide.stack::after{background:linear-gradient(180deg,transparent calc(100vw / 1.79 - 40px),#000 calc(100vw / 1.79))}
+  .slide.stack .tx{top:calc(100vw / 1.79 + 26px);bottom:auto}
+  .slide.stack .temsili{top:10px;right:10px;font-size:9.5px;padding:6px 8px}
+  .hero .slide.stack .lead{display:block}
 }
